@@ -1,0 +1,52 @@
+import { motion } from "framer-motion";
+
+import ServiceRow from "./ServiceRow";
+import servicesData, { services } from "./serviceData";
+
+function Services() {
+  return (
+    <section className="bg-[#F7F4EF] py-32 lg:py-40">
+      <div className="container-custom">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.8 }}
+          className="mx-auto mb-24 max-w-3xl text-center"
+        >
+          <p className="mb-4 text-xs font-medium uppercase tracking-[4px] text-[#C8A96A]">
+            {servicesData.eyebrow}
+          </p>
+
+          <h2 className="font-serif text-5xl leading-tight text-[#111111] md:text-6xl">
+            {servicesData.title}
+
+            <span className="block text-[#C8A96A]">
+              {servicesData.highlight}
+            </span>
+          </h2>
+
+          <div className="mx-auto my-8 h-px w-20 bg-[#C8A96A]" />
+
+          <p className="mx-auto max-w-2xl text-lg leading-9 text-[#666666]">
+            {servicesData.description}
+          </p>
+        </motion.div>
+
+        {/* Services */}
+        <div className="space-y-40">
+          {services.map((service, index) => (
+            <ServiceRow
+              key={service.id}
+              service={service}
+              reverse={index % 2 !== 0}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Services;

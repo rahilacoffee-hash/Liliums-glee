@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@layer components {
+  .container-custom {
+    @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10 xl:px-12;
+  }
+}
+
+.projectSwiper {
+  padding-bottom: 60px;
+}
+
+.projectSwiper .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.projectSwiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: #C8A96A;
+  opacity: .3;
+  transition: .35s;
+}
+
+.projectSwiper .swiper-pagination-bullet-active {
+  width: 40px;
+  border-radius: 999px;
+  opacity: 1;
+}
+
+
+
+.projectSwiper{
+    padding-bottom:140px;
+}
+
+.projectSwiper .swiper-wrapper{
+    align-items:flex-start;
+}
