@@ -7,6 +7,11 @@ import FeaturedProjects from '../component/featuredProjects/FeaturedProjects'
 import DesignProcess from '../component/CompanyTimeline/DesignProcess'
 import { Server } from 'lucide-react'
 import Services from '../component/services/Services'
+import Collections from '../component/collections/Collections'
+import WhyChoose from '../component/WhyChoose/WhyChoose'
+import Testimonials from '../component/testimonials/Testimonials'
+import CTA from '../component/cta/CTA'
+import Footer from '../component/layout/Footer/Footer'
 
 
 const Home = () => {
@@ -19,7 +24,12 @@ const Home = () => {
        <FeaturedProjects/>
        <DesignProcess/>
        <Services/>
+        <Collections/> 
+        <WhyChoose/>
+        <Testimonials/>
+        <CTA/>
       </main>
+      <Footer/>
     </>
   )
 }
