@@ -54,7 +54,7 @@ function Hero() {
 
             {/* Right */}
 
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-40 mb-30 ">
               <HeroFeaturedCard />
             </div>
           </motion.div>
