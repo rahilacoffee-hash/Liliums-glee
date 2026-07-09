@@ -1,74 +1,71 @@
-import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { heroSlides } from "./heroData";
-import { containerVariants } from "./heroVariants";
+
+import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
-import HeroImage from "./HeroImage";
-import CarouselControls from "./CarouselControls";
+import HeroFeaturedCard from "./HeroFeaturedCard";
+import HeroBottomBar from ".//HeroBottomBar";
+
+import {
+  sectionReveal,
+  staggerContainer,
+} from "./heroVariants";
 
 function Hero() {
-  const [current, setCurrent] = useState(0);
-  const [activeHotspot, setActiveHotspot] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
-
-  const slide = heroSlides[current];
-
-  const goToSlide = useCallback((index) => {
-    setActiveHotspot(null);
-    setCurrent(index);
-  }, []);
-
-  const goNext = useCallback(() => {
-    setActiveHotspot(null);
-    setCurrent((prev) => (prev + 1) % heroSlides.length);
-  }, []);
-
-  const goPrev = useCallback(() => {
-    setActiveHotspot(null);
-    setCurrent((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-  }, []);
-
-  const toggleHotspot = (id) => {
-    setActiveHotspot((prev) => (prev === id ? null : id));
-  };
-
-  // Auto Play
-  useEffect(() => {
-    if (isPaused) return;
-
-    const timer = setInterval(() => {
-      goNext();
-    }, 6000);
-
-    return () => clearInterval(timer);
-  }, [goNext, isPaused]);
-
   return (
     <motion.section
-      variants={containerVariants}
-      initial="initial"
-      animate="animate"
-      className="relative min-h-screen w-full overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      variants={sectionReveal}
+      initial="hidden"
+      animate="visible"
+      className="
+        relative
+        min-h-screen
+        overflow-hidden
+        bg-[#0F1713]
+      "
     >
-      <div className="flex min-h-screen flex-col md:flex-row">
-        <HeroContent slide={slide} />
+      {/* ================= Background ================= */}
 
-        <HeroImage
-          slide={slide}
-          activeHotspot={activeHotspot}
-          onToggleHotspot={toggleHotspot}
-          slideCount={heroSlides.length}
-          current={current}
-          onSelectSlide={goToSlide}
-        />
+      <HeroBackground />
 
-        <CarouselControls
-          onPrev={goPrev}
-          onNext={goNext}
-        />
+      {/* ================= Content ================= */}
+
+      <div className="relative z-20 flex min-h-screen flex-col">
+        {/* Navbar */}
+
+
+        {/* Hero */}
+
+        <div className="container-custom flex flex-1 items-center">
+          <motion.div
+            variants={staggerContainer}
+            className="
+              grid
+              w-full
+              items-center
+              gap-20
+              py-32
+
+              lg:grid-cols-[1.1fr_.9fr]
+            "
+          >
+            {/* Left */}
+
+            <HeroContent />
+
+            {/* Right */}
+
+            <div className="flex justify-end">
+              <HeroFeaturedCard />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom Bar */}
+
+        <HeroBottomBar />
       </div>
+
+      {/* Scroll Indicator */}
     </motion.section>
   );
 }

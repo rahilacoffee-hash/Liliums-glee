@@ -1,135 +1,139 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ShoppingBag } from "lucide-react";
+import { motion } from "framer-motion";
 
-import HeroStats from "./HeroStats";
+import heroData from "./heroData";
+import HeroButtons from "./HeroButtons";
 
 import {
-  containerVariants,
+  staggerContainer,
   fadeUp,
-  headingReveal,
-  dividerVariants,
-  primaryButtonVariants,
-  secondaryButtonVariants,
-  arrowVariants,
+  fadeLeft,
 } from "./heroVariants";
 
-function HeroContent({ slide }) {
+function HeroContent() {
   return (
-    <div className="relative flex w-full flex-col justify-center bg-gradient-to-br from-[#0d2b22] to-[#123128] px-8 py-10 pt-42 md:w-1/2 md:px-14 md:py-16 md:pt-40">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slide.id}
-          variants={containerVariants}
-          initial="initial"
-          animate="animate"
-          exit="initial"
-        >
-          {/* Eyebrow */}
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
+      className="
+        relative
+        z-20
+        max-w-3xl
+      "
+    >
+      {/* ================================= */}
+      {/* Eyebrow */}
+      {/* ================================= */}
 
-          <motion.p
-            variants={fadeUp}
-            className="mb-4 text-xs font-medium uppercase tracking-[3px] text-[#D6A354]"
-          >
-            {slide.eyebrow}
-          </motion.p>
+      <motion.span
+        variants={fadeUp}
+        className="
+          inline-flex
+          items-center
+          gap-3
+          rounded-full
+          border
+          border-white/15
+          bg-white/10
+          px-5
+          py-2
+          text-xs
+          font-semibold
+          uppercase
+          tracking-[0.35em]
+          text-[#C8A96A]
+          backdrop-blur-xl
+        "
+      >
+        <span className="h-2 w-2 rounded-full bg-[#C8A96A]" />
 
-          {/* Heading */}
+        {heroData.eyebrow}
+      </motion.span>
 
-          <h1 className="mb-3 font-serif text-[52px] leading-[0.95] text-white lg:text-[72px] xl:text-[82px]">
-            {slide.headlineLines.map((line, i) => (
-              <motion.span
-                key={i}
-                variants={headingReveal}
-                className="block overflow-hidden"
-              >
-                {line.split(" ").map((word, wi) => (
-                  <span
-                    key={wi}
-                    className={
-                      word === slide.highlight ? "text-[#D6A354]" : ""
-                    }
-                  >
-                    {word}{" "}
-                  </span>
-                ))}
-              </motion.span>
-            ))}
-          </h1>
+      {/* ================================= */}
+      {/* Heading */}
+      {/* ================================= */}
 
-          {/* Divider */}
+      <motion.h1
+        variants={fadeLeft}
+        className="
+          mt-8
+          max-w-4xl
+          font-serif
+          text-5xl
+          font-light
+          leading-[1.05]
+          tracking-tight
+          text-white
+          sm:text-6xl
+          lg:text-7xl
+          xl:text-8xl
+        "
+      >
+        {heroData.title}
+      </motion.h1>
 
-          <motion.div
-            variants={dividerVariants}
-            className="my-6 h-px bg-[#D6A354]"
-          />
+      {/* ================================= */}
+      {/* Description */}
+      {/* ================================= */}
 
-          {/* Description */}
+      <motion.p
+        variants={fadeUp}
+        className="
+          mt-8
+          max-w-2xl
+          text-lg
+          leading-9
+          text-white/75
+          md:text-xl
+        "
+      >
+        {heroData.description}
+      </motion.p>
 
-          <motion.p
-            variants={fadeUp}
-            className="mb-10 max-w-md text-sm leading-8 text-white/60"
-          >
-            {slide.description}
-          </motion.p>
-
-          {/* Buttons */}
-
-          <motion.div
-            variants={fadeUp}
-            className="mb-12 flex flex-wrap items-center gap-5"
-          >
-            {/* Explore */}
-
-            <motion.button
-              variants={primaryButtonVariants}
-              whileHover="whileHover"
-              whileTap="whileTap"
-              className="group flex h-14 items-center gap-4 rounded-full bg-[#C8A96A] px-8 text-[15px] font-medium tracking-wide text-[#111111]"
-            >
-              <span>Explore Project</span>
-
-              <motion.span
-                variants={arrowVariants}
-                whileHover="whileHover"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-[#111111] text-[#C8A96A]"
-              >
-                <ChevronRight size={16} />
-              </motion.span>
-            </motion.button>
-
-            {/* Shop */}
-
-            <motion.button
-              variants={secondaryButtonVariants}
-              whileHover="whileHover"
-              whileTap={{ scale: 0.97 }}
-              className="group flex h-14 items-center gap-4 rounded-full border border-white/15 bg-white/5 px-7 backdrop-blur-xl"
-            >
-              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-all duration-300 group-hover:bg-[#C8A96A] group-hover:text-[#111111]">
-                <ShoppingBag size={16} />
-              </span>
-
-              <span className="text-[15px] font-medium tracking-wide text-white">
-                Shop Collection
-              </span>
-            </motion.button>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Stats */}
+      {/* ================================= */}
+      {/* Buttons */}
+      {/* ================================= */}
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          delay: 1.3,
-          duration: 0.8,
-        }}
+        variants={fadeUp}
+        className="mt-12"
       >
-        <HeroStats />
+        <HeroButtons />
       </motion.div>
-    </div>
+
+      {/* ================================= */}
+      {/* Small Trust Badge */}
+      {/* ================================= */}
+
+      <motion.div
+        variants={fadeUp}
+        className="
+          mt-14
+          flex
+          flex-wrap
+          items-center
+          gap-6
+          text-sm
+          text-white/60
+        "
+      >
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[#73B72B]" />
+          Premium Finishes
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[#73B72B]" />
+          Bespoke Designs
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[#73B72B]" />
+          Nationwide Delivery
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

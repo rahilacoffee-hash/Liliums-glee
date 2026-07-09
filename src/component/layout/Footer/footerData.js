@@ -95,14 +95,14 @@ export const contactInfo = [
 
   {
     title: "Instagram",
-    value: "@liliums_glee",
-    href: "https://instagram.com/liliums_glee",
+    value: "@liliums_gleee",
+    href: "https://www.instagram.com/liliums_gleee?igsh=c2V4eDMwdXhoczV3",
   },
 
   {
     title: "TikTok",
     value: "@Liliums glee",
-    href: "https://tiktok.com/@liliumsglee",
+    href: "https://www.tiktok.com/@liliumsgleeinterior?_r=1&_t=ZS-97txGiTclNc",
   },
 ];
 
@@ -110,7 +110,7 @@ export const socialLinks = [
   {
     name: "Instagram",
     icon: CiInstagram,
-    href: "https://instagram.com/liliums_glee",
+    href: "https://instagram.com/liliums_gleee",
   },
 
   {

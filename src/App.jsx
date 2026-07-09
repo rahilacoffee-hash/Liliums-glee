@@ -5,13 +5,20 @@ import VerifyOtpPage from "./component/Auth/Verifyotppage"
 import ForgotPasswordPage from "./component/Auth/Forgotpasswordpage"
 import ResetPasswordPage from "./component/Auth/Resetpasswordpage"
 import Home from "./Pages/Home"
+import About from "./Pages/About"
+import ScrollToTop from "./component/layout/ScrollToTop"
+import Services from "./Pages/Services"
 
 
 function App() {
   return (
     <BrowserRouter>
+    <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Home/>} />
+        <Route path="/about" element={<About/>} />
+        <Route path="/services" element={<Services/>} />
+
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

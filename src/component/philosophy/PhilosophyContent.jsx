@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { philosophy } from "./philosophyData";
 import { fadeUp } from "./philosophyVariants";
+import { Link } from "react-router-dom";
 
 function PhilosophyContent() {
   return (
@@ -29,7 +30,7 @@ function PhilosophyContent() {
       <p className="mt-8 max-w-lg leading-8 text-gray-600">
         {philosophy.description}
       </p>
-
+<Link to="/about">
       <button className="group mt-10 flex items-center gap-3 text-[#1B1B1B]">
         {philosophy.button}
 
@@ -38,6 +39,7 @@ function PhilosophyContent() {
           size={18}
         />
       </button>
+      </Link>
     </motion.div>
   );
 }
