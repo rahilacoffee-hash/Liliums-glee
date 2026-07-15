@@ -6,7 +6,6 @@ const statusOptions = [
   "All",
   "Pending",
   "Confirmed",
-  "Processing",
   "Shipped",
   "Delivered",
   "Cancelled",
@@ -44,19 +43,15 @@ function Orders() {
 
       console.log("Orders Response:", data);
 
-      if (data.success) {
-        setOrders(data.data.orders || []);
-        setTotalPages(data.data.totalPages || 1);
-      } else {
+  if (data.success) {
+  setOrders(data.data || []);
+  setTotalPages(1);
+} else {
         setOrders([]);
-        setTotalPages(1);
       }
     } catch (error) {
       console.error(error);
-
       setOrders([]);
-      setTotalPages(1);
-
       setError(
         error.response?.data?.message ||
           "Failed to load orders."
@@ -67,14 +62,14 @@ function Orders() {
   }
 
   return (
-    <div className="p-4 md:p-6 lg:p-10">
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div className="p-6 md:p-10">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="font-serif text-3xl text-[#111111]">
+          <h1 className="font-serif text-3xl">
             Orders
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="text-gray-500">
             Manage customer orders
           </p>
         </div>
@@ -85,7 +80,7 @@ function Orders() {
             setStatusFilter(e.target.value);
             setPage(1);
           }}
-          className="rounded-xl border border-[#E8E2D9] bg-white px-4 py-3 text-sm outline-none focus:border-[#C8A96A]"
+          className="rounded-lg border px-4 py-2"
         >
           {statusOptions.map((status) => (
             <option
@@ -99,25 +94,25 @@ function Orders() {
       </div>
 
       {error && (
-        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+        <p className="mb-4 text-red-500">
           {error}
-        </div>
+        </p>
       )}
 
       {loading ? (
-        <div className="rounded-2xl border border-[#E8E2D9] bg-white p-10 text-center">
-          Loading orders...
+        <div className="rounded-xl bg-white p-10 text-center">
+          Loading...
         </div>
       ) : (
         <>
           <OrderTable
             orders={orders}
-            showCustomer={true}
+            showCustomer
             basePath="/admin/orders"
           />
 
           {totalPages > 1 && (
-            <div className="mt-8 flex flex-wrap justify-center gap-2">
+            <div className="mt-8 flex justify-center gap-2">
               {Array.from({
                 length: totalPages,
               }).map((_, index) => (
@@ -126,10 +121,10 @@ function Orders() {
                   onClick={() =>
                     setPage(index + 1)
                   }
-                  className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
+                  className={`h-10 w-10 rounded-full ${
                     page === index + 1
-                      ? "bg-[#C8A96A] text-black"
-                      : "border border-[#E8E2D9] bg-white hover:border-[#C8A96A]"
+                      ? "bg-[#C8A96A]"
+                      : "border"
                   }`}
                 >
                   {index + 1}
