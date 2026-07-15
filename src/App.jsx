@@ -32,6 +32,7 @@ import PaymentSuccess from "./Pages/PaymentSuccess";
 import Users from "./admin/users/Users";
 import Reviews from "./admin/reviews/Reviews";
 import Consultations from "./admin/consultation/Consultations";
+import ConsultationDetails from "./admin/consultation/Consultationdetails";
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
          <Route path="users" element={<Users />} />
          <Route path="reviews" element={<Reviews />} />
          <Route path="consultations" element={<Consultations />} />
+         <Route path="consultations/:id" element={<ConsultationDetails />} />
          
           </Route>
 
