@@ -31,6 +31,7 @@ import Checkout from "./Pages/Checkout";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import Users from "./admin/users/Users";
 import Reviews from "./admin/reviews/Reviews";
+import Consultations from "./admin/consultation/Consultations";
 
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
 
          <Route path="users" element={<Users />} />
          <Route path="reviews" element={<Reviews />} />
+         <Route path="consultations" element={<Consultations />} />
          
           </Route>
 

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle2 } from "lucide-react";
 
 import contactData from "./contactData";
 import { formReveal, buttonHover } from "./contactVariants";
+import axiosInstance from "../../api/axiosInstance";
 
 let timeSlots = ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM", "5:00 PM"];
 
@@ -25,15 +26,50 @@ function ConsultationForm() {
     message: "",
   });
 
+  let [submitting, setSubmitting] = useState(false);
+  let [submitted, setSubmitted] = useState(false);
+  let [error, setError] = useState("");
+
   function handleChange(e) {
     let { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // Wire this up to your booking endpoint / email service
-    console.log("Consultation request:", values);
+    setError("");
+    setSubmitting(true);
+
+    try {
+      await axiosInstance.post("/consultation", {
+        fullName: values.fullName,
+        email: values.email,
+        phone: values.phone,
+        projectType: values.projectType,
+        service: values.service,
+        budget: values.budget,
+        preferredDate: values.date,
+        preferredTime: values.time,
+        message: values.message,
+      });
+
+      setSubmitted(true);
+      setValues({
+        fullName: "",
+        email: "",
+        phone: "",
+        projectType: "",
+        service: "",
+        budget: "",
+        date: "",
+        time: "",
+        message: "",
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -47,6 +83,22 @@ function ConsultationForm() {
       <h2 className="mb-2 font-serif text-3xl text-[#111111] md:text-4xl">{form.title}</h2>
       <div className="mb-8 h-px w-14 bg-[#C8A96A]" />
 
+      {submitted ? (
+        <div className="flex flex-col items-center rounded-2xl border border-[#E8E2D9] bg-[#F8F5F0] px-6 py-16 text-center">
+          <CheckCircle2 size={40} className="mb-4 text-[#C8A96A]" />
+          <h3 className="mb-2 font-serif text-2xl text-[#111111]">Request Received</h3>
+          <p className="max-w-sm text-sm leading-6 text-[#666]">
+            Thank you for reaching out! We've received your consultation request
+            and will be in touch within 24 hours.
+          </p>
+          <button
+            onClick={() => setSubmitted(false)}
+            className="mt-6 text-sm font-medium text-[#C8A96A] underline"
+          >
+            Submit another request
+          </button>
+        </div>
+      ) : (
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Full Name" required>
@@ -150,17 +202,23 @@ function ConsultationForm() {
           />
         </Field>
 
+        {error && (
+          <p className="text-sm text-red-500">{error}</p>
+        )}
+
         <motion.button
           type="submit"
+          disabled={submitting}
           variants={buttonHover}
           whileHover="hover"
           whileTap="tap"
-          className="flex w-full items-center justify-center gap-2 rounded-full bg-[#111111] py-4 text-sm font-semibold uppercase tracking-[1px] text-white transition hover:bg-[#C8A96A] hover:text-black"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-[#111111] py-4 text-sm font-semibold uppercase tracking-[1px] text-white transition hover:bg-[#C8A96A] hover:text-black disabled:opacity-60"
         >
-          {form.button}
+          {submitting ? "Submitting..." : form.button}
           <ArrowRight size={16} />
         </motion.button>
       </form>
+      )}
     </motion.div>
   );
 }
