@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin } from "@react-oauth/google";
 import { FaFacebookF, FaXTwitter } from "react-icons/fa6";
 
 import axiosInstance from "../../api/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 import AuthLayout from "./Authlayout";
 import FormInput from "./Forminput";
 import PasswordRequirements from "./PasswordRequirements";
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const { fetchUser } = useAuth();
 
   const [form, setForm] = useState({
     name: "",
@@ -41,10 +43,27 @@ function RegisterPage() {
     }
   }
 
+  async function handleGoogleSuccess(credentialResponse) {
+    setError("");
+    setLoading(true);
+
+    try {
+      const { data } = await axiosInstance.post("/user/google", {
+        credential: credentialResponse.credential,
+      });
+      await fetchUser();
+      navigate(data.data?.role === "ADMIN" ? "/admin" : "/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Google sign-up failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <AuthLayout
       eyebrow="New Here?"
-      title="Join the Liliums Glee"
+      title="Join the Liliums glee"
       subtitle="Create an account to begin your Liliums glee story."
       footer={
         <p className="text-center text-sm text-[#8C7F72]">
@@ -119,8 +138,17 @@ function RegisterPage() {
         <div className="flex-1 h-px bg-white/[0.08]" />
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <SocialButton icon={<FcGoogle size={18} />} />
+      <div className="flex justify-center [&>div]:!w-full mb-4">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => setError("Google sign-up failed")}
+          theme="filled_black"
+          shape="pill"
+          width="320"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
         <SocialButton icon={<FaFacebookF className="text-[#F3ECE9]" size={16} />} />
         <SocialButton icon={<FaXTwitter className="text-[#F3ECE9]" size={15} />} />
       </div>

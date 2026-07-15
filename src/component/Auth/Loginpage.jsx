@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { FcGoogle } from "react-icons/fc"
+import { GoogleLogin } from "@react-oauth/google"
 import { FaFacebook, FaXTwitter } from "react-icons/fa6"
 import axiosInstance from "../../api/axiosInstance"
 import { useAuth } from "../../context/AuthContext"
@@ -26,6 +26,23 @@ function LoginPage() {
       navigate(data.data?.role === "ADMIN" ? "/admin" : "/")
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleGoogleSuccess(credentialResponse) {
+    setError("")
+    setLoading(true)
+
+    try {
+      let { data } = await axiosInstance.post("/user/google", {
+        credential: credentialResponse.credential,
+      })
+      await fetchUser()
+      navigate(data.data?.role === "ADMIN" ? "/admin" : "/")
+    } catch (err) {
+      setError(err.response?.data?.message || "Google sign-in failed")
     } finally {
       setLoading(false)
     }
@@ -83,8 +100,17 @@ function LoginPage() {
         <div className="flex-1 h-px bg-white/[0.08]" />
       </div>
 
+      <div className="flex justify-center [&>div]:!w-full mb-4">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => setError("Google sign-in failed")}
+          theme="filled_black"
+          shape="pill"
+          width="320"
+        />
+      </div>
+
       <div className="flex justify-center gap-4">
-        <SocialButton icon={<FcGoogle size={17} />} />
         <SocialButton icon={<FaFacebook size={17} className="text-[#F3ECE9]" />} />
         <SocialButton icon={<FaXTwitter size={15} className="text-[#F3ECE9]" />} />
       </div>
