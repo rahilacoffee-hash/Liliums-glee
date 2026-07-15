@@ -43,10 +43,11 @@ function Orders() {
 
       console.log("Orders Response:", data);
 
-  if (data.success) {
-  setOrders(data.data || []);
-  setTotalPages(1);
-} else {
+      // data.data is { orders, total, page, totalPages } - not the array itself
+      if (data.success) {
+        setOrders(data.data.orders || []);
+        setTotalPages(data.data.totalPages || 1);
+      } else {
         setOrders([]);
       }
     } catch (error) {
