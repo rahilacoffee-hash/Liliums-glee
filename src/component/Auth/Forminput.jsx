@@ -12,6 +12,7 @@ function FormInput({
   required = true,
 }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const inputType =
     type === "password"
@@ -21,10 +22,12 @@ function FormInput({
       : type;
 
   return (
-    <div className="mb-5">
+    <div className="mb-7">
       <label
         htmlFor={name}
-        className="block mb-2 text-sm font-medium text-[#F3ECE9]"
+        className={`block mb-2 text-xs tracking-[2px] uppercase transition-colors ${
+          focused ? "text-[#C9A46B]" : "text-[#8C7F72]"
+        }`}
       >
         {label}
       </label>
@@ -36,26 +39,26 @@ function FormInput({
           type={inputType}
           value={value}
           onChange={onChange}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           placeholder={placeholder}
           required={required}
           autoComplete={name}
           className={`
             w-full
-            h-12
-            rounded-xl
-            bg-white/5
-            border
-            ${error ? "border-red-500" : "border-white/10"}
-            px-4
-            pr-12
-            text-white
-            placeholder:text-gray-500
+            h-11
+            bg-transparent
+            border-0
+            border-b
+            ${error ? "border-[#6B2737]" : "border-white/15"}
+            px-0
+            pr-10
+            text-[#F3ECE9]
+            placeholder:text-[#5A5148]
             outline-none
-            transition-all
+            transition-colors
             duration-300
             focus:border-[#C9A46B]
-            focus:ring-2
-            focus:ring-[#C9A46B]/30
           `}
         />
 
@@ -63,21 +66,15 @@ function FormInput({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#C6B8A8] hover:text-[#C9A46B] transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-[#8C7F72] hover:text-[#C9A46B] transition-colors"
           >
-            {showPassword ? (
-              <FiEyeOff size={18} />
-            ) : (
-              <FiEye size={18} />
-            )}
+            {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
           </button>
         )}
       </div>
 
       {error && (
-        <p className="mt-2 text-sm text-red-400">
-          {error}
-        </p>
+        <p className="mt-2 text-xs text-[#C97A8A]">{error}</p>
       )}
     </div>
   );

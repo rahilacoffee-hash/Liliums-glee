@@ -29,18 +29,15 @@ function VerifyOtpPage() {
 
   return (
     <AuthLayout
-      title="Verify Email"
-      activeTab="signup"
+      eyebrow="One Step Left"
+      title="Verify your email"
+      subtitle="Enter the 6-digit code we sent you."
       footer={
-        <p className="text-center text-sm text-[#C6B8A8] mt-6">
-          Wrong email? <Link to="/register" className="text-[#C9A46B] underline">Go back</Link>
+        <p className="text-center text-sm text-[#8C7F72]">
+          Wrong email? <Link to="/register" className="text-[#C9A46B] hover:underline">Go back</Link>
         </p>
       }
     >
-      <p className="text-sm text-[#C6B8A8] mb-5 -mt-2">
-        Enter the 6-digit code we sent to your email.
-      </p>
-
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"
@@ -51,21 +48,21 @@ function VerifyOtpPage() {
           placeholder="you@email.com"
         />
         <FormInput
-          label="OTP code"
+          label="Verification Code"
           name="otp"
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
           placeholder="123456"
         />
 
-        {error && <p className="text-xs text-red-400 mb-4">{error}</p>}
+        {error && <p className="text-xs text-[#C97A8A] mb-5 -mt-2">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-11 rounded-lg bg-[#F3ECE9] text-[#1c1712] font-medium hover:bg-[#e7ddd2] transition-colors disabled:opacity-60"
+          className="w-full h-12 bg-[#C9A46B] text-[#0E0E0E] font-medium tracking-[1px] transition-all duration-300 hover:bg-[#D9B57C] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "Verifying..." : "Verify"}
+          {loading ? "Verifying..." : "Verify Code"}
         </button>
       </form>
     </AuthLayout>

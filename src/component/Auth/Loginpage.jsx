@@ -22,12 +22,7 @@ function LoginPage() {
 
     try {
       let { data } = await axiosInstance.post("/user/login", { email, password })
-
-      // Refresh the shared auth state immediately - this is what makes
-      // the Navbar (and anything else using useAuth) update right away
-      // instead of still showing "Login" until a full page reload.
       await fetchUser()
-
       navigate(data.data?.role === "ADMIN" ? "/admin" : "/")
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong")
@@ -38,11 +33,12 @@ function LoginPage() {
 
   return (
     <AuthLayout
-      title="Log In"
-      activeTab="login"
+      eyebrow="Member Access"
+      title="Welcome back"
+      subtitle="Sign in to continue your journey with us."
       footer={
-        <p className="text-center text-sm text-[#C6B8A8] mt-6">
-          Don't have an account? <Link to="/register" className="text-[#C9A46B] underline">Sign up</Link>
+        <p className="text-center text-sm text-[#8C7F72]">
+          New here? <Link to="/register" className="text-[#C9A46B] hover:underline">Create an account</Link>
         </p>
       }
     >
@@ -64,33 +60,33 @@ function LoginPage() {
           placeholder="••••••••"
         />
 
-        <div className="text-right mb-5">
-          <Link to="/forgot-password" className="text-xs text-[#C6B8A8] hover:text-[#C9A46B]">
+        <div className="text-right -mt-3 mb-8">
+          <Link to="/forgot-password" className="text-xs text-[#8C7F72] hover:text-[#C9A46B] transition-colors">
             Forgot password?
           </Link>
         </div>
 
-        {error && <p className="text-xs text-red-400 mb-4">{error}</p>}
+        {error && <p className="text-xs text-[#C97A8A] mb-5">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-11 rounded-lg bg-[#F3ECE9] text-[#1c1712] font-medium hover:bg-[#e7ddd2] transition-colors disabled:opacity-60"
+          className="w-full h-12 bg-[#C9A46B] text-[#0E0E0E] font-medium tracking-[1px] transition-all duration-300 hover:bg-[#D9B57C] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "Logging in..." : "Log In"}
+          {loading ? "Signing in..." : "Sign In"}
         </button>
       </form>
 
-      <div className="flex items-center gap-3 my-6">
-        <div className="flex-1 h-px bg-[#C9A46B]/20" />
-        <span className="text-xs text-[#C6B8A8]">OR</span>
-        <div className="flex-1 h-px bg-[#C9A46B]/20" />
+      <div className="flex items-center gap-4 my-8">
+        <div className="flex-1 h-px bg-white/[0.08]" />
+        <span className="text-[10px] tracking-[2px] uppercase text-[#8C7F72]">Or continue with</span>
+        <div className="flex-1 h-px bg-white/[0.08]" />
       </div>
 
       <div className="flex justify-center gap-4">
-        <SocialButton icon={<FcGoogle size={18} />} />
-        <SocialButton icon={<FaFacebook size={18} className="text-[#F3ECE9]" />} />
-        <SocialButton icon={<FaXTwitter size={16} className="text-[#F3ECE9]" />} />
+        <SocialButton icon={<FcGoogle size={17} />} />
+        <SocialButton icon={<FaFacebook size={17} className="text-[#F3ECE9]" />} />
+        <SocialButton icon={<FaXTwitter size={15} className="text-[#F3ECE9]" />} />
       </div>
     </AuthLayout>
   )
@@ -100,7 +96,7 @@ function SocialButton({ icon }) {
   return (
     <button
       type="button"
-      className="w-10 h-10 rounded-full bg-[#F3ECE9]/[0.08] border border-[#C9A46B]/20 flex items-center justify-center hover:bg-[#F3ECE9]/[0.14] transition-colors"
+      className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center hover:border-[#C9A46B]/50 hover:bg-white/[0.03] transition-colors"
     >
       {icon}
     </button>
