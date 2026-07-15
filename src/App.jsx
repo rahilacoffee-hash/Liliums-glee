@@ -84,7 +84,7 @@ function App() {
          
           </Route>
 
-
+  <Route path="/orders" element={<MyOrders />} />
 
           {/* ================= 404 ================= */}
 
