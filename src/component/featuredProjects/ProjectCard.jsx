@@ -6,7 +6,7 @@ function ProjectCard({ project }) {
   return (
     <motion.div
       variants={fadeUp}
-      className="absolute left-8 right-8 bottom-8 z-20 rounded-[30px] border border-white/15 bg-white/10 p-8 backdrop-blur-2xl shadow-[0_30px_80px_rgba(0,0,0,.30)] lg:left-12 lg:right-auto lg:bottom-10 lg:max-w-md"J
+      className="absolute left-8 right-8 bottom-8 z-20 rounded-[30px] border border-white/15 bg-white/10 p-8 backdrop-blur-2xl shadow-[0_30px_80px_rgba(0,0,0,.30)] lg:left-12 lg:right-auto lg:bottom-10 lg:max-w-md"
     >
       {/* Category */}
       <p className="mb-3 text-xs font-medium uppercase tracking-[3px] text-[#C8A96A]">

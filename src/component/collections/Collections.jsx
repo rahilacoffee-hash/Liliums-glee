@@ -1,50 +1,104 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-import CollectionHeader from "./CollectionHeader";
-import CollectionSlider from "./CollectionSlider";
-import CollectionFeatures from ".//CollectionFeatures";
+import axiosInstance from "../../api/axiosInstance";
 
-import { sectionReveal } from "./collectionVariants";
+import ProductCard from "./ProductCard";
+import productsData from "./collectionData";
 
 function Collections() {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, []);
+
+  async function fetchFeaturedProducts() {
+    try {
+      const { data } = await axiosInstance.get("/products/featured");
+
+      if (data.success) {
+        setFeaturedProducts(data.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch featured products:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <motion.section
-      id="collections"
-      variants={sectionReveal}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{
-        once: true,
-        amount: 0.15,
-      }}
-      className="relative overflow-hidden bg-[#F8F5F0] py-32"
-    >
-      {/* Decorative Background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Top Right Glow */}
-        <div className="absolute -right-44 top-0 h-[420px] w-[420px] rounded-full bg-[#C8A96A]/8 blur-[140px]" />
+    <section className="bg-[#FCFAF7] py-24">
+      <div className="mx-auto max-w-7xl px-6">
 
-        {/* Bottom Left Glow */}
-        <div className="absolute -left-44 bottom-0 h-[420px] w-[420px] rounded-full bg-[#0D2B22]/6 blur-[150px]" />
+        {/* Heading */}
 
-        {/* Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(17,17,17,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(17,17,17,0.025)_1px,transparent_1px)] [background-size:70px_70px]" />
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto mb-16 max-w-3xl text-center"
+        >
+          <p className="mb-4 uppercase tracking-[4px] text-[#C8A96A]">
+            {productsData.eyebrow}
+          </p>
+
+          <h2 className="font-serif text-5xl text-[#111111]">
+            {productsData.title}{" "}
+            <span className="text-[#C8A96A]">
+              {productsData.highlight}
+            </span>
+          </h2>
+
+          <p className="mt-6 text-lg leading-8 text-[#666]">
+            {productsData.description}
+          </p>
+        </motion.div>
+
+        {/* Loading */}
+
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <p className="text-lg text-gray-500">
+              Loading featured products...
+            </p>
+          </div>
+        ) : featuredProducts.length === 0 ? (
+          <div className="flex justify-center py-20">
+            <p className="text-lg text-gray-500">
+              No featured products available.
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Products */}
+
+            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {featuredProducts.map((product, index) => (
+             <ProductCard
+  key={product._id}
+  product={product}
+  index={index}
+/>
+              ))}
+            </div>
+
+            {/* Button */}
+
+            <div className="mt-16 text-center">
+              <a
+                href={productsData.button.href}
+                className="inline-flex items-center rounded-full bg-[#C8A96A] px-8 py-4 font-semibold text-black transition hover:scale-105"
+              >
+                {productsData.button.label}
+              </a>
+            </div>
+          </>
+        )}
       </div>
-
-      <div className="container-custom relative z-10">
-        {/* Header */}
-        <CollectionHeader />
-
-        {/* Slider */}
-        <CollectionSlider />
-
-        {/* Features */}
-        <CollectionFeatures />
-      </div>
-
-      {/* Bottom Fade */}
-      <div className="pointer-events-none absolute bottom-0 left-0 h-28 w-full bg-gradient-to-b from-transparent to-white/50" />
-    </motion.section>
+    </section>
   );
 }
 

@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 
 import ServiceRow from "./ServiceRow";
 import servicesData, { services } from "./serviceData";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Services() {
   return (
@@ -44,6 +46,17 @@ function Services() {
             />
           ))}
         </div>
+<Link to="services">
+          <button className="group mt-12 flex items-center gap-5">
+          <span className="font-medium tracking-wide">
+            Discover Service
+          </span>
+
+          <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#C8A96A] transition-all duration-300 group-hover:bg-[#C8A96A] group-hover:text-white">
+            <ArrowRight size={18} />
+          </span>
+        </button>
+        </Link>
       </div>
     </section>
   );

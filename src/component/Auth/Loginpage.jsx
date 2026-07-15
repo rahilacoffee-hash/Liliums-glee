@@ -3,11 +3,13 @@ import { useNavigate, Link } from "react-router-dom"
 import { FcGoogle } from "react-icons/fc"
 import { FaFacebook, FaXTwitter } from "react-icons/fa6"
 import axiosInstance from "../../api/axiosInstance"
+import { useAuth } from "../../context/AuthContext"
 import AuthLayout from "./Authlayout"
 import FormInput from "./Forminput"
 
 function LoginPage() {
   let navigate = useNavigate()
+  let { fetchUser } = useAuth()
   let [email, setEmail] = useState("")
   let [password, setPassword] = useState("")
   let [error, setError] = useState("")
@@ -20,7 +22,13 @@ function LoginPage() {
 
     try {
       let { data } = await axiosInstance.post("/user/login", { email, password })
-      navigate(data.data?.role === "ADMIN" ? "/admin" : "/dashboard")
+
+      // Refresh the shared auth state immediately - this is what makes
+      // the Navbar (and anything else using useAuth) update right away
+      // instead of still showing "Login" until a full page reload.
+      await fetchUser()
+
+      navigate(data.data?.role === "ADMIN" ? "/admin" : "/")
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong")
     } finally {
