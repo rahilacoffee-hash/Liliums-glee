@@ -55,6 +55,10 @@ function Consultations() {
     setTotal((prev) => prev - 1);
   }
 
+  function handleReplied(id, updated) {
+    setConsultations((prev) => prev.map((c) => (c._id === id ? updated : c)));
+  }
+
   return (
     <div className="p-6 md:p-10">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -101,6 +105,7 @@ function Consultations() {
           <ConsultationTable
             consultations={consultations}
             onDeleted={handleDeleted}
+            onReplied={handleReplied}
           />
 
           {totalPages > 1 && (
