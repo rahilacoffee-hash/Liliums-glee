@@ -4,7 +4,7 @@ import { ArrowRight, Calendar } from "lucide-react";
 
 import contactData from "./contactData";
 import { formReveal, buttonHover } from "./contactVariants";
-import axiosInstance from "../../api/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance";
 
 let timeSlots = ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM", "5:00 PM"];
 
@@ -193,7 +193,7 @@ function ConsultationForm() {
           whileTap="tap"
           className="flex w-full items-center justify-center gap-2 rounded-full bg-[#111111] py-4 text-sm font-semibold uppercase tracking-[1px] text-white transition hover:bg-[#C8A96A] hover:text-black disabled:opacity-60"
         >
-          {submitting ? "Submitting..." : form.button}
+          {submitting ? "Submitting..." : `${form.button} - ₦500,000`}
           <ArrowRight size={16} />
         </motion.button>
       </form>
