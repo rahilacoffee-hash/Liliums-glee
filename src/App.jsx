@@ -34,6 +34,7 @@ import Reviews from "./admin/reviews/Reviews";
 import Consultations from "./admin/consultation/Consultations";
 import ConsultationDetails from "./admin/consultation/Consultationdetails";
 import ConsultationPaymentCallback from "./Pages/Consultationpaymentcallback";
+import Settings from "./admin/settings/Settings";
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
          <Route path="reviews" element={<Reviews />} />
          <Route path="consultations" element={<Consultations />} />
          <Route path="consultations/:id" element={<ConsultationDetails />} />
+         <Route path="settings" element={<Settings />} />
          
           </Route>
 
