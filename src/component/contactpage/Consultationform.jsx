@@ -4,7 +4,7 @@ import { ArrowRight, Calendar } from "lucide-react";
 
 import contactData from "./contactData";
 import { formReveal, buttonHover } from "./contactVariants";
-import axiosInstance from "../../utils/axiosInstance";
+import axiosInstance from "../../api/axiosInstance";
 
 let timeSlots = ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM", "5:00 PM"];
 
