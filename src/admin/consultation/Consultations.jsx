@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
-import ConsultationTable from "./ConsultationTable";
+import ConsultationTable from "./Consultationtable";
 
 let statusOptions = ["All", "Pending", "Contacted", "Completed"];
 
