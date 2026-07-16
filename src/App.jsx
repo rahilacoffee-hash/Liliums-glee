@@ -33,6 +33,7 @@ import Users from "./admin/users/Users";
 import Reviews from "./admin/reviews/Reviews";
 import Consultations from "./admin/consultation/Consultations";
 import ConsultationDetails from "./admin/consultation/Consultationdetails";
+import ConsultationPaymentCallback from "./Pages/Consultationpaymentcallback";
 
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
           </Route>
 
   <Route path="/orders" element={<MyOrders />} />
+  <Route path="/consultation-payment-callback" element={<ConsultationPaymentCallback />} />
 
           {/* ================= 404 ================= */}
 

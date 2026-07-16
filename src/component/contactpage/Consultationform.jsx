@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 
 import contactData from "./contactData";
 import { formReveal, buttonHover } from "./contactVariants";
@@ -27,7 +27,6 @@ function ConsultationForm() {
   });
 
   let [submitting, setSubmitting] = useState(false);
-  let [submitted, setSubmitted] = useState(false);
   let [error, setError] = useState("");
 
   function handleChange(e) {
@@ -41,7 +40,7 @@ function ConsultationForm() {
     setSubmitting(true);
 
     try {
-      await axiosInstance.post("/consultation", {
+      let { data } = await axiosInstance.post("/consultation", {
         fullName: values.fullName,
         email: values.email,
         phone: values.phone,
@@ -53,21 +52,17 @@ function ConsultationForm() {
         message: values.message,
       });
 
-      setSubmitted(true);
-      setValues({
-        fullName: "",
-        email: "",
-        phone: "",
-        projectType: "",
-        service: "",
-        budget: "",
-        date: "",
-        time: "",
-        message: "",
+      let consultationId = data.data._id;
+
+      // Booking isn't complete until the fee is paid - kick off Paystack
+      // checkout right away rather than showing "submitted" yet.
+      let paymentInit = await axiosInstance.post("/consultation/pay/initialize", {
+        consultationId,
       });
+
+      window.location.href = paymentInit.data.data.authorizationUrl;
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   }
@@ -83,22 +78,6 @@ function ConsultationForm() {
       <h2 className="mb-2 font-serif text-3xl text-[#111111] md:text-4xl">{form.title}</h2>
       <div className="mb-8 h-px w-14 bg-[#C8A96A]" />
 
-      {submitted ? (
-        <div className="flex flex-col items-center rounded-2xl border border-[#E8E2D9] bg-[#F8F5F0] px-6 py-16 text-center">
-          <CheckCircle2 size={40} className="mb-4 text-[#C8A96A]" />
-          <h3 className="mb-2 font-serif text-2xl text-[#111111]">Request Received</h3>
-          <p className="max-w-sm text-sm leading-6 text-[#666]">
-            Thank you for reaching out! We've received your consultation request
-            and will be in touch within 24 hours.
-          </p>
-          <button
-            onClick={() => setSubmitted(false)}
-            className="mt-6 text-sm font-medium text-[#C8A96A] underline"
-          >
-            Submit another request
-          </button>
-        </div>
-      ) : (
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Full Name" required>
@@ -218,7 +197,6 @@ function ConsultationForm() {
           <ArrowRight size={16} />
         </motion.button>
       </form>
-      )}
     </motion.div>
   );
 }
