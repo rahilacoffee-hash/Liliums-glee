@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
-import axiosInstance from "../../api/axiosInstance";
+import axiosInstance from "../api/axiosInstance";
 
 function ConsultationPaymentCallback() {
   let [searchParams] = useSearchParams();
