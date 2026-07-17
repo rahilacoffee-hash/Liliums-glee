@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import toast from "react-hot-toast";
+import { Upload } from "lucide-react";
 
 function Settings() {
   const [loading, setLoading] = useState(false);
+  const logoInputRef = useRef(null);
 
   const [settings, setSettings] = useState({
     siteName: "",
-    consultationFee: 50000,
+    consultationFee: 500000,
     supportEmail: "",
     supportPhone: "",
     instagram: "",
@@ -16,6 +18,9 @@ function Settings() {
     whatsapp: "",
     address: "",
   });
+
+  const [logoFile, setLogoFile] = useState(null);
+  const [logoPreview, setLogoPreview] = useState("");
 
   useEffect(() => {
     fetchSettings();
@@ -27,6 +32,7 @@ function Settings() {
 
       if (data.success) {
         setSettings(data.data);
+        setLogoPreview(data.data.logo || "");
       }
     } catch (error) {
       console.log(error);
@@ -40,17 +46,33 @@ function Settings() {
     });
   }
 
+  function handleLogoSelect(file) {
+    if (!file) return;
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  }
+
   async function saveSettings() {
     try {
       setLoading(true);
 
-      const { data } = await axiosInstance.put(
-        "/settings",
-        settings
-      );
+      // Switched to FormData so a logo file can ride along with the rest
+      // of the fields - if no new logo was picked, this just updates text
+      const formData = new FormData();
+      Object.entries(settings).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (logoFile) formData.append("logo", logoFile);
+
+      const { data } = await axiosInstance.put("/settings", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       if (data.success) {
         toast.success("Settings updated.");
+        setSettings(data.data);
+        setLogoPreview(data.data.logo || "");
+        setLogoFile(null);
       }
     } catch (error) {
       toast.error(
@@ -78,6 +100,30 @@ function Settings() {
           <h2 className="mb-6 text-2xl font-semibold">
             General
           </h2>
+
+          <div className="mb-6">
+            <label className="mb-2 block">Logo</label>
+            <div className="flex items-center gap-4">
+              {logoPreview && (
+                <img src={logoPreview} alt="Logo" className="h-16 w-16 rounded-xl border object-contain p-1" />
+              )}
+              <button
+                type="button"
+                onClick={() => logoInputRef.current?.click()}
+                className="flex items-center gap-2 rounded-xl border border-dashed border-[#C8A96A] px-4 py-3 text-sm text-[#C8A96A] hover:bg-[#C8A96A]/5"
+              >
+                <Upload size={15} />
+                {logoPreview ? "Replace Logo" : "Upload Logo"}
+              </button>
+              <input
+                ref={logoInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => handleLogoSelect(e.target.files[0])}
+              />
+            </div>
+          </div>
 
           <div className="grid gap-6 md:grid-cols-2">
 

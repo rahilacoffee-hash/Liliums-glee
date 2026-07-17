@@ -9,6 +9,8 @@ import {
   Settings,
   LogOut,
   X,
+  Image,
+  Star,
 } from "lucide-react";
 
 import logo from "../../assets/image/Logo/Logo.png";
@@ -44,6 +46,16 @@ const menuItems = [
     name: "Consultations",
     icon: CalendarDays,
     path: "/admin/consultations",
+  },
+  {
+    name: "Testimonials",
+    icon: Star,
+    path: "/admin/testimonials",
+  },
+  {
+    name: "Homepage Content",
+    icon: Image,
+    path: "/admin/content",
   },
   {
     name: "Settings",
@@ -113,7 +125,7 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen }) {
       </div>
 
       {/* Navigation */}
-      <nav className="mt-6 flex flex-col gap-2 px-4">
+      <nav className="mt-6 flex flex-col gap-2 overflow-y-auto px-4 pb-24" style={{ maxHeight: "calc(100vh - 96px)" }}>
         {menuItems.map((item) => {
           const Icon = item.icon;
 
@@ -142,7 +154,7 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen }) {
       </nav>
 
       {/* Bottom */}
-      <div className="absolute bottom-0 w-full border-t border-white/10 p-4">
+      <div className="absolute bottom-0 w-full border-t border-white/10 bg-[#0F172A] p-4">
         <button
           onClick={handleLogout}
           className="

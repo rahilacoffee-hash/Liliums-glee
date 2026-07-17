@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 
 function TestimonialCard({ testimonial }) {
@@ -20,15 +19,13 @@ function TestimonialCard({ testimonial }) {
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <img
-            src={testimonial.image}
+            src={testimonial.avatar || "/default-avatar.png"}
             alt={testimonial.name}
             className="h-14 w-14 flex-shrink-0 rounded-full border-2 border-[#F8F5F0] object-cover"
           />
           <div>
             <h3 className="font-serif text-lg text-[#111111]">{testimonial.name}</h3>
-            <p className="text-sm text-[#777777]">
-              {testimonial.role || testimonial.location}
-            </p>
+            <p className="text-sm text-[#777777]">{testimonial.role}</p>
           </div>
         </div>
 
