@@ -6,7 +6,8 @@ function AuthLayout({ title, subtitle, eyebrow, children, footer }) {
       {/* Left Section */}
       <div className="hidden lg:flex w-1/2 relative overflow-hidden">
         <img
-          src="/images/auth-fashion.jpg"
+          src=
+      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1600"
           alt="Luxury Fashion"
           className="absolute inset-0 w-full h-full object-cover"
         />
