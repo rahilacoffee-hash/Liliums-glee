@@ -14,6 +14,7 @@ import {
   Star,
   ChevronsLeft,
   ChevronsRight,
+  Bell,
 } from "lucide-react";
 
 import logo from "../../assets/image/Logo/Logo.png";
@@ -23,7 +24,10 @@ import { useAuth } from "../../context/AuthContext";
 const menuGroups = [
   {
     label: "Overview",
-    items: [{ name: "Dashboard", icon: LayoutDashboard, path: "/admin" }],
+    items: [
+      { name: "Dashboard", icon: LayoutDashboard, path: "/admin" },
+      { name: "Notifications", icon: Bell, path: "/admin/notifications" },
+    ],
   },
   {
     label: "Catalog",
@@ -119,7 +123,7 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen, collapsed, setCollapsed }) 
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-6 overflow-y-auto overflow-x-hidden px-3 py-6 [scrollbar-width:thin]">
+        <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-6 [scrollbar-width:thin]">
           {menuGroups.map((group) => (
             <div key={group.label}>
               {!collapsed && (

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bell, Search, ChevronDown, User, Settings, LogOut } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
+import axiosInstance from "../../api/axiosInstance";
 
 function AdminNavbar({ children }) {
   const location = useLocation();
@@ -11,7 +12,24 @@ function AdminNavbar({ children }) {
   const { user, logout } = useAuth();
 
   const [dropdown, setDropdown] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchUnreadCount() {
+      try {
+        const { data } = await axiosInstance.get("/notification/unread-count");
+        setUnreadCount(data.data.unreadCount);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchUnreadCount();
+    // Poll every 30s so the badge stays reasonably fresh without a websocket
+    const interval = setInterval(fetchUnreadCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     function handleClick(e) {
@@ -67,13 +85,17 @@ function AdminNavbar({ children }) {
           </div>
 
           {/* Notifications */}
-          <button className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#E8E2D9] bg-white transition hover:border-[#C8A96A] hover:text-[#C8A96A]">
+          <Link
+            to="/admin/notifications"
+            className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#E8E2D9] bg-white transition hover:border-[#C8A96A] hover:text-[#C8A96A]"
+          >
             <Bell size={19} />
-            <span className="absolute right-2.5 top-2.5 flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C8A96A] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C8A96A]" />
-            </span>
-          </button>
+            {unreadCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#C8A96A] px-1 text-[10px] font-bold text-black">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </Link>
 
           {/* Profile */}
           <div className="relative" ref={dropdownRef}>

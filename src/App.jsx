@@ -37,6 +37,7 @@ import ConsultationPaymentCallback from "./Pages/Consultationpaymentcallback";
 import Settings from "./admin/settings/Settings";
 import SiteContentEditor from "./admin/components/Sitecontenteditor";
 import Testimonials from "./admin/components/Testimonials";
+import NotificationsPage from "./Pages/Notificationspage";
 
 
 function App() {
@@ -92,6 +93,7 @@ function App() {
          <Route path="settings" element={<Settings />} />
          <Route path="content" element={<SiteContentEditor />} />
 <Route path="testimonials" element={<Testimonials />} />
+<Route path="notifications" element={<NotificationsPage />} />
          
           </Route>
 
