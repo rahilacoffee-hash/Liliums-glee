@@ -13,6 +13,8 @@ function SiteContentEditor() {
   let [hero, setHero] = useState(null);
   let [about, setAbout] = useState(null);
   let [stats, setStats] = useState([]);
+  let [whyChooseStats, setWhyChooseStats] = useState([]);
+  let [ctaStats, setCtaStats] = useState([]);
 
   // Files staged for upload - only sent if the admin actually picks a new one
   let [heroBackgroundFile, setHeroBackgroundFile] = useState(null);
@@ -30,6 +32,8 @@ function SiteContentEditor() {
         setHero(data.data.hero);
         setAbout(data.data.about);
         setStats(data.data.stats);
+        setWhyChooseStats(data.data.whyChooseStats || []);
+        setCtaStats(data.data.ctaStats || []);
         setHeroBackgroundPreview(data.data.hero.backgroundImage);
         setHeroFeaturedPreview(data.data.hero.featuredCollection.image);
         setAboutPreview(data.data.about.image);
@@ -95,6 +99,38 @@ function SiteContentEditor() {
     setStats((prev) => prev.filter((_, i) => i !== index));
   }
 
+  function updateWhyChooseStat(index, field, value) {
+    setWhyChooseStats((prev) => {
+      let next = [...prev];
+      next[index] = { ...next[index], [field]: value };
+      return next;
+    });
+  }
+
+  function addWhyChooseStat() {
+    setWhyChooseStats((prev) => [...prev, { id: Date.now(), value: 0, suffix: "+", label: "" }]);
+  }
+
+  function removeWhyChooseStat(index) {
+    setWhyChooseStats((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updateCtaStat(index, field, value) {
+    setCtaStats((prev) => {
+      let next = [...prev];
+      next[index] = { ...next[index], [field]: value };
+      return next;
+    });
+  }
+
+  function addCtaStat() {
+    setCtaStats((prev) => [...prev, { id: Date.now(), icon: "Award", value: "", label: "" }]);
+  }
+
+  function removeCtaStat(index) {
+    setCtaStats((prev) => prev.filter((_, i) => i !== index));
+  }
+
   async function handleSave() {
     setSaving(true);
     setMessage("");
@@ -105,6 +141,8 @@ function SiteContentEditor() {
       formData.append("hero", JSON.stringify(hero));
       formData.append("about", JSON.stringify(about));
       formData.append("stats", JSON.stringify(stats));
+      formData.append("whyChooseStats", JSON.stringify(whyChooseStats));
+      formData.append("ctaStats", JSON.stringify(ctaStats));
 
       if (heroBackgroundFile) formData.append("heroBackgroundImage", heroBackgroundFile);
       if (heroFeaturedFile) formData.append("heroFeaturedImage", heroFeaturedFile);
@@ -117,6 +155,8 @@ function SiteContentEditor() {
       setHero(data.data.hero);
       setAbout(data.data.about);
       setStats(data.data.stats);
+      setWhyChooseStats(data.data.whyChooseStats || []);
+      setCtaStats(data.data.ctaStats || []);
       setMessage("Site content updated successfully.");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to save site content");
@@ -316,6 +356,90 @@ function SiteContentEditor() {
                 <button onClick={() => removeStat(i)} className="mt-6 text-red-500 hover:text-red-600">
                   <Trash2 size={16} />
                 </button>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ============ WHY CHOOSE STATS (animated counters) ============ */}
+        <section className="rounded-3xl bg-white p-8 shadow">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold text-[#111111]">"Why Choose Us" Stats</h2>
+              <p className="mt-1 text-sm text-[#777]">These count up from 0 when scrolled into view. Value must be a number.</p>
+            </div>
+            <button onClick={addWhyChooseStat} className="flex items-center gap-1.5 rounded-full bg-[#C8A96A] px-4 py-2 text-sm font-medium text-black">
+              <Plus size={14} /> Add Stat
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {whyChooseStats.map((stat, i) => (
+              <div key={stat.id} className="flex items-end gap-4 rounded-2xl border border-[#E8E2D9] p-4">
+                <div className="w-28">
+                  <label className="mb-2 block text-sm text-[#111111]">Value</label>
+                  <input
+                    type="number"
+                    value={stat.value}
+                    onChange={(e) => updateWhyChooseStat(i, "value", Number(e.target.value))}
+                    className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]"
+                  />
+                </div>
+                <div className="w-24">
+                  <label className="mb-2 block text-sm text-[#111111]">Suffix</label>
+                  <input
+                    value={stat.suffix}
+                    onChange={(e) => updateWhyChooseStat(i, "suffix", e.target.value)}
+                    placeholder="+ or %"
+                    className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]"
+                  />
+                </div>
+                <div className="flex-1">
+                  <TextField label="Label" value={stat.label} onChange={(v) => updateWhyChooseStat(i, "label", v)} />
+                </div>
+                <button onClick={() => removeWhyChooseStat(i)} className="mb-1 text-red-500 hover:text-red-600">
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ============ CTA STATS (icon cards) ============ */}
+        <section className="rounded-3xl bg-white p-8 shadow">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-semibold text-[#111111]">CTA Section Stats</h2>
+            <button onClick={addCtaStat} className="flex items-center gap-1.5 rounded-full bg-[#C8A96A] px-4 py-2 text-sm font-medium text-black">
+              <Plus size={14} /> Add Stat
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {ctaStats.map((stat, i) => (
+              <div key={stat.id} className="rounded-2xl border border-[#E8E2D9] p-5">
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="text-xs uppercase tracking-[1px] text-[#999]">Stat {i + 1}</span>
+                  <button onClick={() => removeCtaStat(i)} className="text-red-500 hover:text-red-600">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div>
+                    <label className="mb-2 block text-sm text-[#111111]">Icon</label>
+                    <select
+                      value={stat.icon}
+                      onChange={(e) => updateCtaStat(i, "icon", e.target.value)}
+                      className="w-full rounded-xl border p-3"
+                    >
+                      {["Award", "Users", "Briefcase", "TrendingUp", "Star", "ThumbsUp"].map((icon) => (
+                        <option key={icon} value={icon}>{icon}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <TextField label="Value (e.g. 250+)" value={stat.value} onChange={(v) => updateCtaStat(i, "value", v)} />
+                  <TextField label="Label" value={stat.label} onChange={(v) => updateCtaStat(i, "label", v)} />
+                </div>
               </div>
             ))}
           </div>

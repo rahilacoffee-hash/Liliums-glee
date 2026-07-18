@@ -1,65 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Bell,
-  Search,
-  ChevronDown,
-  User,
-  Settings,
-  LogOut,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bell, Search, ChevronDown, User, Settings, LogOut } from "lucide-react";
 
-import axiosInstance from "../../api/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminNavbar({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const [dropdown, setDropdown] = useState(false);
-  const [user, setUser] = useState(null);
-
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    async function getUser() {
-      try {
-        const { data } = await axiosInstance.get("/user/user-details");
-
-        if (data.success) {
-          setUser(data.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    getUser();
-  }, []);
-
-  useEffect(() => {
     function handleClick(e) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdown(false);
       }
     }
 
     document.addEventListener("mousedown", handleClick);
-
-    return () =>
-      document.removeEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   async function handleLogout() {
-    try {
-      await axiosInstance.get("/user/logout");
-
-      navigate("/login");
-    } catch (error) {
-      console.error(error);
-    }
+    await logout();
+    setDropdown(false);
+    navigate("/login");
   }
 
   const pageTitle =
@@ -72,198 +40,90 @@ function AdminNavbar({ children }) {
           .replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
-    <header className="sticky top-0 z-30 border-b border-gray-200 bg-white">
+    <header className="sticky top-4 z-30 mx-4 mb-4 rounded-[24px] border border-[#E8E2D9] bg-white/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl">
       <div className="flex h-20 items-center justify-between px-5 md:px-8">
 
         {/* Left */}
         <div className="flex items-center gap-5">
-
           {children}
 
           <div>
-            <h1 className="text-2xl font-bold text-[#111827]">
-              {pageTitle}
-            </h1>
-
-            <p className="text-sm text-gray-500">
-              Welcome back 👋
-            </p>
+            <h1 className="font-serif text-2xl text-[#111111]">{pageTitle}</h1>
+            <p className="text-sm text-[#999]">Welcome back 👋</p>
           </div>
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
 
           {/* Search */}
           <div className="relative hidden lg:block">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-
+            <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999]" />
             <input
               type="text"
               placeholder="Search..."
-              className="
-                h-11
-                w-72
-                rounded-xl
-                border
-                border-gray-200
-                bg-[#F8F9FA]
-                pl-11
-                pr-4
-                outline-none
-                transition
-                focus:border-[#C8A96A]
-              "
+              className="h-11 w-64 rounded-full border border-[#E8E2D9] bg-[#F8F5F0] pl-11 pr-4 text-sm outline-none transition focus:border-[#C8A96A] focus:bg-white"
             />
           </div>
 
           {/* Notifications */}
-          <button
-            className="
-              relative
-              rounded-xl
-              border
-              border-gray-200
-              bg-white
-              p-3
-              transition
-              hover:bg-gray-100
-            "
-          >
-            <Bell size={20} />
-
-            <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
+          <button className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#E8E2D9] bg-white transition hover:border-[#C8A96A] hover:text-[#C8A96A]">
+            <Bell size={19} />
+            <span className="absolute right-2.5 top-2.5 flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C8A96A] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C8A96A]" />
+            </span>
           </button>
 
           {/* Profile */}
-          <div
-            className="relative"
-            ref={dropdownRef}
-          >
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdown(!dropdown)}
-              className="
-                flex
-                items-center
-                gap-3
-                rounded-xl
-                border
-                border-gray-200
-                bg-white
-                px-3
-                py-2
-                transition
-                hover:bg-gray-100
-              "
+              className="flex items-center gap-3 rounded-full border border-[#E8E2D9] bg-white py-1.5 pl-1.5 pr-3 transition hover:border-[#C8A96A]"
             >
-              <div
-                className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-[#C8A96A]
-                  font-semibold
-                  text-black
-                "
-              >
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#C8A96A] to-[#B8925A] font-serif font-semibold text-black">
                 {user?.name?.charAt(0).toUpperCase() || "A"}
               </div>
 
               <div className="hidden text-left md:block">
-                <p className="font-medium text-[#111827]">
-                  {user?.name || "Admin"}
-                </p>
-
-                <span className="text-sm text-gray-500">
-                  {user?.role || "Administrator"}
-                </span>
+                <p className="text-sm font-medium text-[#111111]">{user?.name || "Admin"}</p>
+                <span className="text-xs text-[#999]">{user?.role || "Administrator"}</span>
               </div>
 
-              <ChevronDown size={18} />
+              <ChevronDown size={16} className={`text-[#999] transition-transform ${dropdown ? "rotate-180" : ""}`} />
             </button>
 
-            {dropdown && (
-              <div
-                className="
-                  absolute
-                  right-0
-                  mt-3
-                  w-64
-                  overflow-hidden
-                  rounded-2xl
-                  border
-                  border-gray-200
-                  bg-white
-                  shadow-xl
-                "
-              >
-                <div className="border-b border-gray-100 p-5">
-                  <h3 className="font-semibold text-[#111827]">
-                    {user?.name}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-gray-500">
-                    {user?.email}
-                  </p>
-                </div>
-
-                <Link
-                  to="/admin/profile"
-                  className="
-                    flex
-                    items-center
-                    gap-3
-                    px-5
-                    py-3
-                    transition
-                    hover:bg-gray-100
-                  "
+            <AnimatePresence>
+              {dropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
                 >
-                  <User size={18} />
-                  Profile
-                </Link>
+                  <div className="border-b border-[#E8E2D9] bg-[#F8F5F0] p-5">
+                    <h3 className="font-serif text-[#111111]">{user?.name}</h3>
+                    <p className="mt-1 text-sm text-[#999]">{user?.email}</p>
+                  </div>
 
-                <Link
-                  to="/admin/settings"
-                  className="
-                    flex
-                    items-center
-                    gap-3
-                    px-5
-                    py-3
-                    transition
-                    hover:bg-gray-100
-                  "
-                >
-                  <Settings size={18} />
-                  Settings
-                </Link>
+                  <Link to="/admin/profile" onClick={() => setDropdown(false)} className="flex items-center gap-3 px-5 py-3 text-[#111111] transition hover:bg-[#F8F5F0]">
+                    <User size={17} className="text-[#C8A96A]" />
+                    Profile
+                  </Link>
 
-                <button
-                  onClick={handleLogout}
-                  className="
-                    flex
-                    w-full
-                    items-center
-                    gap-3
-                    px-5
-                    py-3
-                    text-red-500
-                    transition
-                    hover:bg-red-50
-                  "
-                >
-                  <LogOut size={18} />
-                  Logout
-                </button>
-              </div>
-            )}
+                  <Link to="/admin/settings" onClick={() => setDropdown(false)} className="flex items-center gap-3 px-5 py-3 text-[#111111] transition hover:bg-[#F8F5F0]">
+                    <Settings size={17} className="text-[#C8A96A]" />
+                    Settings
+                  </Link>
+
+                  <button onClick={handleLogout} className="flex w-full items-center gap-3 border-t border-[#E8E2D9] px-5 py-3 text-red-500 transition hover:bg-red-50">
+                    <LogOut size={17} />
+                    Logout
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
