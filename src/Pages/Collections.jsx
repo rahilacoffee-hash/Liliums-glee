@@ -1,4 +1,5 @@
 
+import AIChat from "../component/AIChat";
 import CollectionsCTA from "../component/collectionspage/CollectionsCTA";
 import CollectionsFAQ from "../component/collectionspage/CollectionsFAQ";
 import CollectionsHero from "../component/collectionspage/CollectionsHero";
@@ -35,6 +36,7 @@ function Collections() {
       {/* ================= Footer ================= */}
 
       <Footer />
+       <AIChat/>  
     </>
   );
 }

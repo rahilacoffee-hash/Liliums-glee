@@ -6,6 +6,7 @@ import ConsultationForm from "../component/contactpage/Consultationform";
 import WhyChooseUs from "../component/contactpage/Whychooseus";
 import StudioVisit from "../component/contactpage/Studiovisit";
 import ContactFAQAndCTA from "../component/contactpage/Contactfaqandcta";
+import AIChat from "../component/AIChat";
 
 
 
@@ -30,6 +31,7 @@ function Contact() {
       </main>
 
       <Footer />
+       <AIChat/>
     </>
   );
 }

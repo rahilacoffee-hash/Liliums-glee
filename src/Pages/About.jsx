@@ -8,6 +8,7 @@ import MissionVision from "../component/about/MissionVision";
 import { Timeline } from "lucide-react";
 import Process from "../component/about/Process";
 import AboutCTA from "../component/about/AboutCTA";
+import AIChat from "../component/AIChat";
 
 function About() {
   return (
@@ -43,6 +44,7 @@ function About() {
       {/* ================= Footer ================= */}
 
       <Footer />
+       <AIChat/>
     </>
   );
 }

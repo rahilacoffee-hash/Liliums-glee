@@ -1,3 +1,4 @@
+import AIChat from "../component/AIChat";
 import Footer from "../component/layout/Footer/Footer";
 import Navbar from "../component/layout/Navbar/Navbar";
 import OurExpertise from "../component/servicespage/OurExpertise";
@@ -42,6 +43,7 @@ function Services() {
       {/* ================= Footer ================= */}
 
       <Footer />
+       <AIChat/>
     </>
   );
 }

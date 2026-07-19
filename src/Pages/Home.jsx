@@ -12,6 +12,7 @@ import WhyChoose from '../component/WhyChoose/WhyChoose'
 import Testimonials from '../component/testimonials/Testimonials'
 import CTA from '../component/cta/CTA'
 import Footer from '../component/layout/Footer/Footer'
+import AIChat from '../component/AIChat'
 
 
 const Home = () => {
@@ -30,6 +31,7 @@ const Home = () => {
         <CTA/>
       </main>
       <Footer/>
+      <AIChat/>
     </>
   )
 }
