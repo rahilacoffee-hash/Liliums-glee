@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { philosophy } from "./philosophyData";
 import { imageReveal } from "./philosophyVariants";
 
-function PhilosophyImage() {
+function PhilosophyImage({ about }) {
   return (
     <motion.div
       className="flex-1 overflow-hidden rounded-[32px]"
@@ -12,16 +11,11 @@ function PhilosophyImage() {
       variants={imageReveal}
     >
       <motion.img
-        src={philosophy.image}
+        src={about.image}
         alt=""
         className="h-[700px] w-full object-cover"
-        whileInView={{
-          scale: [1, 1.05],
-        }}
-        transition={{
-          duration: 18,
-          ease: "linear",
-        }}
+        whileInView={{ scale: [1, 1.05] }}
+        transition={{ duration: 18, ease: "linear" }}
       />
     </motion.div>
   );

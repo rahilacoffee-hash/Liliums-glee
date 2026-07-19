@@ -328,10 +328,35 @@ function SiteContentEditor() {
             />
           </div>
 
-          <TextField label="Title" value={about.title} onChange={(v) => setAbout((prev) => ({ ...prev, title: v }))} />
+          <TextField label="Eyebrow" value={about.eyebrow} onChange={(v) => setAbout((prev) => ({ ...prev, eyebrow: v }))} />
+
+          <div className="mt-6">
+            <label className="mb-2 block text-sm text-[#111111]">
+              Title (one line per row - each becomes its own line on the page)
+            </label>
+            <textarea
+              value={about.title.join("\n")}
+              onChange={(e) => setAbout((prev) => ({ ...prev, title: e.target.value.split("\n") }))}
+              rows={2}
+              className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]"
+            />
+          </div>
 
           <div className="mt-6">
             <TextAreaField label="Description" value={about.description} onChange={(v) => setAbout((prev) => ({ ...prev, description: v }))} />
+          </div>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            <TextField
+              label="Button Label"
+              value={about.button?.label || ""}
+              onChange={(v) => setAbout((prev) => ({ ...prev, button: { ...prev.button, label: v } }))}
+            />
+            <TextField
+              label="Button Link"
+              value={about.button?.href || ""}
+              onChange={(v) => setAbout((prev) => ({ ...prev, button: { ...prev.button, href: v } }))}
+            />
           </div>
         </section>
 
