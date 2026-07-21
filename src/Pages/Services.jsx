@@ -21,8 +21,8 @@ function Services() {
       <ServicesHero />
 
       {/* ================= Services ================= */}
-{/* 
-      <ServicesGrid /> */}
+
+      {/* <ServicesGrid /> */}
 
       {/* ================= Our Expertise ================= */}
 
