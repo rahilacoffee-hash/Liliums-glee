@@ -15,6 +15,8 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Bell,
+  Wrench,
+  FolderKanban,
 } from "lucide-react";
 
 import logo from "../../assets/image/Logo/Logo.png";
@@ -49,6 +51,8 @@ const menuGroups = [
     label: "Site",
     items: [
       { name: "Homepage Content", icon: Image, path: "/admin/content" },
+      { name: "Services", icon: Wrench, path: "/admin/services" },
+      { name: "Projects", icon: FolderKanban, path: "/admin/projects" },
       { name: "Settings", icon: Settings, path: "/admin/settings" },
     ],
   },
