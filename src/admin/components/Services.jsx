@@ -4,7 +4,7 @@ import axiosInstance from "../../api/axiosInstance";
 
 let emptyForm = { number: "", title: "", description: "", features: [""] };
 
-function Services() {
+function Servicess() {
   let [services, setServices] = useState([]);
   let [loading, setLoading] = useState(true);
   let [error, setError] = useState("");
@@ -250,4 +250,4 @@ function Input({ label, value, onChange }) {
   );
 }
 
-export default Services;
+export default Servicess;

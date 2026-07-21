@@ -39,7 +39,7 @@ import SiteContentEditor from "./admin/components/Sitecontenteditor";
 import Testimonials from "./admin/components/Testimonials";
 import NotificationsPage from "./Pages/Notificationspage";
 import Projects from "./admin/components/Projects";
-import services from "./admin/components/Services";
+import Servicess from "./admin/components/Services";
 
 
 function App() {
@@ -96,7 +96,7 @@ function App() {
          <Route path="content" element={<SiteContentEditor />} />
 <Route path="testimonials" element={<Testimonials />} />
 <Route path="notifications" element={<NotificationsPage />} />
-<Route path="services" element={<Services />} />  {/* admin */}
+<Route path="services" element={<Servicess />} />  {/* admin */}
 <Route path="projects" element={<Projects />} />  {/* admin */}
          
           </Route>
