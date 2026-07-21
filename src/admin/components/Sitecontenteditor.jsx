@@ -4,6 +4,15 @@ import axiosInstance from "../../api/axiosInstance";
 
 let iconOptions = ["Armchair", "Columns3", "Building2", "ShoppingBag"];
 
+// Helper to safely ensure title is strictly an array in React state
+const normalizeTitleArray = (title) => {
+  if (Array.isArray(title)) return title;
+  if (typeof title === "string" && title.trim().length > 0) {
+    return title.includes("\n") ? title.split("\n") : [title];
+  }
+  return [""];
+};
+
 function SiteContentEditor() {
   let [loading, setLoading] = useState(true);
   let [saving, setSaving] = useState(false);
@@ -29,14 +38,22 @@ function SiteContentEditor() {
     async function fetchContent() {
       try {
         let { data } = await axiosInstance.get("/site-content");
+        
+        let fetchedAbout = data.data.about || {};
+        // Normalize title to always be an array in component state
+        fetchedAbout.title = normalizeTitleArray(fetchedAbout.title);
+
         setHero(data.data.hero);
-        setAbout(data.data.about);
-        setStats(data.data.stats);
+        setAbout(fetchedAbout);
+        setStats(data.data.stats || []);
         setWhyChooseStats(data.data.whyChooseStats || []);
         setCtaStats(data.data.ctaStats || []);
-        setHeroBackgroundPreview(data.data.hero.backgroundImage);
-        setHeroFeaturedPreview(data.data.hero.featuredCollection.image);
-        setAboutPreview(data.data.about.image);
+        
+        if (data.data.hero) {
+          setHeroBackgroundPreview(data.data.hero.backgroundImage || "");
+          setHeroFeaturedPreview(data.data.hero.featuredCollection?.image || "");
+        }
+        setAboutPreview(fetchedAbout.image || "");
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load site content");
       } finally {
@@ -73,7 +90,7 @@ function SiteContentEditor() {
     setHero((prev) => ({
       ...prev,
       showcase: [
-        ...prev.showcase,
+        ...(prev.showcase || []),
         { id: Date.now(), icon: "Armchair", title: "", description: "", href: "/services" },
       ],
     }));
@@ -152,9 +169,12 @@ function SiteContentEditor() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      let savedAbout = data.data.about || {};
+      savedAbout.title = normalizeTitleArray(savedAbout.title);
+
       setHero(data.data.hero);
-      setAbout(data.data.about);
-      setStats(data.data.stats);
+      setAbout(savedAbout);
+      setStats(data.data.stats || []);
       setWhyChooseStats(data.data.whyChooseStats || []);
       setCtaStats(data.data.ctaStats || []);
       setMessage("Site content updated successfully.");
@@ -207,17 +227,17 @@ function SiteContentEditor() {
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl border border-[#E8E2D9] p-5">
               <p className="mb-3 text-sm font-medium text-[#111111]">Primary Button</p>
-              <TextField label="Label" value={hero.primaryButton.label} onChange={(v) => updateHeroNested("primaryButton", "label", v)} />
+              <TextField label="Label" value={hero.primaryButton?.label || ""} onChange={(v) => updateHeroNested("primaryButton", "label", v)} />
               <div className="mt-3">
-                <TextField label="Link" value={hero.primaryButton.href} onChange={(v) => updateHeroNested("primaryButton", "href", v)} />
+                <TextField label="Link" value={hero.primaryButton?.href || ""} onChange={(v) => updateHeroNested("primaryButton", "href", v)} />
               </div>
             </div>
 
             <div className="rounded-2xl border border-[#E8E2D9] p-5">
               <p className="mb-3 text-sm font-medium text-[#111111]">Secondary Button</p>
-              <TextField label="Label" value={hero.secondaryButton.label} onChange={(v) => updateHeroNested("secondaryButton", "label", v)} />
+              <TextField label="Label" value={hero.secondaryButton?.label || ""} onChange={(v) => updateHeroNested("secondaryButton", "label", v)} />
               <div className="mt-3">
-                <TextField label="Link" value={hero.secondaryButton.href} onChange={(v) => updateHeroNested("secondaryButton", "href", v)} />
+                <TextField label="Link" value={hero.secondaryButton?.href || ""} onChange={(v) => updateHeroNested("secondaryButton", "href", v)} />
               </div>
             </div>
           </div>
@@ -236,36 +256,36 @@ function SiteContentEditor() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <TextField label="Badge" value={hero.featuredCollection.badge} onChange={(v) => updateHeroNested("featuredCollection", "badge", v)} />
-            <TextField label="Eyebrow" value={hero.featuredCollection.eyebrow} onChange={(v) => updateHeroNested("featuredCollection", "eyebrow", v)} />
+            <TextField label="Badge" value={hero.featuredCollection?.badge || ""} onChange={(v) => updateHeroNested("featuredCollection", "badge", v)} />
+            <TextField label="Eyebrow" value={hero.featuredCollection?.eyebrow || ""} onChange={(v) => updateHeroNested("featuredCollection", "eyebrow", v)} />
           </div>
 
           <div className="mt-6">
-            <TextField label="Title" value={hero.featuredCollection.title} onChange={(v) => updateHeroNested("featuredCollection", "title", v)} />
+            <TextField label="Title" value={hero.featuredCollection?.title || ""} onChange={(v) => updateHeroNested("featuredCollection", "title", v)} />
           </div>
 
           <div className="mt-6">
-            <TextAreaField label="Description" value={hero.featuredCollection.description} onChange={(v) => updateHeroNested("featuredCollection", "description", v)} />
+            <TextAreaField label="Description" value={hero.featuredCollection?.description || ""} onChange={(v) => updateHeroNested("featuredCollection", "description", v)} />
           </div>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <TextField
               label="Button Label"
-              value={hero.featuredCollection.button.label}
+              value={hero.featuredCollection?.button?.label || ""}
               onChange={(v) =>
                 setHero((prev) => ({
                   ...prev,
-                  featuredCollection: { ...prev.featuredCollection, button: { ...prev.featuredCollection.button, label: v } },
+                  featuredCollection: { ...prev.featuredCollection, button: { ...prev.featuredCollection?.button, label: v } },
                 }))
               }
             />
             <TextField
               label="Button Link"
-              value={hero.featuredCollection.button.href}
+              value={hero.featuredCollection?.button?.href || ""}
               onChange={(v) =>
                 setHero((prev) => ({
                   ...prev,
-                  featuredCollection: { ...prev.featuredCollection, button: { ...prev.featuredCollection.button, href: v } },
+                  featuredCollection: { ...prev.featuredCollection, button: { ...prev.featuredCollection?.button, href: v } },
                 }))
               }
             />
@@ -282,7 +302,7 @@ function SiteContentEditor() {
           </div>
 
           <div className="space-y-4">
-            {hero.showcase.map((item, i) => (
+            {(hero.showcase || []).map((item, i) => (
               <div key={item.id} className="rounded-2xl border border-[#E8E2D9] p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-xs uppercase tracking-[1px] text-[#999]">Item {i + 1}</span>
@@ -328,14 +348,19 @@ function SiteContentEditor() {
             />
           </div>
 
-          <TextField label="Eyebrow" value={about.eyebrow} onChange={(v) => setAbout((prev) => ({ ...prev, eyebrow: v }))} />
+          <TextField label="Eyebrow" value={about.eyebrow || ""} onChange={(v) => setAbout((prev) => ({ ...prev, eyebrow: v }))} />
 
           <div className="mt-6">
             <label className="mb-2 block text-sm text-[#111111]">
               Title (one line per row - each becomes its own line on the page)
             </label>
             <textarea
-              value={about.title.join("\n")}
+              /* SAFE VALUE: checks if title is an array; falls back gracefully to string or empty */
+              value={
+                Array.isArray(about.title)
+                  ? about.title.join("\n")
+                  : about.title || ""
+              }
               onChange={(e) => setAbout((prev) => ({ ...prev, title: e.target.value.split("\n") }))}
               rows={2}
               className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]"
@@ -343,7 +368,7 @@ function SiteContentEditor() {
           </div>
 
           <div className="mt-6">
-            <TextAreaField label="Description" value={about.description} onChange={(v) => setAbout((prev) => ({ ...prev, description: v }))} />
+            <TextAreaField label="Description" value={about.description || ""} onChange={(v) => setAbout((prev) => ({ ...prev, description: v }))} />
           </div>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
@@ -400,7 +425,7 @@ function SiteContentEditor() {
 
           <div className="space-y-4">
             {whyChooseStats.map((stat, i) => (
-              <div key={stat.id} className="flex items-end gap-4 rounded-2xl border border-[#E8E2D9] p-4">
+              <div key={stat.id || i} className="flex items-end gap-4 rounded-2xl border border-[#E8E2D9] p-4">
                 <div className="w-28">
                   <label className="mb-2 block text-sm text-[#111111]">Value</label>
                   <input
@@ -441,7 +466,7 @@ function SiteContentEditor() {
 
           <div className="space-y-4">
             {ctaStats.map((stat, i) => (
-              <div key={stat.id} className="rounded-2xl border border-[#E8E2D9] p-5">
+              <div key={stat.id || i} className="rounded-2xl border border-[#E8E2D9] p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-xs uppercase tracking-[1px] text-[#999]">Stat {i + 1}</span>
                   <button onClick={() => removeCtaStat(i)} className="text-red-500 hover:text-red-600">
@@ -482,7 +507,7 @@ function SiteContentEditor() {
   );
 }
 
-function TextField({ label, value, onChange }) {
+function TextField({ label, value = "", onChange }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm text-[#111111]">{label}</span>
@@ -495,7 +520,7 @@ function TextField({ label, value, onChange }) {
   );
 }
 
-function TextAreaField({ label, value, onChange }) {
+function TextAreaField({ label, value = "", onChange }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm text-[#111111]">{label}</span>

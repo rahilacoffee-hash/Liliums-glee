@@ -126,8 +126,18 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen, collapsed, setCollapsed }) 
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-6 [scrollbar-width:thin]">
+        {/* Navigation with Custom Gold Scrollbar */}
+        <nav
+          className="
+            flex-1 space-y-6 overflow-y-auto overflow-x-hidden px-3 py-6
+            [scrollbar-color:#C8A96A_transparent] [scrollbar-width:thin]
+            [&&::-webkit-scrollbar]:w-1.5
+            [&&::-webkit-scrollbar-track]:bg-transparent
+            [&&::-webkit-scrollbar-thumb]:rounded-full
+            [&&::-webkit-scrollbar-thumb]:bg-[#C8A96A]/30
+            hover:[&&::-webkit-scrollbar-thumb]:bg-[#C8A96A]/60
+          "
+        >
           {menuGroups.map((group) => (
             <div key={group.label}>
               {!collapsed && (
@@ -161,7 +171,7 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen, collapsed, setCollapsed }) 
 
                       {/* Tooltip when collapsed */}
                       {collapsed && (
-                        <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-lg bg-[#1c1712] px-3 py-1.5 text-xs text-white opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100">
+                        <span className="pointer-events-none absolute left-full ml-3 z-50 whitespace-nowrap rounded-lg bg-[#1c1712] px-3 py-1.5 text-xs text-white opacity-0 shadow-xl transition-opacity duration-200 group-hover:opacity-100">
                           {item.name}
                         </span>
                       )}
