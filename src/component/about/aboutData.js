@@ -31,7 +31,7 @@ const aboutData = {
       "As a growing interior design and lifestyle brand, our commitment is simple—create beautiful spaces that inspire people every day.",
     ],
 
-    image: "/images/about/story.jpg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2FoSu1p9RH7vZlrUfh9LtNFwf2rhaqldbwvzxh3oKETP9xSaL-81y9LbX&s=10",
   },
 
   // =====================================

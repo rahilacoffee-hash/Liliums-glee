@@ -33,7 +33,7 @@ const collectionsData = {
     description:
       "Discover timeless wallpaper collections crafted with premium finishes, elegant textures, and sophisticated designs for modern interiors.",
 
-    image: wallpaper,
+    
 
     button: {
       label: "Explore Collection",

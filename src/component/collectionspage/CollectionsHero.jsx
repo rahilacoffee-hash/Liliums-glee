@@ -69,7 +69,7 @@ function CollectionsHero() {
           >
             <div className="overflow-hidden rounded-[36px] shadow-2xl">
               <img
-                src={collectionsData.heroImage}
+                src="https://framerusercontent.com/images/hQTt9osnaDrAOMaXRDqCvasgs1E.png?width=1700&height=958"
                 alt="Luxury Interior Collection"
                 className="h-[650px] w-full object-cover"
               />
