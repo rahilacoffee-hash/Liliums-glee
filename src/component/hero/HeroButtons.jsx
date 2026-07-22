@@ -16,9 +16,6 @@ function HeroButtons({ primaryButton, secondaryButton }) {
       </Link>
 
       <button className="flex items-center gap-3 text-sm font-medium text-white/85 transition hover:text-[#C8A96A]">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30">
-          <Play size={14} className="ml-0.5" fill="currentColor" />
-        </span>
         {secondaryButton?.label}
       </button>
     </div>
