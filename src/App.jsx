@@ -40,13 +40,36 @@ import Testimonials from "./admin/components/Testimonials";
 import NotificationsPage from "./Pages/Notificationspage";
 import Projects from "./admin/components/Projects";
 import Servicess from "./admin/components/Services";
-
+import { AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import LuxuryLoader from "./component/layout/Loader/LuxuryLoader";
 
 function App() {
+
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 1800);
+
+  return () => clearTimeout(timer);
+}, []);
   return (
     <AuthProvider>
       <BrowserRouter>
         <ScrollToTop />
+
+
+
+ <AnimatePresence mode="wait">
+      {loading && <LuxuryLoader />}
+    </AnimatePresence>
+
+
+
+      {!loading && (
+      
 
         <Routes>
           {/* ================= Public Pages ================= */}
@@ -108,6 +131,8 @@ function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        )}
+
       </BrowserRouter>
     </AuthProvider>
   );

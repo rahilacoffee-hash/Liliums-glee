@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Phone, Mail, MapPin, Instagram, Facebook, Twitter } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa6";
-import axiosInstance from "../../api/axiosInstance";
+import { ArrowUpRight, Phone, Mail, MapPin,  } from "lucide-react";
+import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa6";
+import axiosInstance from "../../../api/axiosInstance";
 
 import { fadeRight, staggerList, listItem, socialHover } from "./footerVariants";
 
@@ -31,9 +31,9 @@ function FooterContact() {
   ].filter((item) => item.value); // don't show a row for fields that were never filled in
 
   let socialLinks = [
-    { name: "Instagram", href: settings.instagram, icon: Instagram },
-    { name: "Facebook", href: settings.facebook, icon: Facebook },
-    { name: "Twitter", href: settings.twitter, icon: Twitter },
+    { name: "Instagram", href: settings.instagram, icon: FaInstagram },
+    { name: "Facebook", href: settings.facebook, icon: FaFacebook },
+    { name: "Twitter", href: settings.twitter, icon: FaTwitter },
     { name: "WhatsApp", href: settings.whatsapp ? `https://wa.me/${settings.whatsapp.replace(/\D/g, "")}` : "", icon: FaWhatsapp },
   ].filter((social) => social.href); // only show platforms that are actually configured
 
