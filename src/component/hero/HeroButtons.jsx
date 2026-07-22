@@ -8,10 +8,10 @@ function HeroButtons({ primaryButton, secondaryButton }) {
   return (
     <div className="flex flex-wrap items-center gap-6">
       <Link
-        to={primaryButton?.href || "/shop"}
+        to={primaryButton?.href}
         className="group inline-flex items-center gap-2 rounded-full bg-[#C8A96A] px-7 py-4 text-sm font-semibold uppercase tracking-[1px] text-black transition hover:-translate-y-0.5 hover:shadow-xl"
       >
-        {primaryButton?.label || "Explore Projects"}
+        {primaryButton?.label}
         <ArrowRight size={16} className="transition group-hover:translate-x-1" />
       </Link>
 
@@ -19,7 +19,7 @@ function HeroButtons({ primaryButton, secondaryButton }) {
         <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30">
           <Play size={14} className="ml-0.5" fill="currentColor" />
         </span>
-        {secondaryButton?.label || "Watch Showreel"}
+        {secondaryButton?.label}
       </button>
     </div>
   );
