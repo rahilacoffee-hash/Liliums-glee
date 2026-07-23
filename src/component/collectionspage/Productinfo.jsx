@@ -1,13 +1,15 @@
 // ProductInfo.jsx
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Plus, ShoppingBag } from "lucide-react";
+import { Star, Plus, ShoppingBag, Flower2, Leaf, Waves } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
 function ProductInfo({ product, whyShop }) {
   let [quantity, setQuantity] = useState(1);
   let [openId, setOpenId] = useState(null);
   let [adding, setAdding] = useState(false);
+
+  let noteIcons = [Flower2, Leaf, Waves];
 
   function toggle(id) {
     setOpenId((prev) => (prev === id ? null : id));
@@ -46,7 +48,7 @@ function ProductInfo({ product, whyShop }) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col justify-center"
+      className="flex flex-col justify-center pt-10 lg:pt-0"
     >
       {/* Rating */}
       <div className="mb-5 flex items-center gap-2">
@@ -62,12 +64,12 @@ function ProductInfo({ product, whyShop }) {
       </div>
 
       {/* Title */}
-      <h1 className="mb-2 font-serif text-4xl leading-tight text-[#111111] md:text-5xl">
+      <h1 className="font-serif text-4xl leading-tight text-[#111111] md:text-5xl">
         {product.name}
       </h1>
 
-      <p className="mb-6 font-serif text-2xl italic text-[#C8A96A]">
-        {product.category}
+      <p className="mb-6 font-serif text-3xl italic text-[#C8A96A]">
+        {product.subtitle || product.category}
       </p>
 
       <div className="mb-6 h-px w-16 bg-[#E8E2D9]" />
@@ -76,31 +78,35 @@ function ProductInfo({ product, whyShop }) {
         {product.description}
       </p>
 
-      {/* Feature accordion */}
-      <div className="mb-8 divide-y divide-[#E8E2D9] rounded-2xl border border-[#E8E2D9]">
-        {whyShop.map((item) => {
+      {/* Notes list */}
+      <div className="mb-8 divide-y divide-[#E8E2D9] border-y border-[#E8E2D9]">
+        {whyShop.slice(0, 3).map((item, index) => {
           let isOpen = openId === item.id;
+          let Icon = noteIcons[index] || Flower2;
 
           return (
             <div key={item.id}>
               <button
                 onClick={() => toggle(item.id)}
-                className="flex w-full items-center justify-between px-6 py-4 text-left"
+                className="flex w-full items-center gap-4 py-5 text-left"
               >
-                <span className="font-medium text-[#111111]">{item.title}</span>
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#F8F5F0] text-[#C8A96A]">
+                  <Icon size={16} />
+                </span>
+
+                <span className="flex-1">
+                  <span className="block font-medium text-[#111111]">{item.title}</span>
+                  <span className="block text-sm text-[#999]">{item.description}</span>
+                </span>
 
                 <motion.span
                   animate={{ rotate: isOpen ? 45 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-[#C8A96A]"
+                  className="flex-shrink-0 text-[#111111]"
                 >
                   <Plus size={16} />
                 </motion.span>
               </button>
-
-              {isOpen && (
-                <p className="px-6 pb-4 text-sm text-[#777]">{item.description}</p>
-              )}
             </div>
           );
         })}
@@ -108,7 +114,7 @@ function ProductInfo({ product, whyShop }) {
 
       {/* Quantity + Add to cart */}
       <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-4 rounded-full bg-[#F8F5F0] px-5 py-3">
+        <div className="flex items-center gap-5 rounded-full bg-[#F1EEE8] px-5 py-3">
           <button onClick={decrease} className="text-lg text-[#111111]">
             −
           </button>
