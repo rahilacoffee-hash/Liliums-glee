@@ -29,23 +29,7 @@ function ProductGallery({ product }) {
             />
           </div>
 
-          {/* Floating price card */}
-          <div className="absolute right-6 top-6 z-10 flex flex-col items-center gap-3 rounded-2xl bg-[#111111] px-6 py-5 text-white shadow-xl">
-            <span className="text-sm font-medium leading-tight">{product.price}</span>
-            <span className="text-[10px] uppercase tracking-widest text-white/60">USD</span>
-
-            <div className="h-px w-6 bg-white/20" />
-
-            <button
-              onClick={() => setWishlisted((prev) => !prev)}
-              className="flex h-8 w-8 items-center justify-center"
-            >
-              <Heart
-                size={16}
-                className={wishlisted ? "fill-[#C8A96A] text-[#C8A96A]" : "text-white"}
-              />
-            </button>
-          </div>
+       
         </div>
 
         {/* Circular badge, overlapping top-left */}
@@ -58,33 +42,7 @@ function ProductGallery({ product }) {
           </span>
         </div>
 
-        {/* Feature pill, overlapping bottom */}
-        <div className="absolute -bottom-8 left-6 right-6 z-10 grid grid-cols-3 divide-x divide-[#E8E2D9] rounded-full border border-[#E8E2D9] bg-white px-4 py-5 shadow-md">
-          <div className="flex flex-col items-center gap-2 px-2 text-center">
-            <span className="text-lg">🌿</span>
-            <p className="text-xs font-medium leading-tight text-[#111111]">
-              Natural
-              <br />
-              Ingredients
-            </p>
-          </div>
-          <div className="flex flex-col items-center gap-2 px-2 text-center">
-            <span className="text-lg">〰️</span>
-            <p className="text-xs font-medium leading-tight text-[#111111]">
-              Long Lasting
-              <br />
-              Aroma
-            </p>
-          </div>
-          <div className="flex flex-col items-center gap-2 px-2 text-center">
-            <Heart size={16} className="text-[#111111]" />
-            <p className="text-xs font-medium leading-tight text-[#111111]">
-              Handmade
-              <br />
-              with Love
-            </p>
-          </div>
-        </div>
+    
       </div>
 
       {/* Vertical thumbnail rail */}
