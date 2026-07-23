@@ -1,3 +1,4 @@
+// RelatedProducts.jsx
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
@@ -6,11 +7,9 @@ function RelatedProducts({ products }) {
   if (!products.length) return null;
 
   return (
-    <section className="border-t border-[#E8E2D9] py-20">
+    <section className="border-t border-[#E8E2D9] bg-[#F8F5F0] py-20">
       <div className="container-custom mx-auto px-6">
-        <h2 className="mb-10 font-serif text-3xl text-[#111111] md:text-4xl">
-          You May Also Like
-        </h2>
+        <h2 className="mb-10 font-serif text-3xl text-[#111111] md:text-4xl">You May Also Like</h2>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product, index) => (
@@ -23,7 +22,7 @@ function RelatedProducts({ products }) {
             >
               <Link
                 to={`/shop/${product.slug}`}
-                className="group block overflow-hidden rounded-[24px] border border-[#E8E2D9] bg-white transition hover:shadow-[0_25px_60px_rgba(0,0,0,0.08)]"
+                className="group block overflow-hidden rounded-[24px] border border-[#E8E2D9] bg-white transition hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(0,0,0,0.08)]"
               >
                 <div className="aspect-square overflow-hidden">
                   <img
@@ -37,6 +36,7 @@ function RelatedProducts({ products }) {
                   <p className="mb-1 text-xs uppercase tracking-[2px] text-[#C8A96A]">
                     {product.category}
                   </p>
+
                   <h3 className="mb-2 font-serif text-lg text-[#111111]">{product.name}</h3>
 
                   <div className="mb-3 flex items-center gap-1">

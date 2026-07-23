@@ -1,3 +1,4 @@
+// ProductCTA.jsx
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -24,6 +25,7 @@ function ProductCTA({ cta }) {
           >
             {cta.primaryButton.label}
           </Link>
+
           <Link
             to={cta.secondaryButton.href}
             className="rounded-full border border-white/30 px-8 py-3.5 font-medium text-white transition hover:border-[#C8A96A] hover:text-[#C8A96A]"

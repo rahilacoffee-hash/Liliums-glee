@@ -1,6 +1,7 @@
+// ProductFAQ.jsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 
 function ProductFAQ({ faq }) {
   let [openId, setOpenId] = useState(null);
@@ -10,7 +11,7 @@ function ProductFAQ({ faq }) {
   }
 
   return (
-    <section className="bg-[#F8F5F0] py-20">
+    <section className="border-t border-[#E8E2D9] bg-white py-20">
       <div className="container-custom mx-auto max-w-3xl px-6">
         <h2 className="mb-10 text-center font-serif text-3xl text-[#111111] md:text-4xl">
           Frequently Asked Questions
@@ -23,19 +24,20 @@ function ProductFAQ({ faq }) {
             return (
               <div
                 key={item.id}
-                className="overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white"
+                className="overflow-hidden rounded-2xl border border-[#E8E2D9] bg-[#F8F5F0]"
               >
                 <button
                   onClick={() => toggle(item.id)}
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                 >
                   <span className="font-medium text-[#111111]">{item.question}</span>
+
                   <motion.span
-                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.25 }}
                     className="flex-shrink-0 text-[#C8A96A]"
                   >
-                    <ChevronDown size={18} />
+                    <Plus size={18} />
                   </motion.span>
                 </button>
 
