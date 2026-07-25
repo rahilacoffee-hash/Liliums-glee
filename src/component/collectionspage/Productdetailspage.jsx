@@ -12,6 +12,7 @@ import RelatedProducts from "./Relatedproducts";
 import ProductFAQ from "./Productfaq";
 import ProductCTA from "./Productcta";
 import Navbar from "../layout/Navbar/Navbar"
+import ProductShowcase from "./ProductShowcase";
 
 function ProductDetailsPage() {
   const { slug } = useParams();
@@ -96,16 +97,7 @@ function ProductDetailsPage() {
       </div>
 
       {/* Product */}
-      <section className="container-custom mx-auto px-6 pb-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <ProductGallery product={product} />
-
-          <ProductInfo
-            product={product}
-            whyShop={collectionsData.whyShop}
-          />
-        </div>
-      </section>
+     <ProductShowcase product={product} whyShop={collectionsData.whyShop} />
 
       <ProductReviews product={product} />
 
