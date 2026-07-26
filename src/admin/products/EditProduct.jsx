@@ -57,7 +57,7 @@ function EditProduct() {
     try {
       setLoading(true);
 
-      const { data } = await axiosInstance.get(`/products/${id}`);
+      const { data } = await axiosInstance.get(`/products/id/${id}`);
 
       const product = data.data;
 
