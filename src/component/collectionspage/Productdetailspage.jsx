@@ -1,15 +1,14 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
-import collectionsData, { featuredProducts as shopProducts } from "./collectionsData";
-import { featuredProducts as homepageProducts } from "../featured-products/productsData";
-import ProductGallery from "./ProductGallery";
-import ProductInfo from "./ProductInfo";
-import ProductReviews from "./ProductReviews";
-import { getReviewsForProduct } from "./reviewsData";
-import RelatedProducts from "./RelatedProducts";
-import ProductFAQ from "./ProductFAQ";
-import ProductCTA from "./ProductCTA";
+import collectionsData from "./collectionsData";
+import ProductGallery from "./Productgallery";
+import ProductInfo from "./Productinfo";
+import ProductReviews from "./Productreviews";
+import { getReviewsForProduct } from "./Reviewsdata";
+import RelatedProducts from "./Relatedproducts";
+import ProductFAQ from "./Productfaq";
+import ProductCTA from "./Productcta";
 
 let allProducts = [...shopProducts, ...homepageProducts];
 
