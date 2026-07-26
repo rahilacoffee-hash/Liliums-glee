@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Plus, Pencil, Trash2, X, Upload, MapPin, Calendar } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
-let emptyForm = { title: "", category: "", location: "", year: "", description: "", isFeatured: true };
+let emptyForm = { title: "", slug: "", category: "", location: "", year: "", description: "", isFeatured: true };
 
 function Projects() {
   let [projects, setProjects] = useState([]);
@@ -40,7 +40,7 @@ function Projects() {
   }
 
   function openEdit(p) {
-    setForm({ title: p.title, category: p.category, location: p.location, year: p.year, description: p.description, isFeatured: p.isFeatured });
+    setForm({ title: p.title, slug: p.slug || "", category: p.category, location: p.location, year: p.year, description: p.description, isFeatured: p.isFeatured });
     setImageFile(null);
     setImagePreview(p.image);
     setEditingId(p._id);
@@ -123,6 +123,7 @@ function Projects() {
               <div className="p-5">
                 <p className="mb-1 text-xs uppercase tracking-[2px] text-[#C8A96A]">{p.category}</p>
                 <h3 className="mb-2 font-serif text-lg text-[#111111]">{p.title}</h3>
+                <p className="mb-3 truncate text-xs text-[#999]">/gallery/{p.slug || "generated-from-title"}</p>
 
                 <div className="mb-4 flex items-center gap-4 text-xs text-[#999]">
                   {p.location && <span className="flex items-center gap-1"><MapPin size={12} /> {p.location}</span>}
@@ -177,6 +178,10 @@ function Projects() {
               </div>
 
               <Input label="Title" value={form.title} onChange={(v) => setForm((p) => ({ ...p, title: v }))} />
+              <div>
+                <Input label="URL Slug (optional)" value={form.slug} onChange={(v) => setForm((p) => ({ ...p, slug: v }))} />
+                <p className="mt-1 text-xs text-[#999]">Leave empty to generate it from the title. Example: luxury-living-room.</p>
+              </div>
               <Input label="Category" value={form.category} onChange={(v) => setForm((p) => ({ ...p, category: v }))} />
 
               <div className="grid grid-cols-2 gap-4">

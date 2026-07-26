@@ -83,7 +83,7 @@ useEffect(() => {
           <Route path="/shop" element={<Collections />} />
           <Route path="/shop/:slug" element={<ProductDetailsPage />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/gallery/:id" element={<ProjectDetails />} />
+          <Route path="/gallery/:slug" element={<ProjectDetails />} />
           <Route path="/cart" element={<Cart />} /> 
            <Route
   path="/checkout"
