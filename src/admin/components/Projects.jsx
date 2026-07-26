@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { Plus, Pencil, Trash2, X, Upload, MapPin, Calendar } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
-let emptyForm = { title: "", slug: "", category: "", location: "", year: "", description: "", isFeatured: true };
+let defaultProcess = [
+  { title: "Understand", description: "" },
+  { title: "Refine", description: "" },
+  { title: "Deliver", description: "" },
+];
+
+let emptyForm = { title: "", slug: "", category: "", location: "", year: "", description: "", storyTitle: "", designApproach: "", highlights: [], process: defaultProcess, isFeatured: true };
 
 function Projects() {
   let [projects, setProjects] = useState([]);
@@ -40,7 +46,19 @@ function Projects() {
   }
 
   function openEdit(p) {
-    setForm({ title: p.title, slug: p.slug || "", category: p.category, location: p.location, year: p.year, description: p.description, isFeatured: p.isFeatured });
+    setForm({
+      title: p.title,
+      slug: p.slug || "",
+      category: p.category,
+      location: p.location,
+      year: p.year,
+      description: p.description || "",
+      storyTitle: p.storyTitle || "",
+      designApproach: p.designApproach || "",
+      highlights: p.highlights || [],
+      process: p.process?.length ? p.process : defaultProcess,
+      isFeatured: p.isFeatured,
+    });
     setImageFile(null);
     setImagePreview(p.image);
     setEditingId(p._id);
@@ -67,7 +85,12 @@ function Projects() {
 
     try {
       let formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+      Object.entries(form).forEach(([key, value]) => {
+        if (key === "highlights" || key === "process") return;
+        formData.append(key, value);
+      });
+      formData.append("highlights", JSON.stringify(form.highlights));
+      formData.append("process", JSON.stringify(form.process));
       if (imageFile) formData.append("image", imageFile);
 
       if (editingId === "new") {
@@ -190,7 +213,7 @@ function Projects() {
               </div>
 
               <label className="block">
-                <span className="mb-2 block text-sm text-[#111111]">Description (optional)</span>
+                <span className="mb-2 block text-sm text-[#111111]">Project overview</span>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
@@ -198,6 +221,31 @@ function Projects() {
                   className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]"
                 />
               </label>
+
+              <Input label="Project story heading (optional)" value={form.storyTitle} onChange={(v) => setForm((p) => ({ ...p, storyTitle: v }))} />
+
+              <label className="block">
+                <span className="mb-2 block text-sm text-[#111111]">Design approach</span>
+                <textarea value={form.designApproach} onChange={(e) => setForm((p) => ({ ...p, designApproach: e.target.value }))} rows={3} className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]" />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm text-[#111111]">Design highlights</span>
+                <textarea value={form.highlights.join("\n")} onChange={(e) => setForm((p) => ({ ...p, highlights: e.target.value.split("\n").map((item) => item.trim()).filter(Boolean) }))} rows={4} placeholder="One highlight per line" className="w-full rounded-xl border border-[#E8E2D9] p-3 text-sm outline-none focus:border-[#C8A96A]" />
+                <p className="mt-1 text-xs text-[#999]">Add one outcome or design detail on each line.</p>
+              </label>
+
+              <div>
+                <span className="mb-2 block text-sm text-[#111111]">Project process</span>
+                <div className="space-y-3">
+                  {form.process.map((step, index) => (
+                    <div key={index} className="rounded-xl border border-[#E8E2D9] p-3">
+                      <input value={step.title} onChange={(e) => setForm((p) => ({ ...p, process: p.process.map((item, itemIndex) => itemIndex === index ? { ...item, title: e.target.value } : item) }))} placeholder="Step title" className="w-full border-b border-[#E8E2D9] pb-2 text-sm font-medium outline-none focus:border-[#C8A96A]" />
+                      <textarea value={step.description} onChange={(e) => setForm((p) => ({ ...p, process: p.process.map((item, itemIndex) => itemIndex === index ? { ...item, description: e.target.value } : item) }))} placeholder="Step description" rows={2} className="mt-2 w-full resize-none text-sm outline-none" />
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               <label className="flex items-center gap-2 text-sm text-[#111111]">
                 <input type="checkbox" checked={form.isFeatured} onChange={(e) => setForm((p) => ({ ...p, isFeatured: e.target.checked }))} />

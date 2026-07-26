@@ -24,8 +24,9 @@ function getProjectStory(project) {
 
   return {
     brief: project.description || `A tailored ${category.toLowerCase()} project shaped around the way its occupants live, work, and gather.`,
-    approach: `We balanced enduring materials, thoughtful spatial planning, and a refined visual language to make every part of this ${category.toLowerCase()} feel intentional.`,
-    highlights: [
+    storyTitle: project.storyTitle || "A space with a point of view.",
+    approach: project.designApproach || `We balanced enduring materials, thoughtful spatial planning, and a refined visual language to make every part of this ${category.toLowerCase()} feel intentional.`,
+    highlights: project.highlights?.length ? project.highlights : [
       "A layout tailored to daily rituals and movement",
       "Layered textures and finishes with lasting appeal",
       "Considered lighting and styling for a complete atmosphere",
@@ -85,6 +86,11 @@ function ProjectDetails() {
     { label: "Location", value: project.location || "Nigeria", icon: MapPin },
     { label: "Completed", value: project.year || "In progress", icon: CalendarDays },
   ] : [];
+  const process = project?.process?.length ? project.process : [
+    { title: "Understand", description: "We begin with the people, rhythms, and practical needs that make a space personal.", icon: Compass },
+    { title: "Refine", description: "Every material, proportion, and finish is brought into one clear visual language.", icon: Lightbulb },
+    { title: "Deliver", description: "We bring the concept to life with detail, care, and a well-managed final installation.", icon: Ruler },
+  ];
 
   return (
     <>
@@ -135,7 +141,7 @@ function ProjectDetails() {
               <div className="container-custom grid gap-12 lg:grid-cols-[.78fr_1.22fr] lg:gap-20">
                 <div>
                   <p className="text-[11px] uppercase tracking-[3px] text-[#C9A768]">Project story</p>
-                  <h2 className="mt-4 font-serif text-4xl leading-tight text-[#1C1512] md:text-5xl">A space with a point of view.</h2>
+                  <h2 className="mt-4 font-serif text-4xl leading-tight text-[#1C1512] md:text-5xl">{story.storyTitle}</h2>
                 </div>
                 <div className="max-w-2xl">
                   <p className="font-serif text-2xl leading-10 text-[#332722] sm:text-3xl">{story.brief}</p>
@@ -160,9 +166,10 @@ function ProjectDetails() {
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                  <div className="rounded-3xl border border-[#E6DED2] bg-white p-6"><Compass size={20} className="text-[#A8824B]" /><h3 className="mt-7 font-serif text-xl text-[#1C1512]">Understand</h3><p className="mt-2 text-sm leading-6 text-[#74685F]">We begin with the people, rhythms, and practical needs that make a space personal.</p></div>
-                  <div className="rounded-3xl border border-[#E6DED2] bg-white p-6"><Lightbulb size={20} className="text-[#A8824B]" /><h3 className="mt-7 font-serif text-xl text-[#1C1512]">Refine</h3><p className="mt-2 text-sm leading-6 text-[#74685F]">Every material, proportion, and finish is brought into one clear visual language.</p></div>
-                  <div className="rounded-3xl border border-[#E6DED2] bg-white p-6"><Ruler size={20} className="text-[#A8824B]" /><h3 className="mt-7 font-serif text-xl text-[#1C1512]">Deliver</h3><p className="mt-2 text-sm leading-6 text-[#74685F]">We bring the concept to life with detail, care, and a well-managed final installation.</p></div>
+                  {process.map((step, index) => {
+                    const Icon = step.icon || [Compass, Lightbulb, Ruler][index % 3];
+                    return <div key={`${step.title}-${index}`} className="rounded-3xl border border-[#E6DED2] bg-white p-6"><Icon size={20} className="text-[#A8824B]" /><h3 className="mt-7 font-serif text-xl text-[#1C1512]">{step.title}</h3><p className="mt-2 text-sm leading-6 text-[#74685F]">{step.description}</p></div>;
+                  })}
                 </div>
               </div>
             </section>
