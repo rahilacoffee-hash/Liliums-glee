@@ -57,9 +57,24 @@ function EditProduct() {
     try {
       setLoading(true);
 
-      const { data } = await axiosInstance.get(`/products/id/${id}`);
+      let product;
 
-      const product = data.data;
+      try {
+        // Current API: protected lookup used by the admin edit route.
+        const { data } = await axiosInstance.get(`/products/id/${id}`);
+        product = data.data;
+      } catch (lookupError) {
+        // Compatibility fallback for an already-deployed API that has not
+        // received the new `/products/id/:id` route yet.
+        if (lookupError.response?.status !== 404) throw lookupError;
+
+        const { data } = await axiosInstance.get("/products", {
+          params: { limit: 1000 },
+        });
+        product = data.data?.products?.find((item) => item._id === id);
+
+        if (!product) throw lookupError;
+      }
 
       setFormData({
         name: product.name || "",
