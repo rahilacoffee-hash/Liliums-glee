@@ -5,13 +5,27 @@ import { ZoomIn } from "lucide-react";
 function ProductGallery({ product }) {
   // Works whether the backend sends `images` (array, multiple angles) or
   // the older single `image` field - normalizes to one array either way
-  let images = Array.isArray(product.images) && product.images.length > 0
+  // Products from the API store image metadata as `{ url, public_id }`,
+  // while older content may still use a plain image URL. The gallery should
+  // only ever pass a URL string to the image element.
+  let imageSource = Array.isArray(product.images) && product.images.length > 0
     ? product.images
     : product.image
-    ? [product.image]
-    : [];
+      ? [product.image]
+      : [];
+
+  let images = imageSource
+    .map((image) => {
+      if (typeof image === "string") return image;
+      return image?.url || image?.secure_url || image?.src || "";
+    })
+    .filter(Boolean);
 
   let [activeIndex, setActiveIndex] = useState(0);
+
+  // A detail route can change without unmounting this component. Clamp the
+  // persisted selection so a shorter gallery still renders its first image.
+  let visibleIndex = Math.min(activeIndex, Math.max(images.length - 1, 0));
 
   if (images.length === 0) {
     return (
@@ -32,7 +46,7 @@ function ProductGallery({ product }) {
               key={i}
               onClick={() => setActiveIndex(i)}
               className={`relative flex-shrink-0 overflow-hidden rounded-2xl border-2 transition ${
-                activeIndex === i ? "border-[#C8A96A]" : "border-transparent opacity-60 hover:opacity-100"
+                visibleIndex === i ? "border-[#C8A96A]" : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
               <img
@@ -60,8 +74,8 @@ function ProductGallery({ product }) {
         <div className="aspect-square w-full overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.img
-              key={activeIndex}
-              src={images[activeIndex]}
+              key={visibleIndex}
+              src={images[visibleIndex]}
               alt={product.name}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -80,7 +94,7 @@ function ProductGallery({ product }) {
                 key={i}
                 onClick={() => setActiveIndex(i)}
                 className={`h-1.5 rounded-full transition-all ${
-                  activeIndex === i ? "w-5 bg-[#C8A96A]" : "w-1.5 bg-black/20"
+                  visibleIndex === i ? "w-5 bg-[#C8A96A]" : "w-1.5 bg-black/20"
                 }`}
               />
             ))}
