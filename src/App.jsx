@@ -12,6 +12,8 @@ import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Services from "./Pages/Services";
 import Collections from "./Pages/Collections";
+import Gallery from "./Pages/Gallery";
+import ProjectDetails from "./Pages/ProjectDetails";
 import ProductDetailsPage from "./component/collectionspage/Productdetailspage";
 import Contact from "./Pages/Contact";
 
@@ -80,6 +82,8 @@ useEffect(() => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Collections />} />
           <Route path="/shop/:slug" element={<ProductDetailsPage />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/gallery/:id" element={<ProjectDetails />} />
           <Route path="/cart" element={<Cart />} /> 
            <Route
   path="/checkout"
