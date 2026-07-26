@@ -27,7 +27,7 @@ function RelatedProducts({ products }) {
               >
                 <div className="aspect-square overflow-hidden">
                   <img
-                    src={product.image}
+                    src={product.image || product.images?.[0]?.url}
                     alt={product.name}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -49,7 +49,7 @@ function RelatedProducts({ products }) {
                     ))}
                   </div>
 
-                  <span className="font-serif text-lg text-[#111111]">{product.price}</span>
+                  <span className="font-serif text-lg text-[#111111]">{product.priceLabel || (typeof product.price === "number" ? `₦${product.price.toLocaleString()}` : product.price)}</span>
                 </div>
               </Link>
             </motion.div>

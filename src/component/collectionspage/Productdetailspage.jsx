@@ -1,59 +1,132 @@
-import { useParams, Link, Navigate } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { ChevronRight, LoaderCircle } from "lucide-react";
 
-import collectionsData from "./collectionsData";
-import ProductGallery from "./Productgallery";
-import ProductInfo from "./Productinfo";
+import axiosInstance from "../../api/axiosInstance";
+import AIChat from "../AIChat";
+import Footer from "../layout/Footer/Footer";
+import Navbar from "../layout/Navbar/Navbar";
+import collectionsData, { featuredProducts } from "./collectionsData";
+import ProductShowcase from "./ProductShowcase";
 import ProductReviews from "./Productreviews";
-import { getReviewsForProduct } from "./Reviewsdata";
 import RelatedProducts from "./Relatedproducts";
 import ProductFAQ from "./Productfaq";
 import ProductCTA from "./Productcta";
 
-let allProducts = [...shopProducts, ...homepageProducts];
+function formatPrice(price) {
+  if (typeof price === "number") return `₦${price.toLocaleString()}`;
+  return price || "Price on request";
+}
+
+function normaliseProduct(product) {
+  if (!product) return null;
+
+  const images = Array.isArray(product.images) && product.images.length
+    ? product.images.map((image) => (typeof image === "string" ? { url: image } : image))
+    : product.image
+      ? [{ url: product.image }]
+      : [];
+
+  return {
+    ...product,
+    _id: product._id || product.slug,
+    isLocal: !product._id,
+    images,
+    image: images[0]?.url,
+    priceLabel: formatPrice(product.price),
+    numReviews: product.numReviews ?? product.reviews ?? 0,
+  };
+}
 
 function ProductDetailsPage() {
-  let { slug } = useParams();
-  let product = allProducts.find((p) => p.slug === slug);
+  const { slug } = useParams();
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!product) {
-    return <Navigate to="/shop" replace />;
-  }
+  useEffect(() => {
+    let active = true;
 
-  let relatedProducts = allProducts
-    .filter((p) => p.category === product.category && p.slug !== product.slug)
-    .slice(0, 3);
+    async function loadProduct() {
+      setLoading(true);
+      setNotFound(false);
+
+      try {
+        const { data } = await axiosInstance.get(`/products/${slug}`);
+        if (!data.success) throw new Error("Product not found");
+
+        const currentProduct = normaliseProduct(data.data);
+        if (!active) return;
+        setProduct(currentProduct);
+
+        const productsResponse = await axiosInstance.get("/products?limit=24");
+        if (!active || !productsResponse.data.success) return;
+
+        const products = productsResponse.data.data.products
+          .map(normaliseProduct)
+          .filter((item) => item.category === currentProduct.category && item.slug !== currentProduct.slug)
+          .slice(0, 3);
+        setRelatedProducts(products);
+      } catch {
+        const localProduct = featuredProducts.find((item) => item.slug === slug);
+        if (!active) return;
+
+        if (!localProduct) {
+          setNotFound(true);
+          return;
+        }
+
+        const currentProduct = normaliseProduct(localProduct);
+        setProduct(currentProduct);
+        setRelatedProducts(
+          featuredProducts
+            .filter((item) => item.category === currentProduct.category && item.slug !== currentProduct.slug)
+            .slice(0, 3)
+            .map(normaliseProduct)
+        );
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    loadProduct();
+    return () => { active = false; };
+  }, [slug]);
+
+  if (notFound) return <Navigate to="/shop" replace />;
 
   return (
-    <main className="bg-white">
-
-      {/* Breadcrumb */}
-      <div className="container-custom mx-auto px-6 pb-2 pt-28">
-        <nav className="flex items-center gap-2 text-sm text-[#777]">
-          <Link to="/" className="hover:text-[#C8A96A]">Home</Link>
-          <ChevronRight size={14} />
-          <Link to="/shop" className="hover:text-[#C8A96A]">Shop</Link>
-          <ChevronRight size={14} />
-          <span className="truncate text-[#111111]">{product.name}</span>
-        </nav>
-      </div>
-
-      {/* Product overview - gallery stays pinned while the info column scrolls */}
-      <section className="container-custom mx-auto px-6 pb-20 pt-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <ProductGallery product={product} />
+    <>
+      <Navbar />
+      <main className="bg-[#F7F3EC] pb-16 lg:pb-0">
+        {loading ? (
+          <div className="flex min-h-screen items-center justify-center text-[#4A141F]">
+            <LoaderCircle className="animate-spin" size={28} aria-label="Loading product" />
           </div>
+        ) : product ? (
+          <>
+            <div className="mx-auto max-w-7xl px-6 pb-5 pt-28 lg:px-16 lg:pt-32">
+              <nav aria-label="Breadcrumb" className="flex items-center gap-2 overflow-hidden text-xs uppercase tracking-[1.5px] text-[#85766c]">
+                <Link to="/" className="transition hover:text-[#4A141F]">Home</Link>
+                <ChevronRight size={13} />
+                <Link to="/shop" className="transition hover:text-[#4A141F]">Collections</Link>
+                <ChevronRight size={13} />
+                <span className="truncate text-[#4A141F]">{product.name}</span>
+              </nav>
+            </div>
 
-          <ProductInfo product={product} whyShop={collectionsData.whyShop} />
-        </div>
-      </section>
-
-      <ProductReviews product={product} reviews={getReviewsForProduct(product.slug)} />
-      <RelatedProducts products={relatedProducts} />
-      <ProductFAQ faq={collectionsData.faq} />
-      <ProductCTA cta={collectionsData.cta} />
-    </main>
+            <ProductShowcase product={product} whyShop={collectionsData.whyShop} />
+            <ProductReviews product={product} />
+            <RelatedProducts products={relatedProducts} />
+            <ProductFAQ faq={collectionsData.faq} />
+            <ProductCTA cta={collectionsData.cta} />
+          </>
+        ) : null}
+      </main>
+      <Footer />
+      <AIChat />
+    </>
   );
 }
 

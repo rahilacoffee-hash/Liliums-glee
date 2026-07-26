@@ -10,8 +10,8 @@ function ProductReviews({ product }) {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    fetchReviews();
-  }, [product._id]);
+    if (!product.isLocal) fetchReviews();
+  }, [product._id, product.isLocal]);
 
   async function fetchReviews() {
     try {
