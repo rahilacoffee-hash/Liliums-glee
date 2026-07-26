@@ -1,121 +1,60 @@
-import { useEffect, useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
-import axiosInstance from "../../api/axiosInstance";
+import collectionsData, { featuredProducts as shopProducts } from "./collectionsData";
+import { featuredProducts as homepageProducts } from "../featured-products/productsData";
+import ProductGallery from "./ProductGallery";
+import ProductInfo from "./ProductInfo";
+import ProductReviews from "./ProductReviews";
+import { getReviewsForProduct } from "./reviewsData";
+import RelatedProducts from "./RelatedProducts";
+import ProductFAQ from "./ProductFAQ";
+import ProductCTA from "./ProductCTA";
 
-import collectionsData from "./collectionsData";
-import ProductGallery from "./Productgallery";
-import ProductInfo from "./Productinfo";
-import ProductReviews from "./Productreviews";
-import RelatedProducts from "./Relatedproducts";
-import ProductFAQ from "./Productfaq";
-import ProductCTA from "./Productcta";
-import Navbar from "../layout/Navbar/Navbar"
+let allProducts = [...shopProducts, ...homepageProducts];
 
 function ProductDetailsPage() {
-  const { slug } = useParams();
+  let { slug } = useParams();
+  let product = allProducts.find((p) => p.slug === slug);
 
-  const [product, setProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-
-  useEffect(() => {
-    fetchProduct();
-  }, [slug]);
-
-  async function fetchProduct() {
-    try {
-      setLoading(true);
-
-      const { data } = await axiosInstance.get(`/products/${slug}`);
-
-      if (!data.success) {
-        setNotFound(true);
-        return;
-      }
-
-      setProduct(data.data);
-
-      // Fetch related products
-      const res = await axiosInstance.get("/products");
-
-      if (res.data.success) {
-        const related = res.data.data.products
-          .filter(
-            (item) =>
-              item.category === data.data.category &&
-              item.slug !== data.data.slug
-          )
-          .slice(0, 3);
-
-        setRelatedProducts(related);
-      }
-    } catch (error) {
-      console.error(error);
-      setNotFound(true);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
-  if (notFound || !product) {
+  if (!product) {
     return <Navigate to="/shop" replace />;
   }
 
+  let relatedProducts = allProducts
+    .filter((p) => p.category === product.category && p.slug !== product.slug)
+    .slice(0, 3);
+
   return (
-    <>
-    <Navbar/>
     <main className="bg-white">
+
       {/* Breadcrumb */}
-      <div className="container-custom mx-auto px-6 pt-32 pb-6">
+      <div className="container-custom mx-auto px-6 pb-2 pt-28">
         <nav className="flex items-center gap-2 text-sm text-[#777]">
-          <Link to="/" className="hover:text-[#C8A96A]">
-            Home
-          </Link>
-
+          <Link to="/" className="hover:text-[#C8A96A]">Home</Link>
           <ChevronRight size={14} />
-
-          <Link to="/shop" className="hover:text-[#C8A96A]">
-            Shop
-          </Link>
-
+          <Link to="/shop" className="hover:text-[#C8A96A]">Shop</Link>
           <ChevronRight size={14} />
-
-          <span className="text-[#111111]">{product.name}</span>
+          <span className="truncate text-[#111111]">{product.name}</span>
         </nav>
       </div>
 
-      {/* Product */}
-      <section className="container-custom mx-auto px-6 pb-20">
+      {/* Product overview - gallery stays pinned while the info column scrolls */}
+      <section className="container-custom mx-auto px-6 pb-20 pt-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <ProductGallery product={product} />
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <ProductGallery product={product} />
+          </div>
 
-          <ProductInfo
-            product={product}
-            whyShop={collectionsData.whyShop}
-          />
+          <ProductInfo product={product} whyShop={collectionsData.whyShop} />
         </div>
       </section>
 
-      <ProductReviews product={product} />
-
+      <ProductReviews product={product} reviews={getReviewsForProduct(product.slug)} />
       <RelatedProducts products={relatedProducts} />
-
       <ProductFAQ faq={collectionsData.faq} />
-
       <ProductCTA cta={collectionsData.cta} />
     </main>
-    </>
   );
 }
 
