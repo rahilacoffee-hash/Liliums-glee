@@ -35,6 +35,7 @@ function ProjectCard({ project }) {
       </div>
 
       {/* CTA */}
+      <Link to={`/project/${project._id}`}>
       <motion.button
         whileHover={{ x: 8 }}
         whileTap={{ scale: 0.98 }}
@@ -46,6 +47,7 @@ function ProjectCard({ project }) {
           <ArrowRight size={16} />
         </span>
       </motion.button>
+      </Link>
     </motion.div>
   );
 }

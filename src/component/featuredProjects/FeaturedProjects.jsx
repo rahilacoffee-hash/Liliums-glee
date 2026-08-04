@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import ProjectSlider from "./ProjectSlider";
 import { sectionReveal, fadeUp } from "./projectVariants";
+import { Link } from "react-router-dom";
 
 function FeaturedProjects() {
   return (
@@ -38,7 +39,7 @@ function FeaturedProjects() {
               premium craftsmanship, and spaces that elevate everyday living.
             </p>
           </div>
-
+<Link to="/projects">
           <motion.button
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.97 }}
@@ -50,6 +51,7 @@ function FeaturedProjects() {
               <ArrowRight size={16} />
             </span>
           </motion.button>
+          </Link>
         </motion.div>
 
         {/* Slider */}
