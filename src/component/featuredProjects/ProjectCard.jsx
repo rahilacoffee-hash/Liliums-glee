@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import { fadeUp } from "./projectVariants";
+import { Link } from "react-router-dom";
 
 function ProjectCard({ project }) {
   return (
