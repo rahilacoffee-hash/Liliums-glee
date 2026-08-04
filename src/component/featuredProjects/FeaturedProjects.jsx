@@ -39,7 +39,7 @@ function FeaturedProjects() {
               premium craftsmanship, and spaces that elevate everyday living.
             </p>
           </div>
-<Link to="/projects">
+<Link to="/gallery">
           <motion.button
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.97 }}
