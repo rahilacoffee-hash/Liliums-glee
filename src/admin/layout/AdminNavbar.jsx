@@ -58,21 +58,21 @@ function AdminNavbar({ children }) {
           .replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
-    <header className="sticky top-4 z-30 mx-4 mb-4 rounded-[24px] border border-[#E8E2D9] bg-white/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl">
-      <div className="flex h-20 items-center justify-between px-5 md:px-8">
+    <header className="sticky top-3 z-30 mx-2 mb-4 rounded-[24px] border border-[#E8E2D9] bg-white/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:top-4 sm:mx-4">
+      <div className="flex h-16 min-w-0 items-center justify-between gap-3 px-3 sm:h-20 sm:px-5 md:px-8">
 
         {/* Left */}
-        <div className="flex items-center gap-5">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-5">
           {children}
 
-          <div>
-            <h1 className="font-serif text-2xl text-[#111111]">{pageTitle}</h1>
-            <p className="text-sm text-[#999]">Welcome back 👋</p>
+          <div className="min-w-0">
+            <h1 className="truncate font-serif text-xl text-[#111111] sm:text-2xl">{pageTitle}</h1>
+            <p className="hidden text-sm text-[#999] sm:block">Welcome back</p>
           </div>
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-shrink-0 items-center gap-2 sm:gap-3">
 
           {/* Search */}
           <div className="relative hidden lg:block">
@@ -122,7 +122,7 @@ function AdminNavbar({ children }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -8, scale: 0.97 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
+                  className="absolute right-0 mt-3 w-64 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
                 >
                   <div className="border-b border-[#E8E2D9] bg-[#F8F5F0] p-5">
                     <h3 className="font-serif text-[#111111]">{user?.name}</h3>

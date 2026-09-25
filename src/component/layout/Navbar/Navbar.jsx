@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   ChevronDown,
   ArrowRight,
+  LayoutDashboard,
   User,
 } from "lucide-react";
 
@@ -147,11 +148,18 @@ const Navbar = () => {
               </button>
 
               {dropdown && (
-                <div className="absolute right-0 mt-4 w-60 rounded-2xl border border-white/10 bg-[#121212] p-2 shadow-xl">
+                <div className="absolute right-0 mt-4 w-60 max-w-[calc(100vw-2rem)] rounded-2xl border border-white/10 bg-[#121212] p-2 shadow-xl">
                   <div className="border-b border-white/10 p-4">
                     <h3 className="font-semibold text-white">Hi, {user.name}</h3>
                     <p className="mt-1 text-sm text-gray-400">{user.email}</p>
                   </div>
+
+                  {user.role === "ADMIN" && (
+                    <Link to="/admin" onClick={() => setDropdown(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-[#D6A354] transition hover:bg-white/5">
+                      <LayoutDashboard size={17} />
+                      Admin Dashboard
+                    </Link>
+                  )}
 
                   <Link to="/profile" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
                     My Profile
@@ -274,6 +282,13 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
+
+                  {user.role === "ADMIN" && (
+                    <Link to="/admin" onClick={() => setMobileMenu(false)} className="mt-3 flex items-center gap-3 rounded-xl bg-[#D6A354]/10 px-4 py-3 text-sm font-medium text-[#D6A354] transition hover:bg-[#D6A354]/20 sm:text-base">
+                      <LayoutDashboard size={18} />
+                      Admin Dashboard
+                    </Link>
+                  )}
 
                   <Link to="/profile" onClick={() => setMobileMenu(false)} className="mt-3 rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:mt-4 sm:py-3 sm:text-base">
                     My Profile

@@ -1,14 +1,28 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 
 import AdminSidebar from "./AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import AdminFooter from "./AdminFooter";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="flex min-h-screen items-center justify-center bg-[#F8F5F0] text-sm text-[#777]">Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.role !== "ADMIN") {
+    return <Navigate to="/" replace />;
+  }
 
   // AdminSidebar renders its own backdrop + animation for the mobile
   // overlay now, so this layout no longer needs a second one stacked on top
@@ -44,7 +58,7 @@ function AdminLayout() {
         </AdminNavbar>
 
         {/* Content */}
-        <main className="flex-1 px-4 pb-5 md:px-6 md:pb-8">
+        <main className="min-w-0 flex-1 px-3 pb-5 sm:px-4 md:px-6 md:pb-8">
           <Outlet />
         </main>
 
