@@ -1,7 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Search, ChevronDown, User, Settings, LogOut } from "lucide-react";
+import {
+  Bell,
+  Search,
+  ChevronDown,
+  User,
+  Settings,
+  LogOut,
+} from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../api/axiosInstance";
@@ -60,23 +67,26 @@ function AdminNavbar({ children }) {
   return (
     <header className="sticky top-3 z-30 mx-2 mb-4 rounded-[24px] border border-[#E8E2D9] bg-white/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:top-4 sm:mx-4">
       <div className="flex h-16 min-w-0 items-center justify-between gap-3 px-3 sm:h-20 sm:px-5 md:px-8">
-
         {/* Left */}
         <div className="flex min-w-0 items-center gap-3 sm:gap-5">
           {children}
 
           <div className="min-w-0">
-            <h1 className="truncate font-serif text-xl text-[#111111] sm:text-2xl">{pageTitle}</h1>
+            <h1 className="truncate font-serif text-xl text-[#111111] sm:text-2xl">
+              {pageTitle}
+            </h1>
             <p className="hidden text-sm text-[#999] sm:block">Welcome back</p>
           </div>
         </div>
 
         {/* Right */}
         <div className="flex flex-shrink-0 items-center gap-2 sm:gap-3">
-
           {/* Search */}
           <div className="relative hidden lg:block">
-            <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999]" />
+            <Search
+              size={17}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999]"
+            />
             <input
               type="text"
               placeholder="Search..."
@@ -108,11 +118,18 @@ function AdminNavbar({ children }) {
               </div>
 
               <div className="hidden text-left md:block">
-                <p className="text-sm font-medium text-[#111111]">{user?.name || "Admin"}</p>
-                <span className="text-xs text-[#999]">{user?.role || "Administrator"}</span>
+                <p className="text-sm font-medium text-[#111111]">
+                  {user?.name || "Admin"}
+                </p>
+                <span className="text-xs text-[#999]">
+                  {user?.role || "Administrator"}
+                </span>
               </div>
 
-              <ChevronDown size={16} className={`text-[#999] transition-transform ${dropdown ? "rotate-180" : ""}`} />
+              <ChevronDown
+                size={16}
+                className={`text-[#999] transition-transform ${dropdown ? "rotate-180" : ""}`}
+              />
             </button>
 
             <AnimatePresence>
@@ -129,17 +146,28 @@ function AdminNavbar({ children }) {
                     <p className="mt-1 text-sm text-[#999]">{user?.email}</p>
                   </div>
 
-                  <Link to="/admin/profile" onClick={() => setDropdown(false)} className="flex items-center gap-3 px-5 py-3 text-[#111111] transition hover:bg-[#F8F5F0]">
+                  <Link
+                    to="/admin/profile"
+                    onClick={() => setDropdown(false)}
+                    className="flex items-center gap-3 px-5 py-3 text-[#111111] transition hover:bg-[#F8F5F0]"
+                  >
                     <User size={17} className="text-[#C8A96A]" />
                     Profile
                   </Link>
 
-                  <Link to="/admin/settings" onClick={() => setDropdown(false)} className="flex items-center gap-3 px-5 py-3 text-[#111111] transition hover:bg-[#F8F5F0]">
+                  <Link
+                    to="/admin/settings"
+                    onClick={() => setDropdown(false)}
+                    className="flex items-center gap-3 px-5 py-3 text-[#111111] transition hover:bg-[#F8F5F0]"
+                  >
                     <Settings size={17} className="text-[#C8A96A]" />
                     Settings
                   </Link>
 
-                  <button onClick={handleLogout} className="flex w-full items-center gap-3 border-t border-[#E8E2D9] px-5 py-3 text-red-500 transition hover:bg-red-50">
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-3 border-t border-[#E8E2D9] px-5 py-3 text-red-500 transition hover:bg-red-50"
+                  >
                     <LogOut size={17} />
                     Logout
                   </button>

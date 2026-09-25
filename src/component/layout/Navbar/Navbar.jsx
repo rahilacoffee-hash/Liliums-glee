@@ -75,7 +75,6 @@ const Navbar = () => {
       className="fixed left-1/2 top-3 z-50 w-[95%] max-w-7xl -translate-x-1/2 sm:top-5 sm:w-[94%]"
     >
       <nav className="flex h-16 items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 shadow-2xl backdrop-blur-xl sm:h-[72px] sm:px-6 lg:h-20 lg:px-8">
-
         {/* Logo */}
         <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           <img
@@ -103,7 +102,9 @@ const Navbar = () => {
                 to={link.path}
                 className={({ isActive }) =>
                   `relative whitespace-nowrap pb-1 transition duration-300 ${
-                    isActive ? "text-[#D6A354]" : "text-white hover:text-[#D6A354]"
+                    isActive
+                      ? "text-[#D6A354]"
+                      : "text-white hover:text-[#D6A354]"
                   } after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:bg-[#D6A354] after:transition-all after:duration-300 ${
                     isActive ? "after:w-full" : "after:w-0 hover:after:w-full"
                   }`
@@ -117,9 +118,11 @@ const Navbar = () => {
 
         {/* Desktop Right Side */}
         <div className="hidden items-center gap-4 xl:flex xl:gap-6">
-
           {/* Cart */}
-          <Link to="/cart" className="relative flex-shrink-0 text-white transition hover:text-[#D6A354]">
+          <Link
+            to="/cart"
+            className="relative flex-shrink-0 text-white transition hover:text-[#D6A354]"
+          >
             <ShoppingBag size={22} />
             {totalItems > 0 && (
               <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#D6A354] text-[10px] font-bold text-black">
@@ -139,52 +142,91 @@ const Navbar = () => {
               >
                 <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#D6A354] font-semibold text-black">
                   {user.avatar ? (
-                    <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     user.name?.charAt(0).toUpperCase()
                   )}
                 </div>
-                <ChevronDown size={18} className={`transition ${dropdown ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  size={18}
+                  className={`transition ${dropdown ? "rotate-180" : ""}`}
+                />
               </button>
 
               {dropdown && (
                 <div className="absolute right-0 mt-4 w-60 max-w-[calc(100vw-2rem)] rounded-2xl border border-white/10 bg-[#121212] p-2 shadow-xl">
                   <div className="border-b border-white/10 p-4">
-                    <h3 className="font-semibold text-white">Hi, {user.name}</h3>
+                    <h3 className="font-semibold text-white">
+                      Hi, {user.name}
+                    </h3>
                     <p className="mt-1 text-sm text-gray-400">{user.email}</p>
                   </div>
 
                   {user.role === "ADMIN" && (
-                    <Link to="/admin" onClick={() => setDropdown(false)} className="flex items-center gap-3 rounded-xl px-4 py-3 text-[#D6A354] transition hover:bg-white/5">
+                    <Link
+                      to="/admin"
+                      onClick={() => setDropdown(false)}
+                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-[#D6A354] transition hover:bg-white/5"
+                    >
                       <LayoutDashboard size={17} />
                       Admin Dashboard
                     </Link>
                   )}
 
-                  <Link to="/profile" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
+                  <Link
+                    to="/profile"
+                    onClick={() => setDropdown(false)}
+                    className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white"
+                  >
                     My Profile
                   </Link>
-                  <Link to="/orders" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
+                  <Link
+                    to="/orders"
+                    onClick={() => setDropdown(false)}
+                    className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white"
+                  >
                     Orders
                   </Link>
-                  <Link to="/wishlist" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
+                  <Link
+                    to="/wishlist"
+                    onClick={() => setDropdown(false)}
+                    className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white"
+                  >
                     Wishlist
                   </Link>
-                  <Link to="/saved-designs" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
+                  <Link
+                    to="/saved-designs"
+                    onClick={() => setDropdown(false)}
+                    className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white"
+                  >
                     Saved Designs
                   </Link>
-                  <Link to="/settings" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
+                  <Link
+                    to="/settings"
+                    onClick={() => setDropdown(false)}
+                    className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white"
+                  >
                     Settings
                   </Link>
 
-                  <button onClick={handleLogout} className="mt-2 w-full rounded-xl px-4 py-3 text-left text-red-400 transition hover:bg-red-500/10">
+                  <button
+                    onClick={handleLogout}
+                    className="mt-2 w-full rounded-xl px-4 py-3 text-left text-red-400 transition hover:bg-red-500/10"
+                  >
                     Logout
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <Link to="/login" className="flex-shrink-0 whitespace-nowrap text-white transition hover:text-[#D6A354]">
+            <Link
+              to="/login"
+              className="flex-shrink-0 whitespace-nowrap text-white transition hover:text-[#D6A354]"
+            >
               Login
             </Link>
           )}
@@ -195,7 +237,10 @@ const Navbar = () => {
             className="group flex flex-shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-[#D6A354] px-6 py-3 font-semibold text-black transition hover:scale-105"
           >
             Get Consultation
-            <ArrowRight size={18} className="transition group-hover:translate-x-1" />
+            <ArrowRight
+              size={18}
+              className="transition group-hover:translate-x-1"
+            />
           </Link>
         </div>
 
@@ -205,7 +250,11 @@ const Navbar = () => {
           className="flex-shrink-0 text-white xl:hidden"
           aria-label={mobileMenu ? "Close menu" : "Open menu"}
         >
-          {mobileMenu ? <X className="h-6 w-6 sm:h-7 sm:w-7" /> : <Menu className="h-6 w-6 sm:h-7 sm:w-7" />}
+          {mobileMenu ? (
+            <X className="h-6 w-6 sm:h-7 sm:w-7" />
+          ) : (
+            <Menu className="h-6 w-6 sm:h-7 sm:w-7" />
+          )}
         </button>
       </nav>
 
@@ -220,7 +269,6 @@ const Navbar = () => {
             className="mt-3 max-h-[80vh] overflow-y-auto overflow-x-hidden rounded-3xl border border-white/10 bg-[#111111]/95 backdrop-blur-xl xl:hidden"
           >
             <div className="flex flex-col p-4 sm:p-6">
-
               {/* Navigation */}
               <div className="space-y-1.5 sm:space-y-2">
                 {navLinks.map((link) => (
@@ -230,7 +278,9 @@ const Navbar = () => {
                     onClick={() => setMobileMenu(false)}
                     className={({ isActive }) =>
                       `block rounded-xl px-4 py-2.5 text-sm transition sm:py-3 sm:text-base ${
-                        isActive ? "bg-[#D6A354] text-black" : "text-white hover:bg-white/10"
+                        isActive
+                          ? "bg-[#D6A354] text-black"
+                          : "text-white hover:bg-white/10"
                       }`
                     }
                   >
@@ -271,36 +321,63 @@ const Navbar = () => {
                     <div className="flex items-center gap-3">
                       <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#D6A354] font-bold text-black sm:h-12 sm:w-12">
                         {user.avatar ? (
-                          <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
+                          <img
+                            src={user.avatar}
+                            alt={user.name}
+                            className="h-full w-full object-cover"
+                          />
                         ) : (
                           user.name?.charAt(0).toUpperCase()
                         )}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="truncate text-sm font-semibold text-white sm:text-base">{user.name}</h3>
-                        <p className="truncate text-xs text-gray-400 sm:text-sm">{user.email}</p>
+                        <h3 className="truncate text-sm font-semibold text-white sm:text-base">
+                          {user.name}
+                        </h3>
+                        <p className="truncate text-xs text-gray-400 sm:text-sm">
+                          {user.email}
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   {user.role === "ADMIN" && (
-                    <Link to="/admin" onClick={() => setMobileMenu(false)} className="mt-3 flex items-center gap-3 rounded-xl bg-[#D6A354]/10 px-4 py-3 text-sm font-medium text-[#D6A354] transition hover:bg-[#D6A354]/20 sm:text-base">
+                    <Link
+                      to="/admin"
+                      onClick={() => setMobileMenu(false)}
+                      className="mt-3 flex items-center gap-3 rounded-xl bg-[#D6A354]/10 px-4 py-3 text-sm font-medium text-[#D6A354] transition hover:bg-[#D6A354]/20 sm:text-base"
+                    >
                       <LayoutDashboard size={18} />
                       Admin Dashboard
                     </Link>
                   )}
 
-                  <Link to="/profile" onClick={() => setMobileMenu(false)} className="mt-3 rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:mt-4 sm:py-3 sm:text-base">
+                  <Link
+                    to="/profile"
+                    onClick={() => setMobileMenu(false)}
+                    className="mt-3 rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:mt-4 sm:py-3 sm:text-base"
+                  >
                     My Profile
                   </Link>
-                  <Link to="/orders" onClick={() => setMobileMenu(false)} className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base">
+                  <Link
+                    to="/orders"
+                    onClick={() => setMobileMenu(false)}
+                    className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base"
+                  >
                     My Orders
                   </Link>
-                  <Link to="/wishlist" onClick={() => setMobileMenu(false)} className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base">
+                  <Link
+                    to="/wishlist"
+                    onClick={() => setMobileMenu(false)}
+                    className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base"
+                  >
                     Wishlist
                   </Link>
 
-                  <button onClick={handleLogout} className="mt-2.5 rounded-xl bg-red-500/10 px-4 py-2.5 text-left text-sm text-red-400 transition hover:bg-red-500/20 sm:mt-3 sm:py-3 sm:text-base">
+                  <button
+                    onClick={handleLogout}
+                    className="mt-2.5 rounded-xl bg-red-500/10 px-4 py-2.5 text-left text-sm text-red-400 transition hover:bg-red-500/20 sm:mt-3 sm:py-3 sm:text-base"
+                  >
                     Logout
                   </button>
                 </>

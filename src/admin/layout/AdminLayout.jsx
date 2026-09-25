@@ -13,7 +13,11 @@ function AdminLayout() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center bg-[#F8F5F0] text-sm text-[#777]">Loading...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#F8F5F0] text-sm text-[#777]">
+        Loading...
+      </div>
+    );
   }
 
   if (!user) {
@@ -29,7 +33,6 @@ function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-[#F8F5F0]">
-
       {/* Sidebar */}
       <AdminSidebar
         sidebarOpen={sidebarOpen}

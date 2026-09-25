@@ -33,9 +33,9 @@ video {
 .projectSwiper .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
-  background: #C8A96A;
-  opacity: .3;
-  transition: .35s;
+  background: #c8a96a;
+  opacity: 0.3;
+  transition: 0.35s;
 }
 
 .projectSwiper .swiper-pagination-bullet-active {
@@ -44,12 +44,10 @@ video {
   opacity: 1;
 }
 
-
-
-.projectSwiper{
-    padding-bottom:140px;
+.projectSwiper {
+  padding-bottom: 140px;
 }
 
-.projectSwiper .swiper-wrapper{
-    align-items:flex-start;
+.projectSwiper .swiper-wrapper {
+  align-items: flex-start;
 }
