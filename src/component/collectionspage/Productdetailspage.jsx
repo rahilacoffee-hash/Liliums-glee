@@ -9,6 +9,7 @@ import ProductReviews from "./Productreviews";
 import RelatedProducts from "./Relatedproducts";
 import ProductFAQ from "./Productfaq";
 import ProductCTA from "./Productcta";
+import Navbar from "../layout/Navbar/Navbar";
 
 // Not covered by any backend content model yet - static for now.
 // Move these into Settings/SiteContent later if you want them admin-editable.
@@ -82,7 +83,9 @@ function ProductDetailsPage() {
   }
 
   return (
-    <main className="bg-white">
+    <>
+      <Navbar />
+      <main className="bg-white">
 
       {/* Breadcrumb */}
       <div className="container-custom mx-auto px-6 pb-2 pt-28">
@@ -110,7 +113,8 @@ function ProductDetailsPage() {
       <RelatedProducts products={relatedProducts} />
       <ProductFAQ faq={faq} />
       <ProductCTA cta={cta} />
-    </main>
+      </main>
+    </>
   );
 }
 

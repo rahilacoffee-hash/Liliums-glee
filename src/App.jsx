@@ -131,6 +131,7 @@ useEffect(() => {
           </Route>
 
   <Route path="/orders" element={<MyOrders />} />
+  <Route path="/orders/:id" element={<OrderDetail />} />
   <Route path="/consultation-payment-callback" element={<ConsultationPaymentCallback />} />
 
           {/* ================= 404 ================= */}

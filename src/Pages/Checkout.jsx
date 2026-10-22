@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axiosInstance from "../api/axiosInstance";
 import { useCart } from "../context/CartContext";
+import Navbar from "../component/layout/Navbar/Navbar";
 
 function Checkout() {
   const { cartItems, totalPrice, clearCart } = useCart();
@@ -115,7 +116,9 @@ async function handleCheckout() {
 }
 
   return (
-    <main className="min-h-screen bg-[#F8F5F0] pt-36 pb-24">
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-[#F8F5F0] pt-36 pb-24">
       <div className="container mx-auto max-w-5xl px-6">
 
         <h1 className="mb-10 font-serif text-5xl">
@@ -262,7 +265,8 @@ async function handleCheckout() {
         </div>
 
       </div>
-    </main>
+      </main>
+    </>
   );
 }
 

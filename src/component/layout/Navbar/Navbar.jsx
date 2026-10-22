@@ -165,7 +165,7 @@ const Navbar = () => {
                     My Profile
                   </Link>
                   <Link to="/orders" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
-                    Orders
+                    Order Details
                   </Link>
                   <Link to="/wishlist" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
                     Wishlist
@@ -173,10 +173,6 @@ const Navbar = () => {
                   <Link to="/saved-designs" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
                     Saved Designs
                   </Link>
-                  <Link to="/settings" onClick={() => setDropdown(false)} className="block rounded-xl px-4 py-3 text-gray-300 transition hover:bg-white/5 hover:text-white">
-                    Settings
-                  </Link>
-
                   <button onClick={handleLogout} className="mt-2 w-full rounded-xl px-4 py-3 text-left text-red-400 transition hover:bg-red-500/10">
                     Logout
                   </button>
@@ -294,10 +290,13 @@ const Navbar = () => {
                     My Profile
                   </Link>
                   <Link to="/orders" onClick={() => setMobileMenu(false)} className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base">
-                    My Orders
+                    Order Details
                   </Link>
                   <Link to="/wishlist" onClick={() => setMobileMenu(false)} className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base">
                     Wishlist
+                  </Link>
+                  <Link to="/saved-designs" onClick={() => setMobileMenu(false)} className="rounded-xl px-4 py-2.5 text-sm text-white transition hover:bg-white/10 sm:py-3 sm:text-base">
+                    Saved Designs
                   </Link>
 
                   <button onClick={handleLogout} className="mt-2.5 rounded-xl bg-red-500/10 px-4 py-2.5 text-left text-sm text-red-400 transition hover:bg-red-500/20 sm:mt-3 sm:py-3 sm:text-base">
