@@ -2,6 +2,7 @@ import DashboardCards from "./DashboardCards";
 import RevenueChart from "./RevenueChart";
 import RecentOrders from "./RecentOrders";
 import LowStock from "./LowStock";
+import SalesByCategory from "./SalesByCategory";
 
 function Dashboard() {
   return (
@@ -24,6 +25,8 @@ function Dashboard() {
 
       {/* Revenue Chart */}
       <RevenueChart />
+
+      <SalesByCategory />
 
       {/* Recent Orders & Low Stock */}
       <div className="grid gap-8 xl:grid-cols-2">
