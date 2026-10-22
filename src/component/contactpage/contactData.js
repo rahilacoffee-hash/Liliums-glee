@@ -35,15 +35,14 @@ const contactData = {
       title: "Address",
 
       value:
-        "Plot 25, Interior Avenue, Lekki Phase 1, Lagos, Nigeria.",
+        "The Mall Dubia, Abuja, Nigeria",
     },
 
     phone: {
       title: "Phone",
 
       value: [
-        "+234 801 234 5678",
-        "+234 809 876 5432",
+        "08058814841",
       ],
     },
 
@@ -171,12 +170,12 @@ const contactData = {
   description:
     "Experience our curated collections in person and speak directly with our interior specialists.",
 
-  location: "The mall dubia, Abuja, Nigeria",
+  location: "The Mall Dubia, Abuja, Nigeria",
 
   button: {
     label: "Get Directions",
 
-    href: "https://maps.google.com/?q=Lekki+Phase+1+Lagos",
+    href: "https://maps.google.com/?q=The+Mall+Dubia+Abuja+Nigeria",
   },
 },
 

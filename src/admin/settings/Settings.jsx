@@ -11,12 +11,12 @@ function Settings() {
     siteName: "",
     consultationFee: 500000,
     supportEmail: "",
-    supportPhone: "",
+    supportPhone: "08058814841",
     instagram: "",
     facebook: "",
     twitter: "",
     whatsapp: "",
-    address: "",
+    address: "The Mall Dubia, Abuja, Nigeria",
   });
 
   const [logoFile, setLogoFile] = useState(null);
