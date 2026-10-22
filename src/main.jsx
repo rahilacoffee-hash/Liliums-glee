@@ -6,11 +6,13 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./index.css";
 import App from "./App";
 import { CartProvider } from "./context/CartContext";
+import { SavedItemsProvider } from "./context/SavedItemsContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <CartProvider>
+        <SavedItemsProvider>
         <Toaster
           position="top-right"
           reverseOrder={false}
@@ -25,6 +27,7 @@ createRoot(document.getElementById("root")).render(
           }}
         />
         <App />
+        </SavedItemsProvider>
       </CartProvider>
     </GoogleOAuthProvider>
   </StrictMode>

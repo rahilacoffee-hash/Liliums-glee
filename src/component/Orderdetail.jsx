@@ -11,6 +11,25 @@ let statusStyles = {
   Cancelled: "bg-red-100 text-red-600",
 };
 
+function formatShippingAddress(shippingAddress) {
+  if (typeof shippingAddress === "string") return [shippingAddress];
+
+  if (!shippingAddress || typeof shippingAddress !== "object") return [];
+
+  const location = [shippingAddress.city, shippingAddress.state]
+    .filter(Boolean)
+    .join(", ");
+
+  return [
+    shippingAddress.fullName,
+    shippingAddress.phone,
+    shippingAddress.email,
+    shippingAddress.address,
+    location,
+    shippingAddress.country,
+  ].filter(Boolean);
+}
+
 function OrderDetail() {
   let { id } = useParams();
   let [order, setOrder] = useState(null);
@@ -39,6 +58,8 @@ function OrderDetail() {
   if (error || !order) {
     return <div className="px-6 py-32 text-center text-sm text-red-500">{error || "Order not found"}</div>;
   }
+
+  const shippingAddressLines = formatShippingAddress(order.shippingAddress);
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-32">
@@ -83,10 +104,12 @@ function OrderDetail() {
         </div>
       </div>
 
-      {order.shippingAddress && (
+      {shippingAddressLines.length > 0 && (
         <div className="mt-6 rounded-2xl border border-[#E8E2D9] bg-white p-6">
           <h2 className="mb-3 font-serif text-lg text-[#111111]">Shipping Address</h2>
-          <p className="text-sm leading-6 text-[#666]">{order.shippingAddress}</p>
+          <address className="not-italic text-sm leading-6 text-[#666]">
+            {shippingAddressLines.map((line) => <p key={line}>{line}</p>)}
+          </address>
         </div>
       )}
     </div>

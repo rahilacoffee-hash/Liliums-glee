@@ -11,6 +11,7 @@ import {
   MapPin,
   Palette,
   Ruler,
+  Bookmark,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -18,6 +19,7 @@ import axiosInstance from "../api/axiosInstance";
 import AIChat from "../component/AIChat";
 import Footer from "../component/layout/Footer/Footer";
 import Navbar from "../component/layout/Navbar/Navbar";
+import { useSavedItems } from "../context/SavedItemsContext";
 
 function getProjectStory(project) {
   const category = project.category || "interior design";
@@ -40,6 +42,7 @@ function ProjectDetails() {
   const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const { savedDesigns, toggleSavedDesign } = useSavedItems();
 
   useEffect(() => {
     let active = true;
@@ -81,6 +84,7 @@ function ProjectDetails() {
   if (notFound) return <Navigate to="/gallery" replace />;
 
   const story = project ? getProjectStory(project) : null;
+  const isSaved = project ? savedDesigns.some((item) => item._id === project._id) : false;
   const metadata = project ? [
     { label: "Project type", value: project.category, icon: Palette },
     { label: "Location", value: project.location || "Nigeria", icon: MapPin },
@@ -125,6 +129,7 @@ function ProjectDetails() {
                   <p className="text-[11px] uppercase tracking-[3px] text-[#C8A96A]">{project.category}</p>
                   <h1 className="mt-5 font-serif text-5xl leading-[1.04] md:text-6xl">{project.title}</h1>
                   <p className="mt-7 text-base leading-8 text-white/75">{story.brief}</p>
+                  <button onClick={() => toggleSavedDesign(project)} className="mt-7 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 px-4 py-2.5 text-sm text-white transition hover:border-[#C8A96A] hover:text-[#C8A96A]"><Bookmark size={16} className={isSaved ? "fill-[#C8A96A] text-[#C8A96A]" : ""} />{isSaved ? "Saved design" : "Save design"}</button>
                   <div className="mt-10 grid gap-5 border-t border-white/15 pt-7 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
                     {metadata.map(({ label, value, icon: Icon }) => (
                       <div key={label}>

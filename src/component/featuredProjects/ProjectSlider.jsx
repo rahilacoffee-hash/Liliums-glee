@@ -41,6 +41,10 @@ function ProjectSlider() {
     return null;
   }
 
+  // Loop mode needs enough distinct slides to create its duplicates. With a
+  // smaller featured-project list, Swiper already handles regular navigation.
+  const canLoop = projects.length >= 3;
+
   return (
     <div className="relative">
       {/* Navigation */}
@@ -66,11 +70,11 @@ function ProjectSlider() {
           prevEl: ".project-prev",
           nextEl: ".project-next",
         }}
-        autoplay={{
+        autoplay={canLoop ? {
           delay: 5000,
           disableOnInteraction: false,
-        }}
-        loop={true}
+        } : false}
+        loop={canLoop}
         speed={1200}
         centeredSlides={true}
         spaceBetween={30}

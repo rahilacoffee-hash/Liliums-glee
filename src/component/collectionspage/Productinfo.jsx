@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Minus, Plus, ShoppingBag, Award, Users, Wrench, Truck } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Award, Users, Wrench, Truck, Heart } from "lucide-react";
 import { useCart } from "../../context/CartContext";
+import { useSavedItems } from "../../context/SavedItemsContext";
 import toast from "react-hot-toast";
 
 // Maps each whyShop entry (by position) to an icon, since the data file
@@ -10,7 +11,9 @@ const whyShopIcons = [Award, Users, Wrench, Truck];
 
 function ProductInfo({ product, whyShop }) {
   const { addToCart } = useCart();
+  const { wishlist, toggleWishlist } = useSavedItems();
   const isOutOfStock = Number(product.stock) <= 0;
+  const isWishlisted = wishlist.some((item) => item._id === product._id);
   function handleAddToCart() {
   if (isOutOfStock) return;
   addToCart(product, quantity);
@@ -83,6 +86,9 @@ function ProductInfo({ product, whyShop }) {
   <ShoppingBag size={18} />
   {isOutOfStock ? "Out of Stock" : "Add to Basket"}
 </button>
+      <button onClick={() => toggleWishlist(product)} aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"} className="flex h-12 w-12 items-center justify-center rounded-full border border-[#E8E2D9] text-[#1C1512] transition hover:border-[#C8A96A]">
+        <Heart size={18} className={isWishlisted ? "fill-[#8B2A35] text-[#8B2A35]" : ""} />
+      </button>
       </div>
 
       {/* Trust badges pulled from the site-wide "why shop" data */}
