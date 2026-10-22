@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar } from "lucide-react";
 
@@ -28,6 +28,22 @@ function ConsultationForm() {
 
   let [submitting, setSubmitting] = useState(false);
   let [error, setError] = useState("");
+  let [consultationFee, setConsultationFee] = useState(null);
+
+  useEffect(() => {
+    async function fetchConsultationFee() {
+      try {
+        const { data } = await axiosInstance.get("/settings");
+        if (data.success && Number.isFinite(Number(data.data.consultationFee))) {
+          setConsultationFee(Number(data.data.consultationFee));
+        }
+      } catch (err) {
+        console.error("Failed to load consultation fee:", err);
+      }
+    }
+
+    fetchConsultationFee();
+  }, []);
 
   function handleChange(e) {
     let { name, value } = e.target;
@@ -193,7 +209,11 @@ function ConsultationForm() {
           whileTap="tap"
           className="flex w-full items-center justify-center gap-2 rounded-full bg-[#111111] py-4 text-sm font-semibold uppercase tracking-[1px] text-white transition hover:bg-[#C8A96A] hover:text-black disabled:opacity-60"
         >
-          {submitting ? "Submitting..." : `${form.button} - ₦500,000`}
+          {submitting
+            ? "Submitting..."
+            : consultationFee === null
+              ? form.button
+              : `${form.button} - ₦${consultationFee.toLocaleString("en-NG")}`}
           <ArrowRight size={16} />
         </motion.button>
       </form>

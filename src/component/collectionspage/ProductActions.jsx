@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 
 function ProductActions({ product }) {
   const { addToCart } = useCart();
+  const isOutOfStock = Number(product.stock) <= 0;
 
   function handleAddToCart(e) {
     e.stopPropagation();
+    if (isOutOfStock) return;
 
     addToCart(product, 1);
 
@@ -23,7 +25,8 @@ function ProductActions({ product }) {
         }}
         whileTap={{ scale: 0.95 }}
         onClick={handleAddToCart}
-        title="Add to Cart"
+        disabled={isOutOfStock}
+        title={isOutOfStock ? "Out of stock" : "Add to Cart"}
         className="
           flex
           h-11
@@ -39,6 +42,8 @@ function ProductActions({ product }) {
           duration-300
           hover:bg-[#C8A96A]
           hover:text-white
+          disabled:cursor-not-allowed
+          disabled:opacity-50
         "
       >
         <ShoppingBag size={18} />

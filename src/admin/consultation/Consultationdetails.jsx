@@ -197,6 +197,15 @@ function ConsultationDetails() {
             <p className="mt-1 text-sm text-[#666]">{consultation.phone}</p>
           </div>
 
+          <div className="rounded-2xl border border-[#E8E2D9] bg-white p-6">
+            <h2 className="mb-3 font-serif text-lg text-[#111111]">Consultation Payment</h2>
+            <p className="text-2xl font-semibold text-[#111111]">₦{Number(consultation.consultationFee || 0).toLocaleString("en-NG")}</p>
+            <p className={`mt-2 text-sm font-medium ${consultation.paymentStatus === "Paid" ? "text-green-700" : "text-amber-700"}`}>
+              {consultation.paymentStatus || "Unpaid"}
+            </p>
+            {consultation.paidAt && <p className="mt-1 text-xs text-[#777]">Paid {new Date(consultation.paidAt).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}</p>}
+          </div>
+
           <div className="rounded-2xl border border-red-100 bg-white p-6">
             <h2 className="mb-3 font-serif text-lg text-[#111111]">Danger Zone</h2>
             {confirmDelete ? (

@@ -46,6 +46,7 @@ function ConsultationTable({ consultations, onDeleted }) {
             <th className="px-5 py-4">Project</th>
             <th className="px-5 py-4">Message</th>
             <th className="px-5 py-4">Status</th>
+            <th className="px-5 py-4">Payment</th>
             <th className="px-5 py-4">Submitted</th>
             <th className="px-5 py-4"></th>
           </tr>
@@ -78,6 +79,13 @@ function ConsultationTable({ consultations, onDeleted }) {
                 <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyles[c.status] || statusStyles.Pending}`}>
                   {c.status}
                 </span>
+              </td>
+
+              <td className="px-5 py-4">
+                <p className={`text-xs font-medium ${c.paymentStatus === "Paid" ? "text-green-700" : "text-amber-700"}`}>
+                  {c.paymentStatus || "Unpaid"}
+                </p>
+                <p className="mt-1 whitespace-nowrap text-xs text-[#999]">₦{Number(c.consultationFee || 0).toLocaleString("en-NG")}</p>
               </td>
 
               <td className="whitespace-nowrap px-5 py-4 text-[#666]">

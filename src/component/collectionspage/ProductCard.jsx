@@ -14,6 +14,7 @@ import {
 } from "./collectionsVariants";
 
 function ProductCard({ product }) {
+  const isOutOfStock = Number(product.stock) <= 0;
   return (
     <motion.article
       variants={productCard}
@@ -41,7 +42,11 @@ function ProductCard({ product }) {
           className="absolute inset-0 bg-black/10"
         />
 
-        {product.badge && (
+        {isOutOfStock ? (
+          <span className="absolute left-5 top-5 rounded-full bg-[#8A3B2E] px-4 py-2 text-xs font-semibold uppercase tracking-[2px] text-white">
+            Out of Stock
+          </span>
+        ) : product.badge && (
           <motion.span
             variants={badgeReveal}
             className="absolute left-5 top-5 rounded-full bg-[#111111] px-4 py-2 text-xs font-semibold uppercase tracking-[2px] text-white"
@@ -81,7 +86,9 @@ function ProductCard({ product }) {
             ₦{Number(product.price).toLocaleString()}
           </span>
 
-          <Link
+          {isOutOfStock && <span className="text-xs font-semibold uppercase tracking-[1px] text-[#8A3B2E]">Unavailable</span>}
+
+          {!isOutOfStock && <Link
             to={`/shop/${product.slug}`}
             className="group/link inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[2px] text-[#C8A96A]"
           >
@@ -93,7 +100,7 @@ function ProductCard({ product }) {
                 className="transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1"
               />
             </motion.span>
-          </Link>
+          </Link>}
         </div>
       </div>
     </motion.article>

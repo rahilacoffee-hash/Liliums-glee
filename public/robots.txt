@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://liliums-glee.vercel.app/sitemap.xml

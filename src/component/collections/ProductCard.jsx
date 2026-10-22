@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 function ProductCard({ product, index }) {
   const rating = Math.round(product.rating || 0);
   const reviewCount = product.numReviews || 0;
+  const isOutOfStock = Number(product.stock) <= 0;
 
   return (
     <motion.div
@@ -22,7 +23,11 @@ function ProductCard({ product, index }) {
       >
         {/* Image */}
         <div className="relative aspect-square overflow-hidden">
-          {product.badge && (
+          {isOutOfStock ? (
+            <span className="absolute left-5 top-5 z-10 rounded-full bg-[#111111] px-4 py-1.5 text-xs font-semibold uppercase tracking-[2px] text-white">
+              Out of Stock
+            </span>
+          ) : product.badge && (
             <span className="absolute left-5 top-5 z-10 rounded-full bg-[#C8A96A] px-4 py-1.5 text-xs font-semibold uppercase tracking-[2px] text-black">
               {product.badge}
             </span>
@@ -78,8 +83,8 @@ function ProductCard({ product, index }) {
               ₦{Number(product.price || 0).toLocaleString()}
             </span>
 
-            <span className="text-sm font-medium text-[#C8A96A] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
-              View Details →
+            <span className={`text-sm font-medium ${isOutOfStock ? "text-[#8A3B2E]" : "text-[#C8A96A] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"}`}>
+              {isOutOfStock ? "Unavailable" : "View Details →"}
             </span>
           </div>
         </div>

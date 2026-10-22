@@ -15,6 +15,9 @@ export function CartProvider({ children }) {
 
   // Add Item
   const addToCart = (product, quantity = 1) => {
+    const stock = Number(product.stock) || 0;
+    if (stock <= 0) return;
+
     setCartItems((prev) => {
       const existing = prev.find(
         (item) => item._id === product._id
@@ -25,7 +28,7 @@ export function CartProvider({ children }) {
           item._id === product._id
             ? {
                 ...item,
-                quantity: item.quantity + quantity,
+                quantity: Math.min(stock, item.quantity + quantity),
               }
             : item
         );
@@ -53,10 +56,7 @@ export function CartProvider({ children }) {
     setCartItems((prev) =>
       prev.map((item) =>
         item._id === id
-          ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
+          ? { ...item, quantity: Math.min(Number(item.stock) || item.quantity, item.quantity + 1) }
           : item
       )
     );
