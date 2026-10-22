@@ -16,6 +16,7 @@ import Gallery from "./Pages/Gallery";
 import ProjectDetails from "./Pages/ProjectDetails";
 import ProductDetailsPage from "./component/collectionspage/Productdetailspage";
 import Contact from "./Pages/Contact";
+import Profile from "./Pages/Profile";
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -80,6 +81,7 @@ useEffect(() => {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/shop" element={<Collections />} />
           <Route path="/shop/:slug" element={<ProductDetailsPage />} />
           <Route path="/gallery" element={<Gallery />} />

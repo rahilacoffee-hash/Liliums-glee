@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+.input-profile { @apply w-full rounded-xl border border-[#E8E2D9] bg-white px-4 py-3 text-[#111111] outline-none transition focus:border-[#C8A96A] focus:ring-2 focus:ring-[#C8A96A]/15; }
+
 html,
 body,
 #root {
