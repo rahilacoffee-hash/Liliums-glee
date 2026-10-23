@@ -10,7 +10,7 @@ const productsData = {
 
   button: {
     label: "View All Products",
-    href: "/shop",
+    href: "/marketplace",
   },
 };
 

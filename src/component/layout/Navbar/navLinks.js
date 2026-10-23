@@ -19,13 +19,14 @@ const navLinks = [
     name: "Shop",
     path: "/shop",
   },
+
   {
-    id: 5,
+    id: 6,
     name: "Gallery",
     path: "/gallery",
   },
   {
-    id: 6,
+    id: 7,
     name: "Contact",
     path: "/contact",
   },

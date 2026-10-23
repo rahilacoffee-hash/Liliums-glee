@@ -22,7 +22,7 @@ function Collections() {
       <main className="overflow-hidden">
         <CollectionsHero />
 
-        <FeaturedProducts />
+        <FeaturedProducts featuredOnly />
 
         {/* <FeaturedCollection /> */}
 

@@ -20,6 +20,7 @@ import Profile from "./Pages/Profile";
 import Wishlist from "./Pages/Wishlist";
 import SavedDesigns from "./Pages/SavedDesigns";
 import Legal from "./Pages/Legal";
+import Marketplace from "./Pages/Marketplace";
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -88,6 +89,7 @@ useEffect(() => {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/saved-designs" element={<SavedDesigns />} />
           <Route path="/shop" element={<Collections />} />
+          <Route path="/marketplace" element={<Marketplace />} />
           {/* Keep previously shared URLs working while the public catalogue
               and project pages use the routes above. */}
           <Route path="/collections" element={<Navigate to="/shop" replace />} />

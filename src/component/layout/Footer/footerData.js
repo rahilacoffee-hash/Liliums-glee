@@ -52,6 +52,10 @@ export const navigationLinks = [
     name: "Collections",
     href: "/shop",
   },
+  {
+    name: "Marketplace",
+    href: "/marketplace",
+  },
 
   {
     name: "Contact",

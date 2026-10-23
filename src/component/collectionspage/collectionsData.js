@@ -20,7 +20,7 @@ const collectionsData = {
 
   button: {
     label: "View All Products",
-    href: "/shop",
+    href: "/marketplace",
   },
 
   // ================= Featured Collection =================
