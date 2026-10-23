@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Grid2X2, List } from "lucide-react";
 
 import axiosInstance from "../../api/axiosInstance";
 
@@ -18,6 +18,7 @@ function FeaturedProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [view, setView] = useState("grid");
 
   useEffect(() => {
     fetchProducts();
@@ -68,12 +69,16 @@ function FeaturedProducts() {
         </div>
 
         {/* Filter */}
-        <div className="mt-16">
+        <div className="mt-12 flex flex-col items-center justify-between gap-5 lg:flex-row">
           <ProductFilter
             categories={productCategories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           />
+          <div className="flex items-center rounded-xl border border-[#E7E1D7] bg-white p-1" aria-label="Product view">
+            <button type="button" onClick={() => setView("grid")} aria-label="Grid view" aria-pressed={view === "grid"} className={`flex h-10 w-10 items-center justify-center rounded-lg transition ${view === "grid" ? "bg-[#111111] text-[#C8A96A]" : "text-[#666] hover:text-[#111]"}`}><Grid2X2 size={18} /></button>
+            <button type="button" onClick={() => setView("list")} aria-label="List view" aria-pressed={view === "list"} className={`flex h-10 w-10 items-center justify-center rounded-lg transition ${view === "list" ? "bg-[#111111] text-[#C8A96A]" : "text-[#666] hover:text-[#111]"}`}><List size={19} /></button>
+          </div>
         </div>
 
         {/* Products */}
@@ -87,13 +92,14 @@ function FeaturedProducts() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+            className={`mt-12 gap-8 ${view === "grid" ? "grid sm:grid-cols-2 lg:grid-cols-3" : "flex flex-col"}`}
           >
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <ProductCard
                   key={product._id}
                   product={product}
+                  view={view}
                 />
               ))
             ) : (
@@ -105,15 +111,7 @@ function FeaturedProducts() {
         )}
 
         {/* CTA */}
-        <div className="mt-16 text-center">
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-2 rounded-full bg-[#C8A96A] px-8 py-4 font-semibold text-black transition hover:scale-105"
-          >
-            View All Products
-            <ArrowRight size={18} />
-          </Link>
-        </div>
+       
       </div>
     </section>
   );

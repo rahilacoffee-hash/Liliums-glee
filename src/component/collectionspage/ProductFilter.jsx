@@ -8,7 +8,7 @@ function ProductFilter({
   setActiveCategory,
 }) {
   return (
-    <div className="mb-16 flex flex-wrap items-center justify-center gap-4">
+    <div className="flex flex-wrap items-center justify-center gap-3">
       {categories.map((category) => {
         const isActive = activeCategory === category;
 

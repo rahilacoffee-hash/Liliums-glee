@@ -13,8 +13,36 @@ import {
   arrowVariants,
 } from "./collectionsVariants";
 
-function ProductCard({ product }) {
+function ProductCard({ product, view = "grid" }) {
   const isOutOfStock = Number(product.stock) <= 0;
+
+  if (view === "list") {
+    return (
+      <motion.article
+        variants={productCard}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="group flex flex-col overflow-hidden rounded-[28px] border border-[#E8E2D8] bg-white sm:flex-row"
+      >
+        <Link to={`/shop/${product.slug}`} className="block shrink-0 bg-[#F8F5F0] sm:w-64 lg:w-72">
+          <img src={product.images?.[0]?.url || "https://placehold.co/600x600?text=No+Image"} alt={product.name} className="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.03] sm:h-full" />
+        </Link>
+        <div className="flex flex-1 flex-col p-6 sm:p-7">
+          <p className="text-xs font-semibold uppercase tracking-[3px] text-[#C8A96A]">{product.category}</p>
+          <Link to={`/shop/${product.slug}`} className="mt-2 font-serif text-2xl text-[#111111] transition hover:text-[#C8A96A]">{product.name}</Link>
+          <p className="mt-3 line-clamp-2 max-w-2xl text-sm leading-7 text-[#666666]">{product.description}</p>
+          {product.colors?.length > 0 && <div className="mt-4 flex items-center gap-2">{product.colors.slice(0, 5).map((color) => <span key={color._id || color.name} title={color.name} className="h-4 w-4 rounded-full border border-black/10" style={{ backgroundColor: color.hex || "#C8A96A" }} />)}</div>}
+          {product.sizes?.length > 0 && <p className="mt-3 text-xs text-[#777]">Sizes: {product.sizes.join(" · ")}</p>}
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#E8E2D8] pt-5">
+            <span className="text-2xl font-semibold text-[#111111]">₦{Number(product.price).toLocaleString()}</span>
+            {isOutOfStock ? <span className="text-xs font-semibold uppercase tracking-[1px] text-[#8A3B2E]">Out of stock</span> : <Link to={`/shop/${product.slug}`} className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[2px] text-[#C8A96A]">View details <ArrowUpRight size={18} /></Link>}
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
+
   return (
     <motion.article
       variants={productCard}
