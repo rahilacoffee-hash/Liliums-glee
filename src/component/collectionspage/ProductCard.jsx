@@ -29,8 +29,8 @@ function ProductCard({ product }) {
         <motion.img
           variants={imageHover}
           src={
-            (product.colors?.[0]?.image?.url || product.images?.[0]?.url)
-              ? (product.colors?.[0]?.image?.url || product.images?.[0]?.url)
+            product.images?.[0]?.url
+              ? product.images[0].url
               : "https://placehold.co/600x600?text=No+Image"
           }
           alt={product.name}

@@ -91,13 +91,8 @@ function AddProduct() {
     setPreviewImages(updatedPreview);
   }
 
-  function addColor() { setColors((prev) => [...prev, { name: "", hex: "#C8A96A", file: null, preview: "" }]); }
+  function addColor() { setColors((prev) => [...prev, { name: "", hex: "#C8A96A" }]); }
   function updateColor(index, field, value) { setColors((prev) => prev.map((color, i) => i === index ? { ...color, [field]: value } : color)); }
-  function selectColorImage(index, file) {
-    if (!file) return;
-    const preview = URL.createObjectURL(file);
-    setColors((prev) => prev.map((color, i) => i === index ? { ...color, file, preview } : color));
-  }
 
   // ===============================
   // Validation
@@ -162,17 +157,11 @@ function AddProduct() {
       payload.append("status", formData.status);
       payload.append("isFeatured", formData.isFeatured);
       payload.append("sizes", JSON.stringify(sizesText.split(",").map((size) => size.trim()).filter(Boolean)));
-      let colorUploadIndex = 0;
-      payload.append("colors", JSON.stringify(colors.map((color) => ({
-        name: color.name,
-        hex: color.hex,
-        uploadIndex: color.file ? colorUploadIndex++ : undefined,
-      }))));
+      payload.append("colors", JSON.stringify(colors.map(({ name, hex }) => ({ name, hex }))));
 
       images.forEach((image) => {
         payload.append("images", image);
       });
-      colors.forEach((color) => { if (color.file) payload.append("colorImages", color.file); });
 
       const { data } = await axiosInstance.post(
         "/products",
@@ -351,9 +340,9 @@ function AddProduct() {
           </div>
 
           <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-2 text-xl font-semibold">Sizes &amp; Colours</h2><p className="mb-5 text-sm text-gray-500">A colour image is optional; the product gallery is used when none is uploaded.</p>
+            <h2 className="mb-2 text-xl font-semibold">Sizes &amp; Colours</h2><p className="mb-5 text-sm text-gray-500">Colours are swatches only. Add product and in-use images in the gallery below.</p>
             <label className="mb-5 block"><span className="mb-2 block font-medium">Sizes (comma separated)</span><input value={sizesText} onChange={(e) => setSizesText(e.target.value)} placeholder="S, M, L or 120 × 180 cm" className="w-full rounded-xl border border-gray-300 px-4 py-3" /></label>
-            <div className="space-y-3">{colors.map((color, index) => <div key={index} className="grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_100px_1fr_auto]"><input value={color.name} onChange={(e) => updateColor(index, "name", e.target.value)} placeholder="Colour name" className="rounded-lg border px-3 py-2" /><input type="color" value={color.hex} onChange={(e) => updateColor(index, "hex", e.target.value)} className="h-10 w-full rounded-lg border" /><label className="cursor-pointer rounded-lg border border-dashed px-3 py-2 text-sm">{color.preview ? "Replace optional image" : "Upload optional image"}<input type="file" accept="image/*" className="hidden" onChange={(e) => selectColorImage(index, e.target.files?.[0])} /></label><button type="button" onClick={() => setColors((prev) => prev.filter((_, i) => i !== index))} className="text-sm text-red-600">Remove</button></div>)}</div>
+            <div className="space-y-3">{colors.map((color, index) => <div key={index} className="grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_100px_auto]"><input value={color.name} onChange={(e) => updateColor(index, "name", e.target.value)} placeholder="Colour name" className="rounded-lg border px-3 py-2" /><input type="color" value={color.hex} onChange={(e) => updateColor(index, "hex", e.target.value)} className="h-10 w-full rounded-lg border" /><button type="button" onClick={() => setColors((prev) => prev.filter((_, i) => i !== index))} className="text-sm text-red-600">Remove</button></div>)}</div>
             <button type="button" onClick={addColor} className="mt-4 rounded-lg border px-4 py-2 text-sm font-medium">+ Add colour</button>
           </div>
 
@@ -488,7 +477,7 @@ function AddProduct() {
           <div className="rounded-2xl bg-white p-6 shadow-sm">
 
             <h2 className="mb-6 text-xl font-semibold">
-              Product Images
+              Product gallery
             </h2>
 
             <label
@@ -501,7 +490,7 @@ function AddProduct() {
               />
 
               <p className="text-lg font-semibold text-gray-700">
-                Upload Product Images
+                Upload product & in-use images
               </p>
 
               <p className="mt-2 text-sm text-gray-500">
@@ -509,7 +498,7 @@ function AddProduct() {
               </p>
 
               <p className="mt-1 text-xs text-gray-400">
-                JPG, PNG, WEBP • Max 10 Images
+                First image is shown on product cards; the rest appear only on the details page.
               </p>
 
               <input
