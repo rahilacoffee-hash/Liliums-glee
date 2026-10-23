@@ -1,68 +1,9 @@
-
 import { motion } from "framer-motion";
-import HeroButtons from "./HeroButtons";
-import { staggerContainer, fadeUp, fadeLeft } from "./heroVariants";
+import { Mouse } from "lucide-react";
+import { FaInstagram, FaLinkedinIn, FaPinterestP, FaXTwitter } from "react-icons/fa6";
+import FeaturedCard from "./FeaturedCard";
 
-function HeroContent({ hero }) {
-  return (
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
-      className="relative z-10 w-full max-w-5xl"
-    >
-      <motion.span
-        variants={fadeUp}
-        className="inline-flex items-center gap-3 text-xs font-medium uppercase tracking-[0.35em] text-[#E1BD8B] sm:text-sm"
-      >
-        <span className="h-px w-10 bg-[#C8A477]" />
-        {hero.eyebrow || "INTERIOR DESIGN"}
-      </motion.span>
-
-      <motion.h1
-        variants={fadeLeft}
-        className="mt-8 max-w-5xl font-serif text-5xl font-normal leading-[0.95] tracking-[-0.045em] text-[#F8EBDD] sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem]"
-      >
-        {hero.title || (
-          <>
-            LILIUMS
-            <span className="mt-2 block pl-8 font-serif italic font-normal tracking-[-0.04em] text-[#E1BD8B] sm:pl-20">
-              Gleee
-            </span>
-          </>
-        )}
-      </motion.h1>
-
-      <motion.p
-        variants={fadeUp}
-        className="mt-8 max-w-xl text-sm leading-7 text-[#F5E9D8]/80 sm:text-base sm:leading-8 md:text-lg"
-      >
-        {hero.description ||
-          "Thoughtfully designed interiors. Timeless materials. A new standard of modern luxury."}
-      </motion.p>
-
-      <motion.div variants={fadeUp} className="mt-9">
-        <HeroButtons
-          primaryButton={hero.primaryButton}
-          secondaryButton={hero.secondaryButton}
-        />
-      </motion.div>
-
-      <motion.div
-        variants={fadeUp}
-        className="mt-12 flex flex-wrap gap-x-7 gap-y-3 text-[10px] uppercase tracking-[0.18em] text-[#F5E9D8]/75 sm:text-xs"
-      >
-        {["Bespoke Interiors", "Timeless Materials", "Modern Luxury"].map(
-          (item) => (
-            <span key={item} className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#C8A477]" />
-              {item}
-            </span>
-          )
-        )}
-      </motion.div>
-    </motion.div>
-  );
+function HeroContent({ slide, reduceMotion, offset }) {
+  return <div className="relative z-10 flex h-full min-h-screen flex-col px-6 pb-24 pt-32 sm:px-10 sm:pt-36 lg:px-10 xl:px-12"><div><p className="font-display text-lg tracking-[0.25em] text-[#F7EBDD] sm:text-[28px]">LILIUMS GLEEE</p><p className="mt-1 text-[8px] font-medium tracking-[0.36em] text-[#F7EBDD]/85">INTERIOR DESIGN</p></div><div className="relative mt-[12vh] lg:mt-[9vh]"><h1 aria-label="Liliums Gleee" className="mb-4 font-display text-[18vw] leading-[.7] tracking-[-0.07em] text-[#F7EBDD] sm:text-[19vw] lg:mb-6 lg:text-[clamp(9rem,17.5vw,20rem)]">{"LILIUMS".split("").map((letter, index) => <span key={`${slide.id}-${index}`} className="inline-block overflow-hidden"><motion.span initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : index * 0.055, ease: [0.22, 1, 0.36, 1] }} className="inline-block">{letter}</motion.span></span>)}</h1><motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0, x: offset.x * -0.7, rotate: -4 }} transition={{ delay: reduceMotion ? 0 : 0.48, duration: 0.7 }} className="relative ml-[52%] mt-3 w-fit font-script text-[20vw] leading-none text-[#F7EBDD] drop-shadow-[0_5px_12px_rgba(0,0,0,.35)] sm:mt-0 sm:text-[16vw] lg:-mt-[2vw] lg:text-[clamp(7rem,13vw,15rem)]">Gleee</motion.p></div><div className="absolute left-10 top-[51%] hidden items-center gap-4 lg:flex"><span className="h-px w-16 bg-[#F7EBDD]/75" /><p className="text-[10px] leading-5 tracking-[0.25em] text-[#F7EBDD]">LUXURY INTERIORS<br />FOR MODERN LIVING</p></div><div className="mt-auto flex items-end justify-between gap-8"><div className="hidden w-60 lg:block"><div className="mb-7 flex gap-5 text-[#F7EBDD]"><a href="https://instagram.com" aria-label="Instagram" className="transition hover:text-[#C9A27A]"><FaInstagram /></a><a href="https://pinterest.com" aria-label="Pinterest" className="transition hover:text-[#C9A27A]"><FaPinterestP /></a><a href="https://linkedin.com" aria-label="LinkedIn" className="transition hover:text-[#C9A27A]"><FaLinkedinIn /></a><a href="https://x.com" aria-label="X" className="transition hover:text-[#C9A27A]"><FaXTwitter /></a></div><div className="flex gap-5"><span className="w-px bg-[#F7EBDD]/75" /><p className="text-[9px] leading-5 tracking-[0.2em] text-[#F7EBDD]">WE DESIGN SPACES THAT<br />INSPIRE, COMFORT AND ELEVATE.</p></div></div><FeaturedCard slide={slide} reduceMotion={reduceMotion} /><div className="hidden flex-col items-center gap-2 text-[#F7EBDD] lg:flex"><motion.span animate={reduceMotion ? {} : { y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }} className="flex h-8 w-5 justify-center rounded-full border border-[#F7EBDD]/80 pt-1"><Mouse size={12} /></motion.span><span className="text-[9px] tracking-[0.27em]">SCROLL DOWN</span></div></div></div>;
 }
-
 export default HeroContent;

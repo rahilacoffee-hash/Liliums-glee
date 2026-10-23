@@ -264,6 +264,12 @@ function SiteContentEditor() {
             <TextField label="Title" value={hero.featuredCollection?.title || ""} onChange={(v) => updateHeroNested("featuredCollection", "title", v)} />
           </div>
 
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            <TextField label="Location" value={hero.featuredCollection?.location || ""} onChange={(v) => updateHeroNested("featuredCollection", "location", v)} />
+            <TextField label="Area" value={hero.featuredCollection?.area || ""} onChange={(v) => updateHeroNested("featuredCollection", "area", v)} />
+            <TextField label="Year" value={hero.featuredCollection?.year || ""} onChange={(v) => updateHeroNested("featuredCollection", "year", v)} />
+          </div>
+
           <div className="mt-6">
             <TextAreaField label="Description" value={hero.featuredCollection?.description || ""} onChange={(v) => updateHeroNested("featuredCollection", "description", v)} />
           </div>

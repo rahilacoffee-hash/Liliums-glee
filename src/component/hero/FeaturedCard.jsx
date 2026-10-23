@@ -1,0 +1,7 @@
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
+export default function FeaturedCard({ slide, reduceMotion }) {
+  return <motion.aside initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduceMotion ? 0 : 0.75, duration: 0.65 }} className="w-full max-w-[375px] rounded-2xl border border-white/30 bg-white/10 p-5 shadow-2xl backdrop-blur-xl sm:p-6"><p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#F7EBDD]/70">{slide.cardLabel || "Featured project"}</p><h2 className="mt-2 font-display text-2xl text-[#F7EBDD]">{slide.title}</h2>{slide.description && <p className="mt-2 text-xs leading-5 text-[#F7EBDD]/75">{slide.description}</p>}<dl className="mt-5 grid grid-cols-[82px_1fr] gap-y-2 text-[11px] leading-5"><dt className="uppercase tracking-[0.14em] text-[#F7EBDD]/65">Location</dt><dd>{slide.location}</dd><dt className="uppercase tracking-[0.14em] text-[#F7EBDD]/65">Area</dt><dd>{slide.area}</dd><dt className="uppercase tracking-[0.14em] text-[#F7EBDD]/65">Year</dt><dd>{slide.year}</dd></dl><div className="mt-4 flex justify-end"><Link aria-label={`View ${slide.title}`} to={slide.href} className="group flex h-10 w-10 items-center justify-center rounded-full border border-[#F7EBDD]/80 transition focus:outline-none focus:ring-2 focus:ring-[#F7EBDD] hover:bg-[#F7EBDD] hover:text-[#22170F]"><ArrowRight size={17} className="transition-transform group-hover:translate-x-0.5" /></Link></div></motion.aside>;
+}
