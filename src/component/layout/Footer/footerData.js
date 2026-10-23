@@ -40,7 +40,7 @@ export const navigationLinks = [
 
   {
     name: "Projects",
-    href: "/projects",
+    href: "/gallery",
   },
 
   {
@@ -50,7 +50,7 @@ export const navigationLinks = [
 
   {
     name: "Collections",
-    href: "/collections",
+    href: "/shop",
   },
 
   {
@@ -62,27 +62,27 @@ export const navigationLinks = [
 export const serviceLinks = [
   {
     name: "Interior Design",
-    href: "/services/interior-design",
+    href: "/services",
   },
 
   {
     name: "Wall Treatments",
-    href: "/services/wall-treatments",
+    href: "/services",
   },
 
   {
     name: "Space Planning",
-    href: "/services/space-planning",
+    href: "/services",
   },
 
   {
     name: "Construction",
-    href: "/services/construction",
+    href: "/services",
   },
 
   {
     name: "Renovation",
-    href: "/services/renovation",
+    href: "/services",
   },
 ];
 

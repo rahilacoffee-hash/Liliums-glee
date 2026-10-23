@@ -50,8 +50,8 @@ const contactData = {
       title: "Email",
 
       value: [
-        "hello@luxinteriors.com",
-        "info@luxinteriors.com",
+        "",
+        "",
       ],
     },
 
@@ -67,7 +67,7 @@ const contactData = {
 
     socials: [
       {
-        name: "Facebook",
+        name: "tiktok",
         href: "https://facebook.com",
       },
 
@@ -76,15 +76,7 @@ const contactData = {
         href: "https://instagram.com",
       },
 
-      {
-        name: "Pinterest",
-        href: "https://pinterest.com",
-      },
-
-      {
-        name: "LinkedIn",
-        href: "https://linkedin.com",
-      },
+      
     ],
   },
 

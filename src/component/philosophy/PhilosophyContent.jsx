@@ -35,15 +35,13 @@ function PhilosophyContent({ about }) {
         {about?.description}
       </p>
 
-      <Link to={about?.button?.href || "/about"}>
-        <button className="group mt-10 flex items-center gap-3 text-[#1B1B1B]">
+      <Link to={about?.button?.href || "/about"} className="group mt-10 inline-flex items-center gap-3 text-[#1B1B1B]">
           {about?.button?.label || "Discover Our Story"}
 
           <ArrowRight
             size={18}
             className="transition-transform duration-300 group-hover:translate-x-2"
           />
-        </button>
       </Link>
     </motion.div>
   );

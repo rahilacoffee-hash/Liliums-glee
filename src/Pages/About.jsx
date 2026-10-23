@@ -5,7 +5,7 @@ import Footer from "../component/layout/Footer/Footer";
 import AboutHero from "../component/about/AboutHero";
 import Story from "../component/about/Story";
 import MissionVision from "../component/about/MissionVision";
-import { Timeline } from "lucide-react";
+import Timeline from "../component/about/Timeline";
 import Process from "../component/about/Process";
 import AboutCTA from "../component/about/AboutCTA";
 import AIChat from "../component/AIChat";

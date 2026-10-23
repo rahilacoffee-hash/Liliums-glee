@@ -10,6 +10,12 @@ import {
 import { Link } from "react-router-dom";
 
 function HeroContent({ hero, reduceMotion }) {
+  const primaryHref = hero.primaryButton?.href && hero.primaryButton.href !== "#"
+    ? hero.primaryButton.href
+    : "/gallery";
+  const secondaryHref = hero.secondaryButton?.href && hero.secondaryButton.href !== "#"
+    ? hero.secondaryButton.href
+    : "/contact";
   const fade = {
     initial: { opacity: 0, y: 14 },
     animate: { opacity: 1, y: 0 },
@@ -66,7 +72,7 @@ function HeroContent({ hero, reduceMotion }) {
 
         <div className="mt-6 flex flex-wrap items-center gap-3 sm:gap-4">
           <Link
-            to={hero.primaryButton?.href || "/gallery"}
+            to={primaryHref}
             className="group inline-flex min-h-11 items-center gap-3 bg-[#e6bc83] px-4 py-3 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#21160f] transition-colors hover:bg-[#fff0d9] sm:px-5 sm:text-[10px]"
           >
             {hero.primaryButton?.label || hero.primaryButton?.text || "Explore Our Work"}
@@ -77,7 +83,7 @@ function HeroContent({ hero, reduceMotion }) {
           </Link>
 
           <Link
-            to={hero.secondaryButton?.href || "/contact"}
+            to={secondaryHref}
             className="group inline-flex min-h-11 items-center gap-3 border border-white/50 px-4 py-3 text-[9px] font-medium uppercase tracking-[0.12em] text-white transition-colors hover:border-[#e6bc83] hover:text-[#e6bc83] sm:px-5 sm:text-[10px]"
           >
             {hero.secondaryButton?.label || hero.secondaryButton?.text || "Start a Project"}

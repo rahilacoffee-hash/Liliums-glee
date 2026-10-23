@@ -126,11 +126,9 @@ export default function DesignProcess() {
                 an unwavering attention to how a space actually feels to live
                 in — not just how it photographs.
               </p>
-                  <Link to="contact">
-              <button className="mx-auto mt-10 rounded-full bg-[#C8A96A] px-8 py-4 font-medium text-[#111] transition hover:-translate-y-1 hover:shadow-xl">
+                  <Link to="/contact" className="mx-auto mt-10 inline-flex rounded-full bg-[#C8A96A] px-8 py-4 font-medium text-[#111] transition hover:-translate-y-1 hover:shadow-xl">
                 Book a Consultation
-              </button>
-              </Link>
+                  </Link>
             </div>
           </div>
         </motion.div>

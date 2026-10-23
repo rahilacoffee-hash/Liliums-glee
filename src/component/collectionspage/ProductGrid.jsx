@@ -152,7 +152,7 @@ function ProductGrid() {
           className="mt-20 text-center"
         >
           <Link
-            to="/collections"
+            to="/shop"
             className="
               inline-flex
               items-center

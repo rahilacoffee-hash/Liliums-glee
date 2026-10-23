@@ -21,7 +21,7 @@ const ctaData = {
 
   secondaryButton: {
     text: "View Our Projects",
-    href: "/projects",
+    href: "/gallery",
   },
 };
 
