@@ -98,15 +98,7 @@ function HeroContent({ hero, reduceMotion }) {
       </div>
 
       {/* Scroll indicator */}
-      <motion.a
-        href="#projects"
-        animate={reduceMotion ? {} : { y: [0, 5, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-[6%] right-6 flex items-center gap-3 text-[9px] uppercase tracking-[0.2em] text-white/75 sm:right-10 lg:right-16"
-      >
-        <span>{hero.scrollLabel || "Discover our world"}</span>
-        <ArrowDownRight size={17} className="text-[#e6bc83]" />
-      </motion.a>
+     
     </div>
   );
 }
