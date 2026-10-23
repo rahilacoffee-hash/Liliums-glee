@@ -22,6 +22,10 @@ const GROQ_API_KEY =
   import.meta.env
     .VITE_GROQ_API_KEY;
 
+// Groq retired llama-3.1-8b-instant for free/developer projects. Keep the
+// model configurable so it can be changed without another client release.
+const GROQ_MODEL = import.meta.env.VITE_GROQ_MODEL || "openai/gpt-oss-20b";
+
 const SYSTEM_PROMPT = `
 You are Lilium AI, the official luxury interior design assistant for Lilium's Glee.
 
@@ -158,8 +162,7 @@ export default function AIChat() {
           },
 
           body: JSON.stringify({
-            model:
-              "llama-3.1-8b-instant",
+            model: GROQ_MODEL,
 
             messages: [
               {
