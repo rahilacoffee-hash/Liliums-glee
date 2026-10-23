@@ -62,20 +62,20 @@ function EditProduct() {
       let product;
 
       try {
-        // Current API: protected lookup used by the admin edit route.
+        // Use the dedicated admin endpoint when it is available.
         const { data } = await axiosInstance.get(`/products/id/${id}`);
         product = data.data;
-      } catch (lookupError) {
-        // Compatibility fallback for an already-deployed API that has not
-        // received the new `/products/id/:id` route yet.
-        if (lookupError.response?.status !== 404) throw lookupError;
-
+      } catch {
+        // This keeps editing functional if an older deployment does not yet
+        // expose the admin lookup route, or browser auth cookies are blocked.
         const { data } = await axiosInstance.get("/products", {
           params: { limit: 1000 },
         });
         product = data.data?.products?.find((item) => item._id === id);
+      }
 
-        if (!product) throw lookupError;
+      if (!product) {
+        throw new Error("Product not found");
       }
 
       setFormData({
@@ -95,7 +95,7 @@ function EditProduct() {
       setSizesText((product.sizes || []).join(", "));
       setColors((product.colors || []).map(({ name, hex, _id }) => ({ name, hex, _id })));
     } catch (error) {
-      toast.error("Unable to load product.");
+      toast.error(error.response?.data?.message || "Unable to load product.");
       navigate("/admin/products");
     } finally {
       setLoading(false);
