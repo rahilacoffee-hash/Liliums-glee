@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ZoomIn } from "lucide-react";
 
-function ProductGallery({ product }) {
+function ProductGallery({ product, selectedColor }) {
   // The card uses the first image only. This gallery is reserved for the
   // full product and in-use images on the details page.
-  let imageSource = Array.isArray(product.images) && product.images.length > 0
+  let imageSource = selectedColor?.image?.url
+    ? [selectedColor.image, ...(product.images || []).filter((image) => image?.url !== selectedColor.image.url)]
+    : Array.isArray(product.images) && product.images.length > 0
     ? product.images
     : product.image
       ? [product.image]
@@ -20,7 +22,7 @@ function ProductGallery({ product }) {
 
   let [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => { setActiveIndex(0); }, [product._id]);
+  useEffect(() => { setActiveIndex(0); }, [product._id, selectedColor?.image?.url]);
 
   // A detail route can change without unmounting this component. Clamp the
   // persisted selection so a shorter gallery still renders its first image.

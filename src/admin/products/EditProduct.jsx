@@ -93,7 +93,7 @@ function EditProduct() {
 
       setExistingImages(product.images || []);
       setSizesText((product.sizes || []).join(", "));
-      setColors((product.colors || []).map(({ name, hex, _id }) => ({ name, hex, _id })));
+      setColors((product.colors || []).map((color) => ({ ...color, file: null })));
     } catch (error) {
       toast.error(error.response?.data?.message || "Unable to load product.");
       navigate("/admin/products");
@@ -166,6 +166,7 @@ function EditProduct() {
     setExistingImages(updated);
   }
   function updateColor(index, field, value) { setColors((prev) => prev.map((color, i) => i === index ? { ...color, [field]: value } : color)); }
+  function selectColorImage(index, file) { if (file) setColors((prev) => prev.map((color, i) => i === index ? { ...color, file, image: null } : color)); }
 
   // ====================================
   // Validation
@@ -234,7 +235,9 @@ function EditProduct() {
         JSON.stringify(existingImages)
       );
       payload.append("sizes", JSON.stringify(sizesText.split(",").map((size) => size.trim()).filter(Boolean)));
-      payload.append("colors", JSON.stringify(colors.map(({ name, hex }) => ({ name, hex }))));
+      let uploadIndex = 0;
+      payload.append("colors", JSON.stringify(colors.map((color) => ({ name: color.name, hex: color.hex, image: color.file ? null : color.image, uploadIndex: color.file ? uploadIndex++ : undefined }))));
+      colors.forEach((color) => { if (color.file) payload.append("colorImages", color.file); });
 
       const { data } = await axiosInstance.put(
         `/products/${id}`,
@@ -357,9 +360,9 @@ function EditProduct() {
           </div>
 
           <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-2 text-xl font-semibold">Sizes &amp; Colours</h2><p className="mb-5 text-sm text-gray-500">Colours are swatches only. Use the gallery for product and in-use images.</p>
+            <h2 className="mb-2 text-xl font-semibold">Sizes &amp; Colours</h2><p className="mb-5 text-sm text-gray-500">A colour image is optional and appears only on the details page when selected.</p>
             <label className="mb-5 block"><span className="mb-2 block font-medium">Sizes (comma separated)</span><input value={sizesText} onChange={(e) => setSizesText(e.target.value)} className="w-full rounded-xl border px-4 py-3" /></label>
-            <div className="space-y-3">{colors.map((color, index) => <div key={color._id || index} className="grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_100px_auto]"><input value={color.name} onChange={(e) => updateColor(index, "name", e.target.value)} placeholder="Colour name" className="rounded-lg border px-3 py-2" /><input type="color" value={color.hex || "#C8A96A"} onChange={(e) => updateColor(index, "hex", e.target.value)} className="h-10 w-full rounded-lg border" /><button type="button" onClick={() => setColors((prev) => prev.filter((_, i) => i !== index))} className="text-sm text-red-600">Remove</button></div>)}</div>
+            <div className="space-y-3">{colors.map((color, index) => <div key={color._id || index} className="grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_100px_1fr_auto]"><input value={color.name} onChange={(e) => updateColor(index, "name", e.target.value)} placeholder="Colour name" className="rounded-lg border px-3 py-2" /><input type="color" value={color.hex || "#C8A96A"} onChange={(e) => updateColor(index, "hex", e.target.value)} className="h-10 w-full rounded-lg border" /><label className="cursor-pointer rounded-lg border border-dashed px-3 py-2 text-sm">Upload optional image<input type="file" accept="image/*" className="hidden" onChange={(e) => selectColorImage(index, e.target.files?.[0])} /></label><button type="button" onClick={() => setColors((prev) => prev.filter((_, i) => i !== index))} className="text-sm text-red-600">Remove</button></div>)}</div>
             <button type="button" onClick={() => setColors((prev) => [...prev, { name: "", hex: "#C8A96A", image: null, file: null }])} className="mt-4 rounded-lg border px-4 py-2 text-sm font-medium">+ Add colour</button>
           </div>
 

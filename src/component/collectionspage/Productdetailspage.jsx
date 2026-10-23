@@ -104,7 +104,7 @@ function ProductDetailsPage() {
       <section className="container-custom mx-auto px-6 pb-20 pt-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <ProductGallery product={product} />
+            <ProductGallery product={product} selectedColor={selectedColor} />
           </div>
 
           <ProductInfo product={product} whyShop={whyShop} selectedColor={selectedColor} onColorChange={setSelectedColor} />
