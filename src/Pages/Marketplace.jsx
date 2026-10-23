@@ -7,7 +7,7 @@ function Marketplace() {
   return (
     <>
       <Navbar />
-      <main className="pt-16 sm:pt-20">
+      <main className="pt-16 sm:pt-20 bg-[#F7F4EF]">
         <FeaturedProducts featuredOnly={false} />
       </main>
       <Footer />
