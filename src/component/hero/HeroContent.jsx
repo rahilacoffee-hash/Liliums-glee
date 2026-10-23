@@ -69,7 +69,7 @@ function HeroContent({ hero, reduceMotion }) {
             to={hero.primaryButton?.href || "/gallery"}
             className="group inline-flex min-h-11 items-center gap-3 bg-[#e6bc83] px-4 py-3 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#21160f] transition-colors hover:bg-[#fff0d9] sm:px-5 sm:text-[10px]"
           >
-            {hero.primaryButton?.text || "Explore Our Work"}
+            {hero.primaryButton?.label || hero.primaryButton?.text || "Explore Our Work"}
             <ArrowUpRight
               size={15}
               className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -80,7 +80,7 @@ function HeroContent({ hero, reduceMotion }) {
             to={hero.secondaryButton?.href || "/contact"}
             className="group inline-flex min-h-11 items-center gap-3 border border-white/50 px-4 py-3 text-[9px] font-medium uppercase tracking-[0.12em] text-white transition-colors hover:border-[#e6bc83] hover:text-[#e6bc83] sm:px-5 sm:text-[10px]"
           >
-            {hero.secondaryButton?.text || "Start a Project"}
+            {hero.secondaryButton?.label || hero.secondaryButton?.text || "Start a Project"}
             <ArrowUpRight size={15} />
           </Link>
         </div>

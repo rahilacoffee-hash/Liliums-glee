@@ -9,6 +9,9 @@ export const defaultHero = {
   sideCopy: "LUXURY INTERIORS\nFOR MODERN LIVING",
   bottomCopy: "WE DESIGN SPACES THAT\nINSPIRE, COMFORT AND ELEVATE.",
   scrollLabel: "SCROLL DOWN",
+  description: "Thoughtfully designed interiors. Timeless materials. A new standard of modern luxury.",
+  primaryButton: { label: "Explore Our Work", href: "/gallery" },
+  secondaryButton: { label: "Start a Project", href: "/contact" },
   featuredCollection: {
     eyebrow: "FEATURED PROJECT",
     title: "The Horizon Residence",

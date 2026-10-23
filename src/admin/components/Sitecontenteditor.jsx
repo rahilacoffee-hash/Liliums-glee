@@ -238,6 +238,32 @@ function SiteContentEditor() {
           <div className="mt-6 max-w-md">
             <TextField label="Scroll Prompt" value={hero.scrollLabel || ""} onChange={(v) => updateHeroField("scrollLabel", v)} />
           </div>
+
+          <div className="mt-6">
+            <h3 className="mb-4 text-base font-semibold text-[#111111]">Hero Buttons</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              <TextField
+                label="Primary Button Label"
+                value={hero.primaryButton?.label || ""}
+                onChange={(v) => updateHeroNested("primaryButton", "label", v)}
+              />
+              <TextField
+                label="Primary Button Link"
+                value={hero.primaryButton?.href || ""}
+                onChange={(v) => updateHeroNested("primaryButton", "href", v)}
+              />
+              <TextField
+                label="Secondary Button Label"
+                value={hero.secondaryButton?.label || ""}
+                onChange={(v) => updateHeroNested("secondaryButton", "label", v)}
+              />
+              <TextField
+                label="Secondary Button Link"
+                value={hero.secondaryButton?.href || ""}
+                onChange={(v) => updateHeroNested("secondaryButton", "href", v)}
+              />
+            </div>
+          </div>
         </section>
 
         {/* ============ FEATURED COLLECTION CARD ============ */}
