@@ -42,6 +42,7 @@ function ProductDetailsPage() {
   let [relatedProducts, setRelatedProducts] = useState([]);
   let [loading, setLoading] = useState(true);
   let [notFound, setNotFound] = useState(false);
+  let [selectedColor, setSelectedColor] = useState(null);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -52,6 +53,7 @@ function ProductDetailsPage() {
         let { data } = await axiosInstance.get(`/products/${slug}`);
         let fetchedProduct = data.data;
         setProduct(fetchedProduct);
+        setSelectedColor(fetchedProduct.colors?.[0] || null);
 
         // Fetch reviews and related products in parallel once we have the product
         let [reviewsRes, relatedRes] = await Promise.all([
@@ -102,10 +104,10 @@ function ProductDetailsPage() {
       <section className="container-custom mx-auto px-6 pb-20 pt-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <ProductGallery product={product} />
+            <ProductGallery product={product} selectedColor={selectedColor} />
           </div>
 
-          <ProductInfo product={product} whyShop={whyShop} />
+          <ProductInfo product={product} whyShop={whyShop} selectedColor={selectedColor} onColorChange={setSelectedColor} />
         </div>
       </section>
 

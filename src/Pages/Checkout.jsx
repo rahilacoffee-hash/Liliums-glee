@@ -66,6 +66,8 @@ async function handleCheckout() {
       items: cartItems.map((item) => ({
         product: item._id,
         quantity: item.quantity,
+        selectedColor: item.selectedColor || "",
+        selectedSize: item.selectedSize || "",
       })),
     });
 
@@ -219,7 +221,7 @@ async function handleCheckout() {
 
               {cartItems.map((item) => (
                 <div
-                  key={item._id}
+                  key={item.cartItemKey || item._id}
                   className="flex justify-between border-b pb-3"
                 >
                   <div>
@@ -230,6 +232,7 @@ async function handleCheckout() {
                     <p className="text-sm text-gray-500">
                       Qty: {item.quantity}
                     </p>
+                    {(item.selectedColor || item.selectedSize) && <p className="text-sm text-gray-500">{[item.selectedColor, item.selectedSize].filter(Boolean).join(" · ")}</p>}
                   </div>
 
                   <span>

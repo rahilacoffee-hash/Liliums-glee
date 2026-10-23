@@ -70,13 +70,13 @@ function Cart() {
           <div className="space-y-6 lg:col-span-2">
             {cartItems.map((item) => (
               <div
-                key={item._id}
+                key={item.cartItemKey || item._id}
                 className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow md:flex-row"
               >
                 <img
                   src={
-                    item.images?.length
-                      ? item.images[0].url
+                    item.selectedColor && item.colors?.find((color) => color.name === item.selectedColor)?.image?.url || item.images?.length
+                      ? (item.selectedColor && item.colors?.find((color) => color.name === item.selectedColor)?.image?.url || item.images[0].url)
                       : "https://placehold.co/200x200"
                   }
                   alt={item.name}
@@ -93,6 +93,8 @@ function Cart() {
                     {item.category}
                   </p>
 
+                  {(item.selectedColor || item.selectedSize) && <p className="mt-2 text-sm text-gray-500">{[item.selectedColor, item.selectedSize].filter(Boolean).join(" · ")}</p>}
+
                   <div className="mt-4 text-2xl font-semibold">
                     ₦{Number(item.price).toLocaleString()}
                   </div>
@@ -105,7 +107,7 @@ function Cart() {
 
                       <button
                         onClick={() =>
-                          decreaseQuantity(item._id)
+                          decreaseQuantity(item.cartItemKey || item._id)
                         }
                         className="p-3"
                       >
@@ -118,7 +120,7 @@ function Cart() {
 
                       <button
                         onClick={() =>
-                          increaseQuantity(item._id)
+                          increaseQuantity(item.cartItemKey || item._id)
                         }
                         className="p-3"
                       >
@@ -128,7 +130,7 @@ function Cart() {
 
                     <button
                       onClick={() =>
-                        removeFromCart(item._id)
+                        removeFromCart(item.cartItemKey || item._id)
                       }
                       className="text-red-500"
                     >

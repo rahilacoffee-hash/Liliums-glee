@@ -29,8 +29,8 @@ function ProductCard({ product }) {
         <motion.img
           variants={imageHover}
           src={
-            product.images?.length
-              ? product.images[0].url
+            (product.colors?.[0]?.image?.url || product.images?.[0]?.url)
+              ? (product.colors?.[0]?.image?.url || product.images?.[0]?.url)
               : "https://placehold.co/600x600?text=No+Image"
           }
           alt={product.name}
@@ -80,6 +80,9 @@ function ProductCard({ product }) {
             reviewCount={product.numReviews}
           />
         </div>
+
+        {product.colors?.length > 0 && <div className="mt-5 flex items-center gap-2">{product.colors.slice(0, 5).map((color) => <span key={color._id || color.name} title={color.name} className="h-4 w-4 rounded-full border border-black/10" style={{ backgroundColor: color.hex || "#C8A96A" }} />)}<span className="ml-1 text-xs text-[#777]">{product.colors.length} colours</span></div>}
+        {product.sizes?.length > 0 && <p className="mt-3 text-xs text-[#777]">Sizes: {product.sizes.join(" · ")}</p>}
 
         <div className="mt-8 flex items-center justify-between">
           <span className="text-2xl font-semibold text-[#111111]">

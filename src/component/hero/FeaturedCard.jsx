@@ -1,7 +1,21 @@
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-export default function FeaturedCard({ slide, reduceMotion }) {
-  return <motion.aside initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduceMotion ? 0 : 0.75, duration: 0.65 }} className="w-full max-w-[375px] rounded-2xl border border-white/30 bg-white/10 p-5 shadow-2xl backdrop-blur-xl sm:p-6"><p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#F7EBDD]/70">{slide.cardLabel || "Featured project"}</p><h2 className="mt-2 font-display text-2xl text-[#F7EBDD]">{slide.title}</h2>{slide.description && <p className="mt-2 text-xs leading-5 text-[#F7EBDD]/75">{slide.description}</p>}<dl className="mt-5 grid grid-cols-[82px_1fr] gap-y-2 text-[11px] leading-5"><dt className="uppercase tracking-[0.14em] text-[#F7EBDD]/65">Location</dt><dd>{slide.location}</dd><dt className="uppercase tracking-[0.14em] text-[#F7EBDD]/65">Area</dt><dd>{slide.area}</dd><dt className="uppercase tracking-[0.14em] text-[#F7EBDD]/65">Year</dt><dd>{slide.year}</dd></dl><div className="mt-4 flex justify-end"><Link aria-label={`View ${slide.title}`} to={slide.href} className="group flex h-10 w-10 items-center justify-center rounded-full border border-[#F7EBDD]/80 transition focus:outline-none focus:ring-2 focus:ring-[#F7EBDD] hover:bg-[#F7EBDD] hover:text-[#22170F]"><ArrowRight size={17} className="transition-transform group-hover:translate-x-0.5" /></Link></div></motion.aside>;
+function Detail({ label, value }) {
+  return <><dt>{label}</dt><dd>{value || "—"}</dd></>;
+}
+
+export default function FeaturedCard({ project }) {
+  return (
+    <article className="w-full max-w-[340px] rounded-xl border border-white/35 bg-[#211813]/70 p-4 shadow-2xl backdrop-blur-md sm:p-5">
+      <p className="text-[9px] font-medium tracking-[.24em] text-white/70">{project.eyebrow}</p>
+      <h2 className="mt-1 font-display text-[clamp(1.2rem,1.45vw,1.55rem)] leading-tight">{project.title}</h2>
+      <dl className="mt-4 grid grid-cols-[68px_1fr] gap-y-1 text-[10px] leading-5 sm:grid-cols-[76px_1fr] sm:text-[11px]">
+        <Detail label="LOCATION" value={project.location} />
+        <Detail label="AREA" value={project.area} />
+        <Detail label="YEAR" value={project.year} />
+      </dl>
+      <Link aria-label={`View ${project.title}`} to={project.button?.href || "/gallery"} className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/80 transition hover:bg-white hover:text-[#1b120d] sm:bottom-5 sm:right-5"><ArrowRight size={15} /></Link>
+    </article>
+  );
 }

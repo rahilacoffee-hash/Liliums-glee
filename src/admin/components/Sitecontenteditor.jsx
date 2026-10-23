@@ -13,6 +13,17 @@ const normalizeTitleArray = (title) => {
   return [""];
 };
 
+const normalizeHero = (hero = {}) => ({
+  ...hero,
+  brandName: hero.brandName || "LILIUMS GLEEE",
+  eyebrow: hero.eyebrow || "INTERIOR DESIGN",
+  title: hero.title === "Designing Timeless Interiors That Inspire Living" ? "LILIUMS" : (hero.title || "LILIUMS"),
+  scriptTitle: hero.scriptTitle || "Gleee",
+  sideCopy: hero.sideCopy || "LUXURY INTERIORS\nFOR MODERN LIVING",
+  bottomCopy: hero.bottomCopy || "WE DESIGN SPACES THAT\nINSPIRE, COMFORT AND ELEVATE.",
+  scrollLabel: hero.scrollLabel || "SCROLL DOWN",
+});
+
 function SiteContentEditor() {
   let [loading, setLoading] = useState(true);
   let [saving, setSaving] = useState(false);
@@ -27,11 +38,9 @@ function SiteContentEditor() {
 
   // Files staged for upload - only sent if the admin actually picks a new one
   let [heroBackgroundFile, setHeroBackgroundFile] = useState(null);
-  let [heroFeaturedFile, setHeroFeaturedFile] = useState(null);
   let [aboutFile, setAboutFile] = useState(null);
 
   let [heroBackgroundPreview, setHeroBackgroundPreview] = useState("");
-  let [heroFeaturedPreview, setHeroFeaturedPreview] = useState("");
   let [aboutPreview, setAboutPreview] = useState("");
 
   useEffect(() => {
@@ -43,7 +52,7 @@ function SiteContentEditor() {
         // Normalize title to always be an array in component state
         fetchedAbout.title = normalizeTitleArray(fetchedAbout.title);
 
-        setHero(data.data.hero);
+        setHero(normalizeHero(data.data.hero));
         setAbout(fetchedAbout);
         setStats(data.data.stats || []);
         setWhyChooseStats(data.data.whyChooseStats || []);
@@ -51,7 +60,6 @@ function SiteContentEditor() {
         
         if (data.data.hero) {
           setHeroBackgroundPreview(data.data.hero.backgroundImage || "");
-          setHeroFeaturedPreview(data.data.hero.featuredCollection?.image || "");
         }
         setAboutPreview(fetchedAbout.image || "");
       } catch (err) {
@@ -162,7 +170,6 @@ function SiteContentEditor() {
       formData.append("ctaStats", JSON.stringify(ctaStats));
 
       if (heroBackgroundFile) formData.append("heroBackgroundImage", heroBackgroundFile);
-      if (heroFeaturedFile) formData.append("heroFeaturedImage", heroFeaturedFile);
       if (aboutFile) formData.append("aboutImage", aboutFile);
 
       let { data } = await axiosInstance.put("/site-content", formData, {
@@ -172,7 +179,7 @@ function SiteContentEditor() {
       let savedAbout = data.data.about || {};
       savedAbout.title = normalizeTitleArray(savedAbout.title);
 
-      setHero(data.data.hero);
+      setHero(normalizeHero(data.data.hero));
       setAbout(savedAbout);
       setStats(data.data.stats || []);
       setWhyChooseStats(data.data.whyChooseStats || []);
@@ -196,7 +203,7 @@ function SiteContentEditor() {
   return (
     <div className="mx-auto max-w-5xl p-6 md:p-10">
       <h1 className="mb-2 font-serif text-3xl text-[#111111]">Homepage Content</h1>
-      <p className="mb-10 text-sm text-[#777]">Edit your hero section, about section, and stats counters.</p>
+      <p className="mb-10 text-sm text-[#777]">Edit the single-image homepage hero, about section, and stats counters.</p>
 
       {message && <div className="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">{message}</div>}
       {error && <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
@@ -205,7 +212,8 @@ function SiteContentEditor() {
 
         {/* ============ HERO ============ */}
         <section className="rounded-3xl bg-white p-8 shadow">
-          <h2 className="mb-6 text-2xl font-semibold text-[#111111]">Hero Section</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-[#111111]">Homepage Hero</h2>
+          <p className="mb-6 text-sm text-[#777]">This is one fixed hero image—there are no slides or rotating content.</p>
 
           <div className="mb-6">
             <ImageUploadField
@@ -216,48 +224,30 @@ function SiteContentEditor() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <TextField label="Eyebrow" value={hero.eyebrow} onChange={(v) => updateHeroField("eyebrow", v)} />
-            <TextField label="Title" value={hero.title} onChange={(v) => updateHeroField("title", v)} />
-          </div>
-
-          <div className="mt-6">
-            <TextAreaField label="Description" value={hero.description} onChange={(v) => updateHeroField("description", v)} />
+            <TextField label="Brand Name" value={hero.brandName || ""} onChange={(v) => updateHeroField("brandName", v)} />
+            <TextField label="Brand Subtitle" value={hero.eyebrow || ""} onChange={(v) => updateHeroField("eyebrow", v)} />
+            <TextField label="Large Display Title" value={hero.title || ""} onChange={(v) => updateHeroField("title", v)} />
+            <TextField label="Script Title" value={hero.scriptTitle || ""} onChange={(v) => updateHeroField("scriptTitle", v)} />
           </div>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-[#E8E2D9] p-5">
-              <p className="mb-3 text-sm font-medium text-[#111111]">Primary Button</p>
-              <TextField label="Label" value={hero.primaryButton?.label || ""} onChange={(v) => updateHeroNested("primaryButton", "label", v)} />
-              <div className="mt-3">
-                <TextField label="Link" value={hero.primaryButton?.href || ""} onChange={(v) => updateHeroNested("primaryButton", "href", v)} />
-              </div>
-            </div>
+            <TextAreaField label="Side Copy (one line per row)" value={hero.sideCopy || ""} onChange={(v) => updateHeroField("sideCopy", v)} />
+            <TextAreaField label="Bottom Copy (one line per row)" value={hero.bottomCopy || ""} onChange={(v) => updateHeroField("bottomCopy", v)} />
+          </div>
 
-            <div className="rounded-2xl border border-[#E8E2D9] p-5">
-              <p className="mb-3 text-sm font-medium text-[#111111]">Secondary Button</p>
-              <TextField label="Label" value={hero.secondaryButton?.label || ""} onChange={(v) => updateHeroNested("secondaryButton", "label", v)} />
-              <div className="mt-3">
-                <TextField label="Link" value={hero.secondaryButton?.href || ""} onChange={(v) => updateHeroNested("secondaryButton", "href", v)} />
-              </div>
-            </div>
+          <div className="mt-6 max-w-md">
+            <TextField label="Scroll Prompt" value={hero.scrollLabel || ""} onChange={(v) => updateHeroField("scrollLabel", v)} />
           </div>
         </section>
 
         {/* ============ FEATURED COLLECTION CARD ============ */}
         <section className="rounded-3xl bg-white p-8 shadow">
-          <h2 className="mb-6 text-2xl font-semibold text-[#111111]">Hero Featured Card</h2>
-
-          <div className="mb-6">
-            <ImageUploadField
-              label="Card Image"
-              preview={heroFeaturedPreview}
-              onSelect={(file) => handleFileSelect(file, setHeroFeaturedFile, setHeroFeaturedPreview)}
-            />
-          </div>
+          <h2 className="mb-2 text-2xl font-semibold text-[#111111]">Featured Project Card</h2>
+          <p className="mb-6 text-sm text-[#777]">This card sits over the one homepage hero image.</p>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <TextField label="Badge" value={hero.featuredCollection?.badge || ""} onChange={(v) => updateHeroNested("featuredCollection", "badge", v)} />
             <TextField label="Eyebrow" value={hero.featuredCollection?.eyebrow || ""} onChange={(v) => updateHeroNested("featuredCollection", "eyebrow", v)} />
+            <TextField label="Legacy Badge (optional)" value={hero.featuredCollection?.badge || ""} onChange={(v) => updateHeroNested("featuredCollection", "badge", v)} />
           </div>
 
           <div className="mt-6">

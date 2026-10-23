@@ -1,9 +1,114 @@
-import { motion } from "framer-motion";
-import { Mouse } from "lucide-react";
-import { FaInstagram, FaLinkedinIn, FaPinterestP, FaXTwitter } from "react-icons/fa6";
-import FeaturedCard from "./FeaturedCard";
 
-function HeroContent({ slide, reduceMotion, offset }) {
-  return <div className="relative z-10 flex h-full min-h-screen flex-col px-6 pb-24 pt-32 sm:px-10 sm:pt-36 lg:px-10 xl:px-12"><div><p className="font-display text-lg tracking-[0.25em] text-[#F7EBDD] sm:text-[28px]">LILIUMS GLEEE</p><p className="mt-1 text-[8px] font-medium tracking-[0.36em] text-[#F7EBDD]/85">INTERIOR DESIGN</p></div><div className="relative mt-[12vh] lg:mt-[9vh]"><h1 aria-label="Liliums Gleee" className="mb-4 font-display text-[18vw] leading-[.7] tracking-[-0.07em] text-[#F7EBDD] sm:text-[19vw] lg:mb-6 lg:text-[clamp(9rem,17.5vw,20rem)]">{"LILIUMS".split("").map((letter, index) => <span key={`${slide.id}-${index}`} className="inline-block overflow-hidden"><motion.span initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : index * 0.055, ease: [0.22, 1, 0.36, 1] }} className="inline-block">{letter}</motion.span></span>)}</h1><motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0, x: offset.x * -0.7, rotate: -4 }} transition={{ delay: reduceMotion ? 0 : 0.48, duration: 0.7 }} className="relative ml-[52%] mt-3 w-fit font-script text-[20vw] leading-none text-[#F7EBDD] drop-shadow-[0_5px_12px_rgba(0,0,0,.35)] sm:mt-0 sm:text-[16vw] lg:-mt-[2vw] lg:text-[clamp(7rem,13vw,15rem)]">Gleee</motion.p></div><div className="absolute left-10 top-[51%] hidden items-center gap-4 lg:flex"><span className="h-px w-16 bg-[#F7EBDD]/75" /><p className="text-[10px] leading-5 tracking-[0.25em] text-[#F7EBDD]">LUXURY INTERIORS<br />FOR MODERN LIVING</p></div><div className="mt-auto flex items-end justify-between gap-8"><div className="hidden w-60 lg:block"><div className="mb-7 flex gap-5 text-[#F7EBDD]"><a href="https://instagram.com" aria-label="Instagram" className="transition hover:text-[#C9A27A]"><FaInstagram /></a><a href="https://pinterest.com" aria-label="Pinterest" className="transition hover:text-[#C9A27A]"><FaPinterestP /></a><a href="https://linkedin.com" aria-label="LinkedIn" className="transition hover:text-[#C9A27A]"><FaLinkedinIn /></a><a href="https://x.com" aria-label="X" className="transition hover:text-[#C9A27A]"><FaXTwitter /></a></div><div className="flex gap-5"><span className="w-px bg-[#F7EBDD]/75" /><p className="text-[9px] leading-5 tracking-[0.2em] text-[#F7EBDD]">WE DESIGN SPACES THAT<br />INSPIRE, COMFORT AND ELEVATE.</p></div></div><FeaturedCard slide={slide} reduceMotion={reduceMotion} /><div className="hidden flex-col items-center gap-2 text-[#F7EBDD] lg:flex"><motion.span animate={reduceMotion ? {} : { y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }} className="flex h-8 w-5 justify-center rounded-full border border-[#F7EBDD]/80 pt-1"><Mouse size={12} /></motion.span><span className="text-[9px] tracking-[0.27em]">SCROLL DOWN</span></div></div></div>;
+import { motion } from "framer-motion";
+import { ArrowDownRight, ArrowUpRight, Mouse } from "lucide-react";
+import {
+  FaInstagram,
+  FaLinkedinIn,
+  FaPinterestP,
+  FaTiktok,
+} from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
+function HeroContent({ hero, reduceMotion }) {
+  const fade = {
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: reduceMotion ? 0 : 0.65,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  };
+
+  return (
+    <div className="relative z-10 flex min-h-[100svh] flex-col px-6 pb-7 pt-9 text-[#fff8ed] sm:px-10 sm:pt-10 lg:px-12 lg:pt-8 xl:px-16">
+
+      {/* Brand typography */}
+      <div className="absolute left-0 right-0 top-[18%] sm:top-[20%] lg:top-[19%]">
+        <motion.h1
+          {...fade}
+          transition={{ ...fade.transition, delay: reduceMotion ? 0 : 0.1 }}
+          className="whitespace-nowrap px-3 text-center font-display text-[20.5vw] uppercase leading-[0.8] tracking-[-0.075em] sm:px-8 sm:text-[18vw] lg:px-[7vw] lg:text-left lg:text-[clamp(9rem,17vw,21rem)]"
+        >
+          {hero.title || "LILIUMS"}
+        </motion.h1>
+
+        <motion.p
+          {...fade}
+          transition={{ ...fade.transition, delay: reduceMotion ? 0 : 0.22 }}
+          className="mr-[5%] mt-5 text-right font-script text-[22vw] leading-[0.65] text-[#e6bc83] drop-shadow-[0_6px_12px_rgba(0,0,0,.35)] sm:mr-[8%] sm:text-[16vw] lg:mr-[18vw] lg:mt-5 lg:text-[clamp(7rem,12vw,15rem)]"
+        >
+          {hero.scriptTitle || "Gleee"}
+        </motion.p>
+      </div>
+
+      {/* Eyebrow and brand description */}
+      <motion.div
+        {...fade}
+        transition={{ ...fade.transition, delay: reduceMotion ? 0 : 0.3 }}
+        className="absolute left-6 top-[12%] flex items-center gap-3 sm:left-10 lg:left-16 lg:top-[13%]"
+      >
+        <span className="h-px w-9 bg-[#e6bc83] lg:w-12" />
+        <p className="text-[9px] font-medium uppercase tracking-[0.3em] text-[#f5d9b2] sm:text-[10px]">
+          {hero.eyebrow || "INTERIOR DESIGN"}
+        </p>
+      </motion.div>
+
+      {/* Main description and calls to action */}
+      <motion.div
+        {...fade}
+        transition={{ ...fade.transition, delay: reduceMotion ? 0 : 0.4 }}
+        className="absolute left-6 top-[53%] max-w-[360px] sm:left-10 sm:top-[54%] lg:left-[9%] lg:top-[55%] lg:max-w-[440px]"
+      >
+        <p className="max-w-md text-sm leading-6 text-white/85 sm:text-base sm:leading-7 lg:text-lg">
+          {hero.description ||
+            "Thoughtfully designed interiors. Timeless materials. A new standard of modern luxury."}
+        </p>
+
+        <div className="mt-6 flex flex-wrap items-center gap-3 sm:gap-4">
+          <Link
+            to={hero.primaryButton?.href || "/gallery"}
+            className="group inline-flex min-h-11 items-center gap-3 bg-[#e6bc83] px-4 py-3 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#21160f] transition-colors hover:bg-[#fff0d9] sm:px-5 sm:text-[10px]"
+          >
+            {hero.primaryButton?.text || "Explore Our Work"}
+            <ArrowUpRight
+              size={15}
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+
+          <Link
+            to={hero.secondaryButton?.href || "/contact"}
+            className="group inline-flex min-h-11 items-center gap-3 border border-white/50 px-4 py-3 text-[9px] font-medium uppercase tracking-[0.12em] text-white transition-colors hover:border-[#e6bc83] hover:text-[#e6bc83] sm:px-5 sm:text-[10px]"
+          >
+            {hero.secondaryButton?.text || "Start a Project"}
+            <ArrowUpRight size={15} />
+          </Link>
+        </div>
+      </motion.div>
+
+      {/* Social links */}
+      <div className="absolute bottom-[7%] left-6 hidden items-center gap-5 sm:left-10 lg:flex xl:left-16">
+        <a href="https://instagram.com/" aria-label="Instagram" className="transition hover:text-[#e6bc83]">
+          <FaInstagram size={17} />
+        </a>
+        <a href="https://tiktok.com/" aria-label="TikTok" className="transition hover:text-[#e6bc83]">
+          <FaTiktok size={16} />
+        </a>
+       
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.a
+        href="#projects"
+        animate={reduceMotion ? {} : { y: [0, 5, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[6%] right-6 flex items-center gap-3 text-[9px] uppercase tracking-[0.2em] text-white/75 sm:right-10 lg:right-16"
+      >
+        <span>{hero.scrollLabel || "Discover our world"}</span>
+        <ArrowDownRight size={17} className="text-[#e6bc83]" />
+      </motion.a>
+    </div>
+  );
 }
+
 export default HeroContent;

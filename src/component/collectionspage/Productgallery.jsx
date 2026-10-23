@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ZoomIn } from "lucide-react";
 
-function ProductGallery({ product }) {
+function ProductGallery({ product, selectedColor }) {
   // Works whether the backend sends `images` (array, multiple angles) or
   // the older single `image` field - normalizes to one array either way
   // Products from the API store image metadata as `{ url, public_id }`,
   // while older content may still use a plain image URL. The gallery should
   // only ever pass a URL string to the image element.
-  let imageSource = Array.isArray(product.images) && product.images.length > 0
+  let imageSource = selectedColor?.image?.url
+    ? [selectedColor.image, ...(product.images || []).filter((image) => image?.url !== selectedColor.image.url)]
+    : Array.isArray(product.images) && product.images.length > 0
     ? product.images
     : product.image
       ? [product.image]
@@ -22,6 +24,10 @@ function ProductGallery({ product }) {
     .filter(Boolean);
 
   let [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [selectedColor?.image?.url, product._id]);
 
   // A detail route can change without unmounting this component. Clamp the
   // persisted selection so a shorter gallery still renders its first image.

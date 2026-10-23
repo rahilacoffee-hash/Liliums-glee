@@ -19,13 +19,12 @@ export function CartProvider({ children }) {
     if (stock <= 0) return;
 
     setCartItems((prev) => {
-      const existing = prev.find(
-        (item) => item._id === product._id
-      );
+      const variantKey = `${product._id}:${product.selectedColor || ""}:${product.selectedSize || ""}`;
+      const existing = prev.find((item) => item.cartItemKey === variantKey);
 
       if (existing) {
         return prev.map((item) =>
-          item._id === product._id
+          item.cartItemKey === variantKey
             ? {
                 ...item,
                 quantity: Math.min(stock, item.quantity + quantity),
@@ -38,6 +37,7 @@ export function CartProvider({ children }) {
         ...prev,
         {
           ...product,
+          cartItemKey: variantKey,
           quantity,
         },
       ];
@@ -45,17 +45,17 @@ export function CartProvider({ children }) {
   };
 
   // Remove Item
-  const removeFromCart = (id) => {
+  const removeFromCart = (cartItemKey) => {
     setCartItems((prev) =>
-      prev.filter((item) => item._id !== id)
+      prev.filter((item) => (item.cartItemKey || item._id) !== cartItemKey)
     );
   };
 
   // Increase Quantity
-  const increaseQuantity = (id) => {
+  const increaseQuantity = (cartItemKey) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item._id === id
+        (item.cartItemKey || item._id) === cartItemKey
           ? { ...item, quantity: Math.min(Number(item.stock) || item.quantity, item.quantity + 1) }
           : item
       )
@@ -63,11 +63,11 @@ export function CartProvider({ children }) {
   };
 
   // Decrease Quantity
-  const decreaseQuantity = (id) => {
+  const decreaseQuantity = (cartItemKey) => {
     setCartItems((prev) =>
       prev
         .map((item) =>
-          item._id === id
+          (item.cartItemKey || item._id) === cartItemKey
             ? {
                 ...item,
                 quantity: item.quantity - 1,

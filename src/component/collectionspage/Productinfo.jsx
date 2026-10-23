@@ -9,20 +9,21 @@ import toast from "react-hot-toast";
 // doesn't carry icon references itself.
 const whyShopIcons = [Award, Users, Wrench, Truck];
 
-function ProductInfo({ product, whyShop }) {
+function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
   const { addToCart } = useCart();
   const { wishlist, toggleWishlist } = useSavedItems();
   const isOutOfStock = Number(product.stock) <= 0;
   const isWishlisted = wishlist.some((item) => item._id === product._id);
   function handleAddToCart() {
   if (isOutOfStock) return;
-  addToCart(product, quantity);
+  addToCart({ ...product, selectedColor: selectedColor?.name, selectedSize }, quantity);
 
   toast.success(
     `${quantity} × ${product.name} added to basket`
   );
 }
   let [quantity, setQuantity] = useState(1);
+  let [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "");
 
   function decrease() {
     setQuantity((q) => Math.max(1, q - 1));
@@ -56,6 +57,9 @@ function ProductInfo({ product, whyShop }) {
       <p className={`mb-8 text-sm font-medium ${isOutOfStock ? "text-red-600" : "text-green-700"}`}>
         {isOutOfStock ? "Out of stock" : `${product.stock} in stock`}
       </p>
+
+      {product.colors?.length > 0 && <div className="mb-6"><p className="mb-3 text-xs font-semibold uppercase tracking-[2px] text-[#665A51]">Colour: <span className="text-[#1C1512]">{selectedColor?.name}</span></p><div className="flex flex-wrap gap-3">{product.colors.map((color) => <button key={color._id || color.name} type="button" onClick={() => onColorChange(color)} title={color.name} className={`h-9 w-9 rounded-full border-2 p-0.5 ${selectedColor?.name === color.name ? "border-[#1C1512]" : "border-transparent"}`}><span className="block h-full w-full rounded-full" style={{ backgroundColor: color.hex || "#C8A96A" }} /></button>)}</div></div>}
+      {product.sizes?.length > 0 && <div className="mb-7"><p className="mb-3 text-xs font-semibold uppercase tracking-[2px] text-[#665A51]">Size</p><div className="flex flex-wrap gap-2">{product.sizes.map((size) => <button key={size} type="button" onClick={() => setSelectedSize(size)} className={`min-w-11 rounded-lg border px-3 py-2 text-sm ${selectedSize === size ? "border-[#1C1512] bg-[#1C1512] text-white" : "border-[#E8E2D9]"}`}>{size}</button>)}</div></div>}
 
       <div className="mb-8 flex flex-wrap items-center gap-4">
         <div className="flex items-center rounded-full border border-[#E8E2D9]">
