@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { backgroundZoom, decorativeGlow } from "./heroVariants";
 
@@ -5,40 +6,39 @@ function HeroBackground({ hero }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <motion.img
-        src={hero.backgroundImage}
-        alt="Luxury Interior"
+        src={hero.backgroundImage || "/images/liliums-hero.png"}
+        alt="Luxury modern interior designed by Liliums Gleee"
         variants={backgroundZoom}
         initial="initial"
         animate="animate"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-center"
       />
 
-      <div className="absolute inset-0 bg-black/55" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20" />
-      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      {/* Cinematic contrast */}
+      <div className="absolute inset-0 bg-[#100B07]/35" />
 
+      <div className="absolute inset-0 bg-gradient-to-r from-[#100B07]/75 via-[#100B07]/35 to-transparent" />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-[#100B07]/75 via-transparent to-[#100B07]/20" />
+
+      {/* Subtle architectural grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]
-          bg-[linear-gradient(#ffffff_1px,transparent_1px),linear-gradient(90deg,#ffffff_1px,transparent_1px)]
-          [background-size:70px_70px]"
+        className="pointer-events-none absolute inset-0 opacity-[0.045]
+        bg-[linear-gradient(#F5E9D8_1px,transparent_1px),linear-gradient(90deg,#F5E9D8_1px,transparent_1px)]
+        [background-size:80px_80px]"
+      />
+
+      {/* Warm ambient lighting */}
+      <motion.div
+        variants={decorativeGlow}
+        animate="animate"
+        className="pointer-events-none absolute -left-40 top-1/4 h-[400px] w-[400px] rounded-full bg-[#C8A477]/15 blur-[150px]"
       />
 
       <motion.div
         variants={decorativeGlow}
         animate="animate"
-        className="absolute -left-40 top-1/4 h-[450px] w-[450px] rounded-full bg-[#C8A96A]/15 blur-[150px]"
-      />
-
-      <motion.div
-        variants={decorativeGlow}
-        animate="animate"
-        className="absolute -right-48 bottom-0 h-[500px] w-[500px] rounded-full bg-[#C8A96A]/10 blur-[180px]"
-      />
-
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-48 -right-32 hidden h-[550px] w-[550px] rounded-full border border-dashed border-white/10 xl:block"
+        className="pointer-events-none absolute -right-40 bottom-0 h-[400px] w-[400px] rounded-full bg-[#C8A477]/10 blur-[160px]"
       />
     </div>
   );
