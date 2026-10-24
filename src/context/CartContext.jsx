@@ -16,7 +16,7 @@ export function CartProvider({ children }) {
   // Add Item
   const addToCart = (product, quantity = 1) => {
     const stock = Number(product.stock) || 0;
-    if (stock <= 0) return;
+    if (!product.isPreorder && stock <= 0) return;
 
     setCartItems((prev) => {
       const variantKey = `${product._id}:${product.selectedColor || ""}:${product.selectedSize || ""}`;
@@ -27,7 +27,9 @@ export function CartProvider({ children }) {
           item.cartItemKey === variantKey
             ? {
                 ...item,
-                quantity: Math.min(stock, item.quantity + quantity),
+                quantity: product.isPreorder
+                  ? item.quantity + quantity
+                  : Math.min(stock, item.quantity + quantity),
               }
             : item
         );
@@ -56,7 +58,12 @@ export function CartProvider({ children }) {
     setCartItems((prev) =>
       prev.map((item) =>
         (item.cartItemKey || item._id) === cartItemKey
-          ? { ...item, quantity: Math.min(Number(item.stock) || item.quantity, item.quantity + 1) }
+          ? {
+              ...item,
+              quantity: item.isPreorder
+                ? item.quantity + 1
+                : Math.min(Number(item.stock) || item.quantity, item.quantity + 1),
+            }
           : item
       )
     );

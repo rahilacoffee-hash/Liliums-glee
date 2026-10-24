@@ -35,6 +35,9 @@ function EditProduct() {
     stock: "",
     status: "Active",
     isFeatured: false,
+    isPreorder: false,
+    preorderDescription: "",
+    preorderDeliveryDays: "15",
   });
 
   const categories = [
@@ -89,6 +92,9 @@ function EditProduct() {
         stock: product.stock || "",
         status: product.status || "Active",
         isFeatured: product.isFeatured || false,
+        isPreorder: product.isPreorder || false,
+        preorderDescription: product.preorderDescription || "",
+        preorderDeliveryDays: product.preorderDeliveryDays || "15",
       });
 
       setExistingImages(product.images || []);
@@ -190,6 +196,11 @@ function EditProduct() {
 
     if (!formData.price) {
       toast.error("Enter product price");
+      return false;
+    }
+
+    if (formData.isPreorder && !formData.preorderDescription.trim()) {
+      toast.error("Add a preorder description");
       return false;
     }
 
@@ -567,6 +578,27 @@ function EditProduct() {
                   className="h-5 w-5"
                 />
               </label>
+
+              <label className="flex items-center justify-between rounded-xl border p-4">
+                <div>
+                  <h3 className="font-semibold">Available for preorder</h3>
+                  <p className="text-sm text-gray-500">Shows a Pre-order badge and allows purchase before stock arrives.</p>
+                </div>
+                <input type="checkbox" name="isPreorder" checked={formData.isPreorder} onChange={handleChange} className="h-5 w-5" />
+              </label>
+
+              {formData.isPreorder && (
+                <div className="space-y-5 rounded-xl border border-[#C8A96A]/40 bg-[#FDF9F1] p-4">
+                  <div>
+                    <label className="mb-2 block font-medium">Preorder description</label>
+                    <textarea rows={3} name="preorderDescription" value={formData.preorderDescription} onChange={handleChange} className="w-full rounded-xl border border-gray-300 px-4 py-3" />
+                  </div>
+                  <div>
+                    <label className="mb-2 block font-medium">Delivery time (working days)</label>
+                    <input type="number" min="1" name="preorderDeliveryDays" value={formData.preorderDeliveryDays} onChange={handleChange} className="w-full rounded-xl border border-gray-300 px-4 py-3" />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

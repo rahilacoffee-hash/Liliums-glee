@@ -101,6 +101,10 @@ function PaymentSuccess() {
           Your order has been confirmed.
         </p>
 
+        <p className="mb-8 rounded-2xl bg-[#F8F5F0] px-5 py-4 text-sm font-medium leading-6 text-[#51483E]">
+          Goods would be delivered within 15 working days.
+        </p>
+
         <button
           onClick={() => navigate("/orders")}
           className="w-full rounded-full bg-[#C8A96A] py-4 font-semibold transition hover:opacity-90"

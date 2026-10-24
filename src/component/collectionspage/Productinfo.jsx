@@ -12,7 +12,7 @@ const whyShopIcons = [Award, Users, Wrench, Truck];
 function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
   const { addToCart } = useCart();
   const { wishlist, toggleWishlist } = useSavedItems();
-  const isOutOfStock = Number(product.stock) <= 0;
+  const isOutOfStock = !product.isPreorder && Number(product.stock) <= 0;
   const isWishlisted = wishlist.some((item) => item._id === product._id);
   function handleAddToCart() {
   if (isOutOfStock) return;
@@ -30,7 +30,7 @@ function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
   }
 
   function increase() {
-    setQuantity((q) => Math.min(Number(product.stock) || 1, q + 1));
+    setQuantity((q) => product.isPreorder ? q + 1 : Math.min(Number(product.stock) || 1, q + 1));
   }
 
   return (
@@ -47,7 +47,13 @@ function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
         {product.name}
       </h1>
 
-   
+      {product.isPreorder && (
+        <div className="mb-6 rounded-2xl border border-[#C8A96A]/40 bg-[#FDF9F1] p-4">
+          <p className="text-xs font-bold uppercase tracking-[2px] text-[#9A783D]">Pre-order</p>
+          <p className="mt-2 text-sm leading-6 text-[#51483E]">{product.preorderDescription}</p>
+          <p className="mt-3 font-semibold text-[#171717]">Estimated delivery: within {product.preorderDeliveryDays || 15} working days.</p>
+        </div>
+      )}
 
       <p className="mb-8 max-w-md text-base leading-8 text-[#666]">
         {product.description}
@@ -55,7 +61,7 @@ function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
 
       <div className="mb-3 font-serif text-3xl text-[#111111]">₦{Number(product.price || 0).toLocaleString("en-NG")}</div>
       <p className={`mb-8 text-sm font-medium ${isOutOfStock ? "text-red-600" : "text-green-700"}`}>
-        {isOutOfStock ? "Out of stock" : `${product.stock} in stock`}
+        {isOutOfStock ? "Out of stock" : product.isPreorder ? `Pre-order · delivery within ${product.preorderDeliveryDays || 15} working days` : `${product.stock} in stock`}
       </p>
 
       {product.colors?.length > 0 && <div className="mb-6"><p className="mb-3 text-xs font-semibold uppercase tracking-[2px] text-[#665A51]">Colour: <span className="text-[#1C1512]">{selectedColor?.name}</span></p><div className="flex flex-wrap gap-3">{product.colors.map((color) => <button key={color._id || color.name} type="button" onClick={() => onColorChange(color)} title={color.name} className={`h-9 w-9 rounded-full border-2 p-0.5 ${selectedColor?.name === color.name ? "border-[#1C1512]" : "border-transparent"}`}><span className="block h-full w-full rounded-full" style={{ backgroundColor: color.hex || "#C8A96A" }} /></button>)}</div></div>}
@@ -74,7 +80,7 @@ function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
           <span className="w-8 text-center font-medium text-[#111111]">{quantity}</span>
           <button
             onClick={increase}
-            disabled={isOutOfStock || quantity >= product.stock}
+            disabled={isOutOfStock || (!product.isPreorder && quantity >= product.stock)}
             aria-label="Increase quantity"
             className="flex h-12 w-12 items-center justify-center text-[#111111] transition hover:text-[#C8A96A]"
           >
@@ -88,7 +94,7 @@ function ProductInfo({ product, whyShop, selectedColor, onColorChange }) {
   className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#C8A96A] px-8 py-3.5 font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:bg-[#D8D3CB] disabled:text-[#777] disabled:shadow-none sm:flex-none"
 >
   <ShoppingBag size={18} />
-  {isOutOfStock ? "Out of Stock" : "Add to Basket"}
+  {isOutOfStock ? "Out of Stock" : product.isPreorder ? "Pre-order Now" : "Add to Basket"}
 </button>
       <button onClick={() => toggleWishlist(product)} aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"} className="flex h-12 w-12 items-center justify-center rounded-full border border-[#E8E2D9] text-[#1C1512] transition hover:border-[#C8A96A]">
         <Heart size={18} className={isWishlisted ? "fill-[#8B2A35] text-[#8B2A35]" : ""} />

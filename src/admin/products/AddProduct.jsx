@@ -33,6 +33,9 @@ function AddProduct() {
     stock: "",
     status: "Active",
     isFeatured: false,
+    isPreorder: false,
+    preorderDescription: "",
+    preorderDeliveryDays: "15",
   });
 
   const categories = [
@@ -120,6 +123,11 @@ function AddProduct() {
       return false;
     }
 
+    if (formData.isPreorder && !formData.preorderDescription.trim()) {
+      toast.error("Add a preorder description");
+      return false;
+    }
+
     if (images.length === 0) {
       toast.error("Upload at least one product image");
       return false;
@@ -157,6 +165,9 @@ function AddProduct() {
       payload.append("stock", formData.stock);
       payload.append("status", formData.status);
       payload.append("isFeatured", formData.isFeatured);
+      payload.append("isPreorder", formData.isPreorder);
+      payload.append("preorderDescription", formData.preorderDescription);
+      payload.append("preorderDeliveryDays", formData.preorderDeliveryDays);
       payload.append("sizes", JSON.stringify(sizesText.split(",").map((size) => size.trim()).filter(Boolean)));
       let uploadIndex = 0;
       payload.append("colors", JSON.stringify(colors.map((color) => ({ name: color.name, hex: color.hex, uploadIndex: color.file ? uploadIndex++ : undefined }))));
@@ -472,6 +483,27 @@ function AddProduct() {
                 />
 
               </label>
+
+              <label className="flex cursor-pointer items-center justify-between rounded-xl border p-4">
+                <div>
+                  <h3 className="font-semibold">Available for preorder</h3>
+                  <p className="text-sm text-gray-500">Shows a Pre-order badge and allows purchase before stock arrives.</p>
+                </div>
+                <input type="checkbox" name="isPreorder" checked={formData.isPreorder} onChange={handleChange} className="h-5 w-5" />
+              </label>
+
+              {formData.isPreorder && (
+                <div className="space-y-5 rounded-xl border border-[#C8A96A]/40 bg-[#FDF9F1] p-4">
+                  <div>
+                    <label className="mb-2 block font-medium">Preorder description</label>
+                    <textarea rows={3} name="preorderDescription" value={formData.preorderDescription} onChange={handleChange} placeholder="Made to order. Secure yours before the next shipment." className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-black" />
+                  </div>
+                  <div>
+                    <label className="mb-2 block font-medium">Delivery time (working days)</label>
+                    <input type="number" min="1" name="preorderDeliveryDays" value={formData.preorderDeliveryDays} onChange={handleChange} className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-black" />
+                  </div>
+                </div>
+              )}
 
             </div>
 

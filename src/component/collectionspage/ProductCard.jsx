@@ -15,7 +15,8 @@ import {
 } from "./collectionsVariants";
 
 function ProductCard({ product, view = "grid" }) {
-  const isOutOfStock = Number(product.stock) <= 0;
+  const isOutOfStock = !product.isPreorder && Number(product.stock) <= 0;
+  const badge = product.isPreorder ? "Pre-order" : product.badge;
 
   const imageUrl =
     product.images?.[0]?.url ||
@@ -61,9 +62,9 @@ function ProductCard({ product, view = "grid" }) {
               </span>
             )}
 
-            {!isOutOfStock && product.badge && (
+            {!isOutOfStock && badge && (
               <span className="shrink-0 rounded-full bg-[#111111] px-1.5 py-0.5 text-[8px] font-semibold text-white">
-                {product.badge}
+                {badge}
               </span>
             )}
           </div>
@@ -158,12 +159,12 @@ function ProductCard({ product, view = "grid" }) {
             Out of Stock
           </span>
         ) : (
-          product.badge && (
+          badge && (
             <motion.span
               variants={badgeReveal}
               className="absolute left-2 top-2 rounded-full bg-[#111111] px-2 py-1 text-[9px] font-semibold uppercase tracking-wide text-white sm:left-4 sm:top-4 sm:px-3 sm:text-[10px] lg:left-5 lg:top-5 lg:px-4 lg:py-2 lg:text-xs"
             >
-              {product.badge}
+              {badge}
             </motion.span>
           )
         )}
