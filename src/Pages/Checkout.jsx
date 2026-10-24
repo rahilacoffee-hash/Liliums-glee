@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { MapPin, Save } from "lucide-react";
 import toast from "react-hot-toast";
 import axiosInstance from "../api/axiosInstance";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "../component/layout/Navbar/Navbar";
 
 function Checkout() {
   const { cartItems, totalPrice, clearCart } = useCart();
+  const { user, setUser } = useAuth();
 
   const [loading, setLoading] = useState(false);
+  const [saveAddress, setSaveAddress] = useState(false);
+  const [addressLabel, setAddressLabel] = useState("Home");
 
   const [shippingAddress, setShippingAddress] = useState({
     fullName: "",
@@ -18,6 +23,28 @@ function Checkout() {
     state: "",
     country: "Nigeria",
   });
+
+  useEffect(() => {
+    if (!user) return;
+    setShippingAddress((current) => ({
+      ...current,
+      fullName: current.fullName || user.name || "",
+      email: current.email || user.email || "",
+      phone: current.phone || user.mobile || "",
+    }));
+  }, [user]);
+
+  const isAbuja = /abuja|fct/i.test(`${shippingAddress.address} ${shippingAddress.city} ${shippingAddress.state}`);
+  const hasPreorder = cartItems.some((item) => item.isPreorder);
+  const deliveryEstimate = hasPreorder
+    ? "Pre-order goods would be delivered within 15 working days."
+    : isAbuja
+      ? "Estimated delivery in Abuja: 3–5 working days."
+      : "Estimated delivery outside Abuja: 7–10 working days.";
+  const mapQuery = useMemo(
+    () => [shippingAddress.address, shippingAddress.city, shippingAddress.state, shippingAddress.country].filter(Boolean).join(", "),
+    [shippingAddress]
+  );
 
   function handleChange(e) {
     setShippingAddress({
@@ -58,6 +85,15 @@ async function handleCheckout() {
     ) {
       toast.error("Please fill in all shipping details.");
       return;
+    }
+
+    if (saveAddress && user) {
+      const { data: savedAddressData } = await axiosInstance.post("/user/saved-addresses", {
+        label: addressLabel,
+        ...shippingAddress,
+      });
+      if (!savedAddressData.success) throw new Error(savedAddressData.message);
+      setUser((current) => current ? { ...current, savedAddresses: savedAddressData.data } : current);
     }
 
     // Create Order
@@ -139,6 +175,23 @@ async function handleCheckout() {
 
             <div className="space-y-5">
 
+              {user?.savedAddresses?.length > 0 && (
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-[#333]">Saved address</label>
+                  <select
+                    defaultValue=""
+                    onChange={(event) => {
+                      const saved = user.savedAddresses.find((item) => item._id === event.target.value);
+                      if (saved) setShippingAddress((current) => ({ ...current, ...saved, email: current.email || user.email || "" }));
+                    }}
+                    className="w-full rounded-xl border p-4"
+                  >
+                    <option value="">Choose a saved address</option>
+                    {user.savedAddresses.map((item) => <option key={item._id} value={item._id}>{item.label} — {item.address}, {item.city}</option>)}
+                  </select>
+                </div>
+              )}
+
               <input
                 type="text"
                 name="fullName"
@@ -147,6 +200,21 @@ async function handleCheckout() {
                 onChange={handleChange}
                 className="w-full rounded-xl border p-4"
               />
+
+              {user && (
+                <div className="rounded-2xl border border-[#E8E2D8] bg-[#FDF9F1] p-4">
+                  <label className="flex cursor-pointer items-center gap-3 text-sm font-medium text-[#333]">
+                    <input type="checkbox" checked={saveAddress} onChange={(event) => setSaveAddress(event.target.checked)} className="h-4 w-4" />
+                    <Save size={16} className="text-[#A98446]" /> Save this address for next time
+                  </label>
+                  {saveAddress && <input type="text" value={addressLabel} onChange={(event) => setAddressLabel(event.target.value)} placeholder="Address label, e.g. Home" className="mt-3 w-full rounded-xl border bg-white p-3" />}
+                </div>
+              )}
+
+              <div className="overflow-hidden rounded-2xl border border-[#E8E2D8]">
+                <div className="flex items-center gap-2 bg-[#FDF9F1] px-4 py-3 text-sm font-semibold text-[#51483E]"><MapPin size={16} className="text-[#A98446]" /> Delivery location</div>
+                <iframe title="Delivery address map" src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery || "Abuja, Nigeria")}&output=embed`} loading="lazy" className="h-56 w-full border-0" />
+              </div>
 
               <input
                 type="email"
@@ -251,6 +319,11 @@ async function handleCheckout() {
               <span>
                 ₦{totalPrice.toLocaleString()}
               </span>
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-[#C8A96A]/35 bg-[#FDF9F1] p-4 text-sm leading-6 text-[#51483E]">
+              <p className="font-semibold text-[#171717]">Delivery estimate</p>
+              <p className="mt-1">{deliveryEstimate}</p>
             </div>
 
             <button
