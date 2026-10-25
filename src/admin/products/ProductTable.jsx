@@ -58,10 +58,12 @@ function ProductTable() {
     try {
       setLoading(true);
 
-      const { data } = await axiosInstance.get("/products");
+      const { data } = await axiosInstance.get("/products", {
+        params: { limit: 1000 },
+      });
 
       setProducts(data.data.products || []);
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch products");
     } finally {
       setLoading(false);

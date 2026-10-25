@@ -10,17 +10,14 @@ export function AuthProvider({ children }) {
   // Re-usable so both the initial mount AND a fresh login can trigger it
   let fetchUser = useCallback(async function fetchUser() {
     try {
-      let res = await axiosInstance.get(
-        `${import.meta.env.VITE_API_URL}/user/user-details`,
-        { withCredentials: true }
-      );
+      let res = await axiosInstance.get("/user/user-details");
 
       if (res.data.success) {
         setUser(res.data.data);
       } else {
         setUser(null);
       }
-    } catch (error) {
+    } catch {
       setUser(null);
     } finally {
       setLoading(false);
@@ -33,10 +30,7 @@ export function AuthProvider({ children }) {
 
   async function logout() {
     try {
-      await axiosInstance.get(
-        `${import.meta.env.VITE_API_URL}/user/logout`,
-        { withCredentials: true }
-      );
+      await axiosInstance.get("/user/logout");
     } catch (error) {
       console.error(error);
     } finally {

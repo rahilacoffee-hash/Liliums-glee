@@ -34,7 +34,9 @@ function Products() {
     try {
       setLoading(true);
 
-      const { data } = await axiosInstance.get("/products");
+      const { data } = await axiosInstance.get("/products", {
+        params: { limit: 1000 },
+      });
 
       const products = data.data.products || [];
 
@@ -57,7 +59,7 @@ function Products() {
           (item) => item.stock <= 5
         ).length,
       });
-    } catch (error) {
+    } catch {
       toast.error("Failed to load product statistics.");
     } finally {
       setLoading(false);
