@@ -14,11 +14,14 @@ export function AuthProvider({ children }) {
 
       if (res.data.success) {
         setUser(res.data.data);
+        return res.data.data;
       } else {
         setUser(null);
+        return null;
       }
     } catch {
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,15 @@
 import axios from "axios";
 
+// Safari can block cookies sent to an API hosted on an unrelated domain.
+// In production, route requests through Vercel's same-origin /api rewrite so
+// the browser treats the session cookie as first-party. Keep VITE_API_URL for
+// local development, where Vite is not serving the Vercel rewrite.
+const apiBaseURL = import.meta.env.PROD
+  ? "/api"
+  : import.meta.env.VITE_API_URL;
+
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: apiBaseURL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

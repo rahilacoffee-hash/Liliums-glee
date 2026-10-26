@@ -21,11 +21,16 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      let { data } = await axiosInstance.post("/user/login", { email, password })
-      await fetchUser()
-      navigate(data.data?.role === "ADMIN" ? "/admin" : "/")
+      await axiosInstance.post("/user/login", { email, password })
+      const user = await fetchUser()
+
+      if (!user) {
+        throw new Error("Your browser could not save the sign-in session. Please try again after reloading the page.")
+      }
+
+      navigate(user.role === "ADMIN" ? "/admin" : "/")
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong")
+      setError(err.response?.data?.message || err.message || "Something went wrong")
     } finally {
       setLoading(false)
     }
@@ -36,13 +41,18 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      let { data } = await axiosInstance.post("/user/google", {
+      await axiosInstance.post("/user/google", {
         credential: credentialResponse.credential,
       })
-      await fetchUser()
-      navigate(data.data?.role === "ADMIN" ? "/admin" : "/")
+      const user = await fetchUser()
+
+      if (!user) {
+        throw new Error("Your browser could not save the sign-in session. Please try again after reloading the page.")
+      }
+
+      navigate(user.role === "ADMIN" ? "/admin" : "/")
     } catch (err) {
-      setError(err.response?.data?.message || "Google sign-in failed")
+      setError(err.response?.data?.message || err.message || "Google sign-in failed")
     } finally {
       setLoading(false)
     }
