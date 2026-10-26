@@ -30,41 +30,34 @@ function Products() {
   // Fetch Dashboard Statistics
   // ======================================
 
-  async function fetchStatistics() {
-    try {
-      setLoading(true);
+ async function fetchStatistics() {
+  try {
+    setLoading(true);
 
-      const { data } = await axiosInstance.get("/products", {
-        params: { limit: 1000 },
-      });
+    const { data } = await axiosInstance.get(
+      "/admin/products/stats"
+    );
 
-      const products = data.data.products || [];
+    const statsData = data.data;
 
-      setStats({
-        totalProducts: products.length,
-
-        featuredProducts: products.filter(
-          (item) => item.isFeatured
-        ).length,
-
-        activeProducts: products.filter(
-          (item) => item.status === "Active"
-        ).length,
-
-        archivedProducts: products.filter(
-          (item) => item.status === "Archived"
-        ).length,
-
-        lowStockProducts: products.filter(
-          (item) => item.stock <= 5
-        ).length,
-      });
-    } catch {
-      toast.error("Failed to load product statistics.");
-    } finally {
-      setLoading(false);
-    }
+    setStats({
+      totalProducts: statsData.totalProducts ?? 0,
+      featuredProducts: statsData.featuredProducts ?? 0,
+      activeProducts: statsData.activeProducts ?? 0,
+      archivedProducts: statsData.archivedProducts ?? 0,
+      lowStockProducts: statsData.lowStockProducts ?? 0,
+    });
+  } catch (error) {
+    console.error("Product statistics error:", {
+  url: error.config?.baseURL + error.config?.url,
+  status: error.response?.status,
+  response: error.response?.data,
+});
+    toast.error("Failed to load product statistics.");
+  } finally {
+    setLoading(false);
   }
+}
 
   useEffect(() => {
     fetchStatistics();
