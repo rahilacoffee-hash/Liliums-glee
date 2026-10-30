@@ -12,6 +12,8 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../api/axiosInstance";
+import toast from "react-hot-toast";
+import { subscribeToAdminNotifications } from "../../api/adminNotificationStream";
 
 function AdminNavbar({ children }) {
   const location = useLocation();
@@ -33,9 +35,24 @@ function AdminNavbar({ children }) {
     }
 
     fetchUnreadCount();
-    // Poll every 30s so the badge stays reasonably fresh without a websocket
+
+    const unsubscribe = subscribeToAdminNotifications((notification) => {
+      if (notification && notification.isRead !== true) {
+        setUnreadCount((count) => count + 1);
+        toast(notification.title || "New admin notification", {
+          icon: "🔔",
+          duration: 5000,
+        });
+      }
+    });
+
+    // Keep a low-frequency REST reconciliation as a fallback if a proxy or
+    // browser cannot maintain the event stream, and to recover after reconnects.
     const interval = setInterval(fetchUnreadCount, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      unsubscribe();
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {

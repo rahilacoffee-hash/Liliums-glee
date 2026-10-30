@@ -7,6 +7,9 @@ function HeroBackground({ image, alt, reduceMotion }) {
       <motion.img
         src={image || "/images/liliums-hero.png"}
         alt={alt || "Luxury modern interior"}
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
         initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.04 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{

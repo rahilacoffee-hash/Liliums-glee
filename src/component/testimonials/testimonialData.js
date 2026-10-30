@@ -1,5 +1,5 @@
 
-import bedroom from "../../assets/image/collections/wallpaper.jpeg";
+import bedroom from "../../assets/image/collections/wallpaper.webp";
 import office from "../../assets/image/collections/decor.jpeg";
 
 import {

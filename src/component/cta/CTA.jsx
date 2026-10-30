@@ -10,7 +10,7 @@ import {
   glowAnimation,
 } from "./ctaVariants";
 
-import ctaBg from "../../assets/image/backgrounds/commercial.png"; // Replace with your image
+import ctaBg from "../../assets/image/backgrounds/commercial.webp"; // Replace with your image
 
 function CTA() {
   return (
@@ -38,6 +38,8 @@ function CTA() {
         <img
           src={ctaBg}
           alt="Luxury Interior"
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover"
         />
       </motion.div>

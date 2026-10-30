@@ -27,6 +27,8 @@ function WhyChooseImage() {
         <img
           src={whyChooseData.image}
           alt={whyChooseData.title}
+          loading="lazy"
+          decoding="async"
           className="h-[720px] w-full object-cover"
         />
       </motion.div>

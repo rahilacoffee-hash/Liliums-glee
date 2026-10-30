@@ -41,6 +41,8 @@ function FeaturedCollection() {
             <img
               src={featuredCollection.image}
               alt={featuredCollection.title}
+              loading="lazy"
+              decoding="async"
               className="
                 h-full
                 w-full

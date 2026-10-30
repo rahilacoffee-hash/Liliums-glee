@@ -4,7 +4,6 @@ import Navbar from "../component/layout/Navbar/Navbar";
 import OurExpertise from "../component/servicespage/OurExpertise";
 import ServicesCTA from "../component/servicespage/ServicesCTA";
 import ServicesFAQ from "../component/servicespage/ServicesFAQ";
-import ServicesGrid from "../component/servicespage/ServicesGrid";
 import ServicesHero from "../component/servicespage/ServicesHero";
 import WhyChooseServices from "../component/servicespage/WhyChooseServices";
 

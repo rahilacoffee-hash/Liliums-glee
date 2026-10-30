@@ -19,7 +19,7 @@ import {
   FolderKanban,
 } from "lucide-react";
 
-import logo from "../../assets/image/Logo/Logo.png";
+import logo from "../../assets/image/Logo/Logo.webp";
 import axiosInstance from "../../api/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
 
@@ -103,7 +103,7 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen, collapsed, setCollapsed }) 
         {/* Logo */}
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-6">
           <div className="flex min-w-0 items-center gap-3">
-            <img src={logo} alt="Logo" className="h-11 w-11 flex-shrink-0 rounded-xl object-cover ring-2 ring-[#C8A96A]/30" />
+            <img src={logo} alt="Liliums Glee logo" loading="lazy" decoding="async" className="h-11 w-11 flex-shrink-0 rounded-xl object-cover ring-2 ring-[#C8A96A]/30" />
 
             <AnimatePresence>
               {!collapsed && (

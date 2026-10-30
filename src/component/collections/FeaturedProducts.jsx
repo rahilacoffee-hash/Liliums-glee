@@ -41,6 +41,8 @@ function FeaturedProducts() {
               <img
                 src={product.image}
                 alt={product.name}
+                loading="lazy"
+                decoding="async"
               />
 
               <h3>{product.name}</h3>

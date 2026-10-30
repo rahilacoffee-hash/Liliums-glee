@@ -1,6 +1,6 @@
 // ================= Images =================
-import heroImage from "../../assets/image/collections/wallpaper.jpeg";
-import ctaImage from "../../assets/image/collections/wall-treatment.jpeg";
+import heroImage from "../../assets/image/collections/wallpaper.webp";
+import ctaImage from "../../assets/image/collections/wall-treatment.webp";
 
 // ================= Contact Page Data =================
 

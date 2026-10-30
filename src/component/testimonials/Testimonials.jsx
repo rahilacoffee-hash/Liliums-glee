@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 
 import TestimonialHeader from "./TestimonialHeader";
 import TestimonialSlider from "./TestimonialSlider";
-import TestimonialFeatures from "./TestimonialFeatures";
 
 import { sectionReveal } from "./testimonialVariants";
 

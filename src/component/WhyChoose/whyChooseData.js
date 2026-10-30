@@ -1,5 +1,5 @@
 // Replace with your actual image
-import whyChooseImage from "../../assets/image/collections/wallpaper.jpeg";
+import whyChooseImage from "../../assets/image/collections/wallpaper.webp";
 
 const whyChooseData = {
   eyebrow: "WHY CHOOSE LILIUMS GLEE",

@@ -1,55 +1,50 @@
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-import LoginPage from "./component/Auth/Loginpage";
-import RegisterPage from "./component/Auth/Registerpage";
-import VerifyOtpPage from "./component/Auth/Verifyotppage";
-import ForgotPasswordPage from "./component/Auth/Forgotpasswordpage";
-import ResetPasswordPage from "./component/Auth/Resetpasswordpage";
-
 import ScrollToTop from "./component/layout/ScrollToTop";
-
-import Home from "./Pages/Home";
-import About from "./Pages/About";
-import Services from "./Pages/Services";
-import Collections from "./Pages/Collections";
-import Gallery from "./Pages/Gallery";
-import ProjectDetails from "./Pages/ProjectDetails";
-import ProductDetailsPage from "./component/collectionspage/Productdetailspage";
-import Contact from "./Pages/Contact";
-import Profile from "./Pages/Profile";
-import Wishlist from "./Pages/Wishlist";
-import SavedDesigns from "./Pages/SavedDesigns";
-import Legal from "./Pages/Legal";
-import Marketplace from "./Pages/Marketplace";
-
 import { AuthProvider } from "./context/AuthContext";
-
-import AdminLayout from "./admin/layout/AdminLayout";
-import Dashboard from "./admin/dashboard/Dashboard";
-import Products from "./admin/products/Products";
-import AddProduct from "./admin/products/AddProduct";
-import EditProduct from "./admin/products/EditProduct";
-import MyOrders from "./Pages/Myorders";
-import Orders from "./admin/orders/Orders";
-import OrderDetails from "./admin/orders/Orderdetails";
-import OrderDetail from "./component/Orderdetail";
-import Cart from "./Pages/Cart";
-import Checkout from "./Pages/Checkout";
-import PaymentSuccess from "./Pages/PaymentSuccess";
-import Users from "./admin/users/Users";
-import Reviews from "./admin/reviews/Reviews";
-import Consultations from "./admin/consultation/Consultations";
-import ConsultationDetails from "./admin/consultation/Consultationdetails";
-import ConsultationPaymentCallback from "./Pages/Consultationpaymentcallback";
-import Settings from "./admin/settings/Settings";
-import SiteContentEditor from "./admin/components/Sitecontenteditor";
-import Testimonials from "./admin/components/Testimonials";
-import NotificationsPage from "./Pages/Notificationspage";
-import Projects from "./admin/components/Projects";
-import Servicess from "./admin/components/Services";
-import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
 import LuxuryLoader from "./component/layout/Loader/LuxuryLoader";
+
+const Home = lazy(() => import("./Pages/Home"));
+const About = lazy(() => import("./Pages/About"));
+const Services = lazy(() => import("./Pages/Services"));
+const Collections = lazy(() => import("./Pages/Collections"));
+const Gallery = lazy(() => import("./Pages/Gallery"));
+const ProjectDetails = lazy(() => import("./Pages/ProjectDetails"));
+const ProductDetailsPage = lazy(() => import("./component/collectionspage/Productdetailspage"));
+const Contact = lazy(() => import("./Pages/Contact"));
+const Profile = lazy(() => import("./Pages/Profile"));
+const Wishlist = lazy(() => import("./Pages/Wishlist"));
+const SavedDesigns = lazy(() => import("./Pages/SavedDesigns"));
+const Legal = lazy(() => import("./Pages/Legal"));
+const Marketplace = lazy(() => import("./Pages/Marketplace"));
+const Cart = lazy(() => import("./Pages/Cart"));
+const Checkout = lazy(() => import("./Pages/Checkout"));
+const PaymentSuccess = lazy(() => import("./Pages/PaymentSuccess"));
+const MyOrders = lazy(() => import("./Pages/Myorders"));
+const OrderDetail = lazy(() => import("./component/Orderdetail"));
+const ConsultationPaymentCallback = lazy(() => import("./Pages/Consultationpaymentcallback"));
+const LoginPage = lazy(() => import("./component/Auth/Loginpage"));
+const RegisterPage = lazy(() => import("./component/Auth/Registerpage"));
+const VerifyOtpPage = lazy(() => import("./component/Auth/Verifyotppage"));
+const ForgotPasswordPage = lazy(() => import("./component/Auth/Forgotpasswordpage"));
+const ResetPasswordPage = lazy(() => import("./component/Auth/Resetpasswordpage"));
+const AdminLayout = lazy(() => import("./admin/layout/AdminLayout"));
+const Dashboard = lazy(() => import("./admin/dashboard/Dashboard"));
+const Products = lazy(() => import("./admin/products/Products"));
+const AddProduct = lazy(() => import("./admin/products/AddProduct"));
+const EditProduct = lazy(() => import("./admin/products/EditProduct"));
+const Orders = lazy(() => import("./admin/orders/Orders"));
+const OrderDetails = lazy(() => import("./admin/orders/Orderdetails"));
+const Users = lazy(() => import("./admin/users/Users"));
+const Reviews = lazy(() => import("./admin/reviews/Reviews"));
+const Consultations = lazy(() => import("./admin/consultation/Consultations"));
+const ConsultationDetails = lazy(() => import("./admin/consultation/Consultationdetails"));
+const Settings = lazy(() => import("./admin/settings/Settings"));
+const SiteContentEditor = lazy(() => import("./admin/components/Sitecontenteditor"));
+const Testimonials = lazy(() => import("./admin/components/Testimonials"));
+const NotificationsPage = lazy(() => import("./Pages/Notificationspage"));
+const Projects = lazy(() => import("./admin/components/Projects"));
+const Servicess = lazy(() => import("./admin/components/Services"));
 
 function App() {
 
@@ -69,15 +64,14 @@ useEffect(() => {
 
 
 
- <AnimatePresence mode="wait">
       {loading && <LuxuryLoader />}
-    </AnimatePresence>
 
 
 
       {!loading && (
       
 
+        <Suspense fallback={<LuxuryLoader />}>
         <Routes>
           {/* ================= Public Pages ================= */}
 
@@ -152,6 +146,7 @@ useEffect(() => {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
         )}
 
       </BrowserRouter>

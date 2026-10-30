@@ -1,4 +1,4 @@
-import horizon from "../../assets/image/backgrounds/heroimg.png";
+import horizon from "../../assets/image/backgrounds/heroimg.webp";
 
 export const defaultHero = {
   backgroundImage: horizon,

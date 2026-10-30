@@ -8,10 +8,9 @@ import {
   ChevronDown,
   ArrowRight,
   LayoutDashboard,
-  User,
 } from "lucide-react";
 
-import staticLogo from "../../../assets/image/Logo/Logo.png";
+import staticLogo from "../../../assets/image/Logo/Logo.webp";
 import navLinks from "./navLinks";
 
 import { useAuth } from "../../../context/AuthContext";
@@ -81,6 +80,8 @@ const Navbar = () => {
           <img
             src={logoSrc}
             alt={siteName}
+            loading="eager"
+            decoding="async"
             className="h-9 w-9 flex-shrink-0 rounded-lg object-contain sm:h-11 sm:w-11 lg:h-14 lg:w-14"
           />
 

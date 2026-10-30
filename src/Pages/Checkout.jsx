@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../component/layout/Navbar/Navbar";
 
 function Checkout() {
-  const { cartItems, totalPrice, clearCart } = useCart();
+  const { cartItems, totalPrice } = useCart();
   const { user, setUser } = useAuth();
 
   const [loading, setLoading] = useState(false);

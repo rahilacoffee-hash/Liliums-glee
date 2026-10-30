@@ -74,6 +74,8 @@ function ProductGrid() {
                 <img
                   src={product.image}
                   alt={product.name}
+                  loading="lazy"
+                  decoding="async"
                   className="h-[340px] w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 

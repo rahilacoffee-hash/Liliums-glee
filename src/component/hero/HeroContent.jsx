@@ -1,10 +1,8 @@
 
 import { motion } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, Mouse } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import {
   FaInstagram,
-  FaLinkedinIn,
-  FaPinterestP,
   FaTiktok,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";

@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-
 function ServiceRow({ service, reverse = false }) {
   return (
     <motion.div
@@ -13,13 +11,22 @@ function ServiceRow({ service, reverse = false }) {
       }`}
     >
       {/* Image */}
-      <div className="group overflow-hidden rounded-[36px]">
-        <img
-          src={service.image}
-          alt={service.title}
-          className="h-[620px] w-full object-cover transition duration-700 group-hover:scale-105"
+      {typeof service.image === "string" && service.image.trim() ? (
+        <div className="group overflow-hidden rounded-[36px]">
+          <img
+            src={service.image.trim()}
+            alt={service.title || "Interior design service"}
+            loading="lazy"
+            decoding="async"
+            className="h-[620px] w-full object-cover transition duration-700 group-hover:scale-105"
+          />
+        </div>
+      ) : (
+        <div
+          aria-hidden="true"
+          className="h-[320px] rounded-[36px] bg-[#E9E3D9] lg:h-[620px]"
         />
-      </div>
+      )}
 
       {/* Content */}
       <div className="max-w-xl">
@@ -40,7 +47,7 @@ function ServiceRow({ service, reverse = false }) {
         {/* Features */}
 
         <div className="mt-10 grid grid-cols-2 gap-5">
-          {service.features.map((item) => (
+          {(Array.isArray(service.features) ? service.features : []).map((item) => (
             <div
               key={item}
               className="flex items-center gap-3"

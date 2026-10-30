@@ -45,6 +45,7 @@ function ProductCard({ product, view = "grid" }) {
             src={imageUrl}
             alt={product.name}
             loading="lazy"
+            decoding="async"
             className="h-full min-h-[118px] w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:min-h-[140px]"
           />
         </Link>

@@ -1,9 +1,9 @@
 // ================= Images =================
 
-import wallpaper from "../../assets/image/collections/wallpaper.jpeg";
-import wallTreatment from "../../assets/image/collections/wall-treatment.jpeg";
-import curtains from "../../assets/image/collections/curtains.jpeg";
-import lighting from "../../assets/image/collections/lighting.jpeg";
+import wallpaper from "../../assets/image/collections/wallpaper.webp";
+import wallTreatment from "../../assets/image/collections/wall-treatment.webp";
+import curtains from "../../assets/image/collections/curtains.webp";
+import lighting from "../../assets/image/collections/lighting.webp";
 import decor from "../../assets/image/collections/decor.jpeg";
 
 // ================= Section Data =================

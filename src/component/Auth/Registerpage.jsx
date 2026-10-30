@@ -34,7 +34,7 @@ function RegisterPage() {
     setError("");
 
     try {
-      const { data } = await axiosInstance.post("/user/register", form);
+      await axiosInstance.post("/user/register", form);
       navigate("/verify-otp", { state: { email: form.email } });
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Unable to create account.");

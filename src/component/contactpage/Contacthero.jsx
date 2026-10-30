@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import contactData from "./contactData";
-import { fadeUp, fadeRight, heroImage, staggerContainer } from "./contactVariants";
+import { fadeUp, heroImage, staggerContainer } from "./contactVariants";
 
 function ContactHero() {
   let { hero } = contactData;

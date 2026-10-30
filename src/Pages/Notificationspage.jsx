@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, CalendarDays, MessageSquare, Users, Package, Bell, CheckCheck, Trash2 } from "lucide-react";
 import axiosInstance from "../api/axiosInstance";
+import { subscribeToAdminNotifications } from "../api/adminNotificationStream";
 
 let typeConfig = {
   order: { icon: ShoppingCart, color: "text-[#C8A96A] bg-[#C8A96A]/10" },
@@ -43,16 +44,12 @@ function NotificationsPage() {
   let [totalPages, setTotalPages] = useState(1);
   let [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    fetchNotifications();
-  }, [filter, page]);
-
-  async function fetchNotifications() {
-    setLoading(true);
-    setError("");
-
+  const fetchNotifications = useCallback(async () => {
     try {
-      let { data } = await axiosInstance.get("/notification", { params: { filter, page, limit: 20 } });
+      const { data } = await axiosInstance.get("/notification", {
+        params: { filter, page, limit: 20 },
+      });
+      setError("");
       setNotifications(data.data.notifications);
       setTotalPages(data.data.totalPages);
       setUnreadCount(data.data.unreadCount);
@@ -61,7 +58,41 @@ function NotificationsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [filter, page]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadNotifications() {
+      try {
+        const { data } = await axiosInstance.get("/notification", {
+          params: { filter, page, limit: 20 },
+        });
+        if (!active) return;
+        setError("");
+        setNotifications(data.data.notifications);
+        setTotalPages(data.data.totalPages);
+        setUnreadCount(data.data.unreadCount);
+      } catch (err) {
+        if (active) {
+          setError(err.response?.data?.message || "Failed to load notifications");
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    loadNotifications();
+    return () => {
+      active = false;
+    };
+  }, [filter, page]);
+
+  useEffect(() => {
+    return subscribeToAdminNotifications(() => {
+      fetchNotifications();
+    });
+  }, [fetchNotifications]);
 
   async function handleClick(notification) {
     if (!notification.isRead) {
@@ -146,7 +177,7 @@ function NotificationsPage() {
         </div>
       ) : (
         <div className="overflow-hidden rounded-2xl border border-[#E8E2D9] bg-white">
-          {notifications.map((n, i) => {
+          {notifications.map((n) => {
             let config = typeConfig[n.type] || typeConfig.system;
             let Icon = config.icon;
 
